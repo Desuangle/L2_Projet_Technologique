@@ -8,7 +8,7 @@
 shows the grid of the game
  */
 
-
+//Future co-author: Mathis Gendron
 
 void num_input(int tab[], unsigned int size){
   if (size == 2){
