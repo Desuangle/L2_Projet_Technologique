@@ -10,6 +10,8 @@ shows the grid of the game
 
 //Future co-author: Mathis Gendron, Killian Le Guen
 
+//Future co-author: Alouini Walid
+
 void num_input(int tab[], unsigned int size){
   if (size == 2){
     scanf("%d%d", &tab[0], &tab[1]);
