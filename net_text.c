@@ -9,7 +9,7 @@ shows the grid of the game
  */
 
 //Future co-author: Mathis Gendron
-
+//Future co-author: Killian Le Guen
 //Future co-author: Alouini Walid
 
 void num_input(int tab[], unsigned int size){
