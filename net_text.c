@@ -119,6 +119,6 @@ int main(void){
   show_grid(ex);
 
   delete_game(ex);
-  
+  ex = NULL;
   return EXIT_SUCCESS;
 }
