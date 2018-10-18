@@ -13,6 +13,15 @@ libs : libgame.a
 net_text : net_text.o
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
+test_walouini: test_walouini.o libgame.a
+	$(CC) $(CFLAGS)  $(CPPFLAGS) $^ $(LDFLAGS) -o $@
+
+run_test_walouini: test_walouini
+	./test_walouini success
+	./test_walouini empty
+
+test: run_test_walouini
+
 clean :
-	rm net_text net_text.o *.a
-.PHONY : clean
+	rm net_text net_text.o test_walouini.o *.a test_walouini
+.PHONY : clean libs test
