@@ -16,8 +16,8 @@ net_text : net_text.o
 test: run_test_kleguen
 
 run_test_kleguen: test_kleguen
-	 		./test_kleguen success
-			./test_kleguen set_piece
+#	 	./test_kleguen success
+		./test_kleguen set_piece
 	    ./test_kleguen empty
 
 
