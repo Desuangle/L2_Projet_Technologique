@@ -8,7 +8,7 @@
 shows the grid of the game
  */
 
-//Future co-author: Mathis Gendron(
+//Future co-author: Mathis Gendron
 //Future co-author: Killian Le Guen
 //Future co-author: Alouini Walid
 
@@ -119,6 +119,6 @@ int main(void){
   show_grid(ex);
 
   delete_game(ex);
-  
+  ex = NULL;
   return EXIT_SUCCESS;
 }
