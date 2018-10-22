@@ -1,0 +1,28 @@
+
+killian
+game new_game(piece *pieces, direction *initial_directions);
+void set_piece(game g, int x, int y, piece piece, direction orientation);
+void shuffle_dir(game g);
+int game_height(cgame game);
+
+alexandre
+int game_width(cgame game);
+void rotate_piece_one(game game, int x, int y);
+void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn);
+void set_piece_current_dir (game game, int x, int y, direction dir);
+
+wallid
+bool is_edge_coordinates(cgame g, int x, int y, direction dir);
+bool is_edge(piece piece, direction orientation, direction dir);
+direction opposite_dir(direction dir);
+game copy_game (cgame g_src);
+
+mathis
+void delete_game (game g);
+piece get_piece(cgame game, int x, int y);
+direction get_current_dir(cgame g, int x, int y);
+void restart_game(game g);
+
+déjà fait
+bool is_game_over (cgame g);
+game new_game_empty();
