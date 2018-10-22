@@ -13,20 +13,17 @@ libs : libgame.a
 net_text : net_text.o
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
-test: run_test_kleguen
-
-test_kleguen : test_kleguen.c libgame.a
-	$(CC) $^ $(CFLAGS) $(CPPFLAGS) -o test_kleguen
+test: run_test_kleguen run_test_walouini
 
 run_test_kleguen: test_kleguen
-#	 	./test_kleguen success
+	 	./test_kleguen success
 		./test_kleguen set_piece
 	    ./test_kleguen empty
 
 
 
-
-test: run_test_walouini
+test_kleguen : test_kleguen.c libgame.a
+	$(CC) $^ $(CFLAGS) $(CPPFLAGS) -o test_kleguen
 
 test_walouini: test_walouini.o libgame.a
 	$(CC) $(CFLAGS)  $(CPPFLAGS) $^ $(LDFLAGS) -o $@
@@ -35,7 +32,6 @@ run_test_walouini: test_walouini
 	./test_walouini success
 	./test_walouini empty
 
-
 clean :
-	rm net_text net_text.o test_walouini.o *.a test_walouini
+	rm net_text net_text.o test_walouini.o *.a test_walouini test_kleguen
 .PHONY : clean libs test
