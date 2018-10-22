@@ -19,9 +19,9 @@ test_kleguen : test_kleguen.c libgame.a
 	$(CC) $^ $(CFLAGS) $(CPPFLAGS) -o test_kleguen
 
 run_test_kleguen: test_kleguen
-#	 	./test_kleguen success
-		./test_kleguen set_piece
-	    ./test_kleguen empty
+	./test_kleguen success
+	./test_kleguen set_piece
+	./test_kleguen empty
 
 
 
@@ -37,5 +37,5 @@ run_test_walouini: test_walouini
 
 
 clean :
-	rm net_text net_text.o test_walouini.o *.a test_walouini
+	rm net_text net_text.o test_walouini.o *.a test_walouini test_kleguen.o *.a test_kleguen
 .PHONY : clean libs test

@@ -7,7 +7,7 @@
 
 /* ********** TEST SUCCESS ********** */
 
-int test_success(int argc, char *argv[])
+  int test_success(int argc, char *argv[])
 {
 /**
   |  ┘ ^ < └ v  |  ┌ < > ┐ v  |
@@ -28,11 +28,11 @@ int test_success(int argc, char *argv[])
     CORNER, LEAF, LEAF, CORNER, LEAF
   };
 
-    direction p2[] = {E,N,W,S,S,
-                      E,S,S,N,E,
+    direction p2[] = {E,N,W,N,N,
+                      E,S,N,S,S,
                       N,N,E,W,N,
-                      E,S,N,S,N,
-                      E,N,W,N,N
+                      E,S,S,N,W,
+                      E,W,E,S,S
                       };
     //   ┐
     //  └
@@ -50,17 +50,23 @@ int test_success(int argc, char *argv[])
 
 }
 
-/* ********** TEST FSET_PIECE********** */
+/* ********** TEST SET_PIECE********** */
 
 int test_set_piece(int argc, char *argv[])
 {
   game g = new_game_empty();
   set_piece(g,1,1,LEAF,N);
-  if (get_piece(g, 1, 1)== '^')
+
+  if (get_piece(g, 1, 1)== LEAF && get_current_dir(g, 1, 1)== N)
   {
+    delete_game(g);
+    g = NULL;
     return EXIT_SUCCESS;;
   }
-  else{
+  else
+{
+    delete_game(g);
+    g = NULL;
     return EXIT_FAILURE;
   }
 
@@ -111,8 +117,8 @@ int main(int argc, char *argv[])
 
     printf("=> RUN TEST \"%s\"\n", argv[1]);
 
-    int status;
-    if (strcmp("success", argv[1]) == 0)
+  int status;
+   if (strcmp("success", argv[1]) == 0)
         status = test_success(argc, argv);
     else if (strcmp("set_piece", argv[1]) == 0)
         status = test_set_piece(argc, argv);
