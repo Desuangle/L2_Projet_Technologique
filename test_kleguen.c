@@ -55,20 +55,203 @@
 int test_set_piece(int argc, char *argv[])
 {
   game g = new_game_empty();
-  set_piece(g,1,1,LEAF,N);
 
-  if (get_piece(g, 1, 1)== LEAF && get_current_dir(g, 1, 1)== N)
-  {
-    delete_game(g);
-    g = NULL;
-    return EXIT_SUCCESS;;
-  }
-  else
+  int h = 5;
+  int w = 5;
+    for (int y = 0; y < h; y++)
+    {
+        for (int x = 0; x < w; x++)
+        {
+          set_piece(g,x,y,LEAF,N);
+
+          if (get_piece(g, x, y) != LEAF || get_current_dir(g, x, y)!= N)
+          {
+            delete_game(g);
+            g = NULL;
+            return EXIT_FAILURE;
+          }
+          set_piece(g,x,y,LEAF,S);
+          if (get_piece(g, x, y) != LEAF || get_current_dir(g, x, y)!= S)
+          {
+            delete_game(g);
+            g = NULL;
+            return EXIT_FAILURE;
+          }
+          set_piece(g,x,y,LEAF,E);
+          if (get_piece(g, x, y) != LEAF || get_current_dir(g, x, y)!= E)
+          {
+            delete_game(g);
+            g = NULL;
+            return EXIT_FAILURE;
+          }
+          set_piece(g,x,y,LEAF,W);
+          if (get_piece(g, x, y) != LEAF || get_current_dir(g, x, y)!= W)
+          {
+            delete_game(g);
+            g = NULL;
+            return EXIT_FAILURE;
+          }
+
+          set_piece(g,x,y,TEE,N);
+          if (get_piece(g, x, y) != TEE || get_current_dir(g, x, y)!= N)
+          {
+            delete_game(g);
+            g = NULL;
+            return EXIT_FAILURE;
+          }
+          set_piece(g,x,y,TEE,S);
+          if (get_piece(g, x, y) != TEE || get_current_dir(g, x, y)!= S)
+          {
+            delete_game(g);
+            g = NULL;
+            return EXIT_FAILURE;
+          }
+          set_piece(g,x,y,TEE,E);
+          if (get_piece(g, x, y) != TEE || get_current_dir(g, x, y)!= E)
+          {
+            delete_game(g);
+            g = NULL;
+            return EXIT_FAILURE;
+          }
+          set_piece(g,x,y,TEE,W);
+          if (get_piece(g, x, y) != TEE || get_current_dir(g, x, y)!= W)
+          {
+            delete_game(g);
+            g = NULL;
+            return EXIT_FAILURE;
+          }
+
+
+          set_piece(g,x,y,CORNER,N);
+            if (get_piece(g, x, y) != CORNER|| get_current_dir(g, x, y)!= N)
+            {
+              delete_game(g);
+              g = NULL;
+              return EXIT_FAILURE;
+            }
+          set_piece(g,x,y,CORNER,S);
+              if (get_piece(g, x, y) != CORNER|| get_current_dir(g, x, y)!= S)
+              {
+                delete_game(g);
+                g = NULL;
+                return EXIT_FAILURE;
+              }
+          set_piece(g,x,y,CORNER,E);
+                if (get_piece(g, x, y) != CORNER|| get_current_dir(g, x, y)!= E)
+                {
+                  delete_game(g);
+                  g = NULL;
+                  return EXIT_FAILURE;
+                }
+          set_piece(g,x,y,CORNER,W);
+                if (get_piece(g, x, y) != CORNER|| get_current_dir(g, x, y)!= W)
+                {
+                  delete_game(g);
+                  g = NULL;
+                  return EXIT_FAILURE;
+                }
+          set_piece(g,x,y,SEGMENT,N);
+            if (get_piece(g, x, y) != SEGMENT|| get_current_dir(g, x, y)!= N)
+            {
+              delete_game(g);
+              g = NULL;
+              return EXIT_FAILURE;
+            }
+          set_piece(g,x,y,SEGMENT,S);
+              if (get_piece(g, x, y) != SEGMENT|| get_current_dir(g, x, y)!= S)
+              {
+                delete_game(g);
+                g = NULL;
+                return EXIT_FAILURE;
+              }
+          set_piece(g,x,y,SEGMENT,E);
+                if (get_piece(g, x, y) != SEGMENT|| get_current_dir(g, x, y)!= E)
+                {
+                  delete_game(g);
+                  g = NULL;
+                  return EXIT_FAILURE;
+                }
+          set_piece(g,x,y,SEGMENT,W);
+            if (get_piece(g, x, y) != SEGMENT|| get_current_dir(g, x, y)!= W)
+            {
+              delete_game(g);
+              g = NULL;
+              return EXIT_FAILURE;
+            }
+        }
+        }
+
+  delete_game(g);
+  g = NULL;
+  return EXIT_SUCCESS;
+
+}
+
+/* ********** TEST shuffle_dir********** */
+
+int test_shuffle_dir(int argc, char *argv[])
 {
+  piece p1[] = {
+  LEAF, TEE, LEAF, LEAF, LEAF,
+  LEAF, TEE, TEE, CORNER, SEGMENT,
+  LEAF, LEAF, TEE, LEAF, SEGMENT,
+  TEE, TEE, TEE, TEE, TEE,
+  CORNER, LEAF, LEAF, CORNER, LEAF
+};
+
+  direction p2[] = {E,N,W,N,N,
+                    E,S,N,S,S,
+                    N,N,E,W,N,
+                    E,S,S,N,W,
+                    E,W,E,S,S
+                    };
+  //   ┐
+  //  └
+  //taille de 5*5 obli
+  game(g) = new_game(p1, p2);
+
+  int w = game_width(g);
+  int h = game_height(g);
+
+  int No = 0; int So = 0; int We = 0; int Ea =0;
+
+  shuffle_dir(g);
+
+  for (int y = 0; y < h; y++)
+  {
+      for (int x = 0; x < w; x++)
+      {
+        char dir = get_current_dir(g, x, y);
+        if (dir == N)
+        {
+          No+=1;
+        }
+        if (dir == S)
+        {
+          So+=1;
+        }
+        if (dir == E)
+        {
+          Ea+=1;
+        }
+        if (dir == W)
+        {
+          We+=1;
+        }
+      }
+  }
+    int moit = (w * h)/2;
+    if (No>moit || So>moit || Ea>moit|| We>moit)
+    {
+      delete_game(g);
+      g = NULL;
+      return EXIT_FAILURE;
+    }
     delete_game(g);
     g = NULL;
-    return EXIT_FAILURE;
-  }
+    return EXIT_SUCCESS;
+
+
 
 }
 
@@ -93,6 +276,84 @@ int test_empty(int argc, char *argv[])
     g = NULL;
     return EXIT_SUCCESS;
 }
+/* ********** TEST game_new_game ********** */
+int test_game_new_game (int argc, char *argv[])
+{
+
+  piece p1[] = {
+  LEAF, TEE, LEAF, LEAF, LEAF,
+  LEAF, TEE, TEE, CORNER, SEGMENT,
+  LEAF, LEAF, TEE, LEAF, SEGMENT,
+  TEE, TEE, TEE, TEE, TEE,
+  CORNER, LEAF, LEAF, CORNER, LEAF
+  };
+
+  direction p2[] = {E,N,W,N,N, //1er ligne du bass
+                    E,S,N,S,S,
+                    N,N,E,W,N,
+                    E,S,S,N,W,
+                    E,W,E,S,S  //dernier ligne du haut
+                    };
+
+  game(g) = new_game(p1, p2);
+  int w = 5;
+  int h = 5;
+  if (g == NULL)
+  {
+    delete_game(g);
+    return EXIT_FAILURE;
+  }
+
+  for (int x = 0; x < h; x++)
+  {
+    for (int y = 0; x < w; x++)
+    {
+      if (get_piece(g,x,y) != p1[x+5*y] || get_current_dir(g,x,y)!=p2[x+5*y])
+      {
+        g = NULL;
+        return EXIT_FAILURE;
+      }
+
+    }
+  }
+    delete_game(g);
+    g = NULL;
+    return EXIT_SUCCESS;
+}
+
+/* ********** TEST game_height ********** */
+int test_game_height (int argc, char *argv[])
+{
+  piece p1[] = {
+  LEAF, TEE, LEAF, LEAF, LEAF,
+  LEAF, TEE, TEE, CORNER, SEGMENT,
+  LEAF, LEAF, TEE, LEAF, SEGMENT,
+  TEE, TEE, TEE, TEE, TEE,
+  CORNER, LEAF, LEAF, CORNER, LEAF
+  };
+
+  direction p2[] = {E,N,W,N,N, //1er ligne du bass
+                    E,S,N,S,S,
+                    N,N,E,W,N,
+                    E,S,S,N,W,
+                    E,W,E,S,S  //dernier ligne du haut
+                    };
+
+  game(g) = new_game(p1, p2);
+
+  if (game_height(g) != 5)
+  {
+    delete_game(g);
+    g = NULL;
+    return EXIT_FAILURE;
+  }
+  delete_game(g);
+  g = NULL;
+  return EXIT_SUCCESS;
+
+}
+
+
 
 /* ********** USAGE ********** */
 
@@ -122,6 +383,16 @@ int main(int argc, char *argv[])
         status = test_success(argc, argv);
     else if (strcmp("set_piece", argv[1]) == 0)
         status = test_set_piece(argc, argv);
+
+    else if (strcmp("game_new_game", argv[1]) == 0)
+        status = test_game_new_game(argc, argv);
+
+    else if (strcmp("shuffle_dir", argv[1]) == 0)
+        status = test_shuffle_dir(argc, argv);
+
+    else if (strcmp("game_height", argv[1]) == 0)
+        status = test_game_height(argc, argv);
+
     else if (strcmp("empty", argv[1]) == 0)
         status = test_empty(argc, argv);
     else
