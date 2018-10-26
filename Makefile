@@ -10,7 +10,7 @@ test_avialar.o: test_avialar.c libs
 	$(CC) -c $< $(CFLAGS)
 test_mgendron.o : test_mgendron.c libs
 	$(CC) -c $< $(CFLAGS)
-test_walouini.o: test_walouini.c libs	
+test_walouini.o: test_walouini.c libs
 	$(CC) -c $< $(CFLAGS)
 test_kleguen.o: test_kleguen.c libs
 	$(CC) -c $< $(CFLAGS)
@@ -27,6 +27,8 @@ run_test_kleguen: test_kleguen
 	./test_kleguen success
 	./test_kleguen set_piece
 	./test_kleguen empty
+	./test_kleguen shuffle_dir
+	./test_kleguen game_height
 
 run_test_avialar: test_avialar
 	./test_avialar is_game_over
