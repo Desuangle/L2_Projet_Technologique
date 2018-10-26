@@ -4,6 +4,7 @@ CPPFLAGS = -I ../include
 LDFLAGS = -L. -lgame
 
 all : libs net_text
+
 net_text.o : net_text.c libgame.a
 	$(CC) -c $< $(CFLAGS)
 test_avialar.o: test_avialar.c libs
@@ -11,13 +12,13 @@ test_avialar.o: test_avialar.c libs
 test_mgendron.o : test_mgendron.c libs
 	$(CC) -c $< $(CFLAGS)
 test_walouini.o: test_walouini.c libs
-	$(CC) -c $< $(CFLAGS)
+	$(CC) $(CFLAGS) -c $< 
 test_kleguen.o: test_kleguen.c libs
 	$(CC) -c $< $(CFLAGS)
 libgame.a : game.o game_io.o
 	ar rcs $@ $^
-libs : libgame.a
 
+libs : libgame.a
 net_text : net_text.o
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
@@ -43,26 +44,24 @@ run_test_mgendron: test_mgendron
 	./test_mgendron current_dir
 	./test_mgendron restart
 
-test_kleguen : test_kleguen.c libgame.a
+run_test_walouini: test_walouini
+	./test_walouini is_edge_coordinates
+	./test_walouini is_edge
+	./test_walouini opposite_dir
+	./test_walouini copy_game
+
+
+test_kleguen : test_kleguen.o 
 	$(CC) $^ $(CFLAGS) $(CPPFLAGS) -o test_kleguen
 
 test_avialar: test_avialar.o
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
-test_walouini: test_walouini.o libgame.a
+test_walouini: test_walouini.o 
 	$(CC) $(CFLAGS)  $(CPPFLAGS) $^ $(LDFLAGS) -o $@
 
 test_mgendron : test_mgendron.o
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
-
-run_test_walouini: test_walouini
-	./test_walouini success
-	./test_walouini empty
-	./test_walouini is_edge_coordinates
-	./test_walouini is_edge
-	./test_walouini opposite_dir
-	./test_walouini copy_game
-	./test_walouini failure
 
 
 clean :
