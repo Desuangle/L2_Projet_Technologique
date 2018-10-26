@@ -5,6 +5,7 @@
 
 #include "game.h"
 
+
 /* ********** TEST is_edge *********** */
 int test_is_edge(int argc, char *argv[])
 {
@@ -32,7 +33,7 @@ int test_is_edge(int argc, char *argv[])
     for (int y = 0; y < h; y++){
         for (int x = 0; x < w; x++)            
         {
-            piece p = get_piece(g, x, y);  ///piece { LEAF=0= ^ , SEGMENT=1= | , CORNER=2= └ , TEE=3= ┴ }==> direction (North)
+            piece p = get_piece(g, x, y);  ///piece { LEAF=0= ^ , SEGMENT=1= | , CORNER=2= └ , TEE=3= ┴ }===> direction (North)
             direction d = get_current_dir(g, x, y);
             ///////////////_test_SEGMENT_///////////////// 
             if( (p == SEGMENT) && ( (d == N) || (d == S) ) )  //// SEGMENT= | /////
@@ -566,6 +567,7 @@ int test_copy_game (int argc, char *argv[]){
     return EXIT_SUCCESS;
 }
 
+
 /* ********** TEST EMPTY ********** */
 
 int test_empty(int argc, char *argv[])
@@ -588,6 +590,7 @@ int test_empty(int argc, char *argv[])
     g = NULL;
     return EXIT_SUCCESS;
 }
+
 
 /* ********** USAGE ********** */
 
