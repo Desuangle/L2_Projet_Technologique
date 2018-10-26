@@ -11,7 +11,7 @@ void rotate_piece_one(game game, int x, int y);
 void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn);
 void set_piece_current_dir (game game, int x, int y, direction dir);
 
-wallid
+walid
 bool is_edge_coordinates(cgame g, int x, int y, direction dir);
 bool is_edge(piece piece, direction orientation, direction dir);
 direction opposite_dir(direction dir);
