@@ -12,7 +12,7 @@ test_avialar.o: test_avialar.c libs
 test_mgendron.o : test_mgendron.c libs
 	$(CC) -c $< $(CFLAGS)
 test_walouini.o: test_walouini.c libs
-	$(CC) $(CFLAGS) -c $< 
+	$(CC) $(CFLAGS) -c $<
 test_kleguen.o: test_kleguen.c libs
 	$(CC) -c $< $(CFLAGS)
 libgame.a : game.o game_io.o
@@ -25,9 +25,8 @@ net_text : net_text.o
 test: run_test_kleguen run_test_walouini run_test_avialar run_test_mgendron
 
 run_test_kleguen: test_kleguen
-	./test_kleguen success
 	./test_kleguen set_piece
-	./test_kleguen empty
+	./test_kleguen game_new_game
 	./test_kleguen shuffle_dir
 	./test_kleguen game_height
 
@@ -51,13 +50,13 @@ run_test_walouini: test_walouini
 	./test_walouini copy_game
 
 
-test_kleguen : test_kleguen.o 
-	$(CC) $^ $(CFLAGS) $(CPPFLAGS) -o test_kleguen
+test_kleguen : test_kleguen.o
+	$(CC) $(CFLAGS)  $(CPPFLAGS) $^ $(LDFLAGS) -o $@
 
 test_avialar: test_avialar.o
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
-test_walouini: test_walouini.o 
+test_walouini: test_walouini.o
 	$(CC) $(CFLAGS)  $(CPPFLAGS) $^ $(LDFLAGS) -o $@
 
 test_mgendron : test_mgendron.o

@@ -6,9 +6,6 @@
 #include "game.h"
 
 /* ********** TEST SUCCESS ********** */
-
-  int test_success(int argc, char *argv[])
-{
 /**
   |  ┘ ^ < └ v  |  ┌ < > ┐ v  |
   |  ┬ ┤ ┴ ├ ├  |  ├ ┬ ┬ ┴ ┤  |
@@ -20,35 +17,7 @@
 
 **/
     //on remplit de gauche a droite de bas vers le haut
-    piece p1[] = {
-    LEAF, TEE, LEAF, LEAF, LEAF,
-    LEAF, TEE, TEE, CORNER, SEGMENT,
-    LEAF, LEAF, TEE, LEAF, SEGMENT,
-    TEE, TEE, TEE, TEE, TEE,
-    CORNER, LEAF, LEAF, CORNER, LEAF
-  };
 
-    direction p2[] = {E,N,W,N,N,
-                      E,S,N,S,S,
-                      N,N,E,W,N,
-                      E,S,S,N,W,
-                      E,W,E,S,S
-                      };
-    //   ┐
-    //  └
-    //taille de 5*5 obli
-    game(g) = new_game(p1, p2);
-
-    if(is_game_over(g))
-    {
-      return EXIT_SUCCESS;
-    }
-    else
-    {
-    return EXIT_FAILURE;
-    }
-
-}
 
 /* ********** TEST SET_PIECE********** */
 
@@ -379,9 +348,7 @@ int main(int argc, char *argv[])
     printf("=> RUN TEST \"%s\"\n", argv[1]);
 
   int status;
-   if (strcmp("success", argv[1]) == 0)
-        status = test_success(argc, argv);
-    else if (strcmp("set_piece", argv[1]) == 0)
+    if (strcmp("set_piece", argv[1]) == 0)
         status = test_set_piece(argc, argv);
 
     else if (strcmp("game_new_game", argv[1]) == 0)
