@@ -6,6 +6,8 @@ LDFLAGS = -L. -lgame
 all : libs net_text
 net_text.o : net_text.c libgame.a
 	$(CC) -c $< $(CFLAGS)
+test_avialar.o: test_avialar.c libs
+	$(CC) -c $< $(CFLAGS)
 libgame.a : game.o game_io.o
 	ar rcs $@ $^
 libs : libgame.a
@@ -13,17 +15,25 @@ libs : libgame.a
 net_text : net_text.o
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
-test: run_test_kleguen run_test_walouini
+test: run_test_kleguen run_test_walouini run_test_avialar
 
 run_test_kleguen: test_kleguen
 	./test_kleguen success
 	./test_kleguen set_piece
 	./test_kleguen empty
 
-
+run_test_avialar: test_avialar
+	./test_avialar is_game_over
+	./test_avialar game_width
+	./test_avialar rotate_piece_one
+	./test_avialar rotate_piece
+	./test_avialar set_piece_current_dir
 
 test_kleguen : test_kleguen.c libgame.a
 	$(CC) $^ $(CFLAGS) $(CPPFLAGS) -o test_kleguen
+
+test_avialar: test_avialar.o
+	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
 test_walouini: test_walouini.o libgame.a
 	$(CC) $(CFLAGS)  $(CPPFLAGS) $^ $(LDFLAGS) -o $@
@@ -38,5 +48,5 @@ run_test_walouini: test_walouini
 	./test_walouini failure
 
 clean :
-	rm net_text net_text.o test_walouini.o *.a test_walouini test_kleguen.o *.a test_kleguen
+	rm net_text net_text.o test_*.o *.a test_walouini test_kleguen test_avialar
 .PHONY : clean libs test
