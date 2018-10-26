@@ -5,7 +5,6 @@
 
 #include "game.h"
 
-
 /* ********** TEST is_edge *********** */
 int test_is_edge(int argc, char *argv[])
 {
