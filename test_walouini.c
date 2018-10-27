@@ -511,11 +511,34 @@ int test_opposite_dir(int argc, char *argv[])
         for (int x = 0; x < w; x++)
         {
             direction d = get_current_dir(g, x, y);
-            if ( opposite_dir( d ) == d    )
-            {
-                fprintf(stderr, "Error: opposite direction (%d,%d)!\n", x, y);
-                return EXIT_FAILURE;
+            if(d==N){
+                if ( opposite_dir( d ) != S )
+                {
+                    fprintf(stderr, "Error: opposite direction (%d,%d)!\n", x, y);
+                    return EXIT_FAILURE;
+                }
+            } 
+            if(d==S){
+                if ( opposite_dir( d ) != N )
+                {
+                    fprintf(stderr, "Error: opposite direction (%d,%d)!\n", x, y);
+                    return EXIT_FAILURE;
+                }
             }
+            if(d==W){
+                if ( opposite_dir( d ) != E )
+                {
+                    fprintf(stderr, "Error: opposite direction (%d,%d)!\n", x, y);
+                    return EXIT_FAILURE;
+                }
+            }       
+            if(d==E){
+                if ( opposite_dir( d ) != W )
+                {
+                    fprintf(stderr, "Error: opposite direction (%d,%d)!\n", x, y);
+                    return EXIT_FAILURE;
+                }
+            }              
         }
     }    
     delete_game(g);
@@ -553,7 +576,10 @@ int test_copy_game (int argc, char *argv[]){
     for (int y = 0; y < h; y++){
         for (int x = 0; x < w; x++)
         {
-            if (get_piece(g, x, y) != get_piece(g_copy, x, y))
+            direction d = get_current_dir(g, x, y);
+            direction d_copy = get_current_dir(g_copy, x, y);
+
+            if (   (get_piece(g, x, y) != get_piece(g_copy, x, y) )  && ( d != d_copy )   )
             {
                 fprintf(stderr, "Error: copy game (%d,%d)!\n", x, y);
                 return EXIT_FAILURE;
@@ -566,7 +592,6 @@ int test_copy_game (int argc, char *argv[]){
     g_copy = NULL;    
     return EXIT_SUCCESS;
 }
-
 
 
 /* ********** TEST EMPTY ********** */
@@ -591,8 +616,8 @@ int test_empty(int argc, char *argv[])
     g = NULL;
     return EXIT_SUCCESS;
 }
-
 */
+
 /* ********** USAGE ********** */
 
 #ifndef TESTFW
@@ -617,8 +642,8 @@ int main(int argc, char *argv[])
     printf("=> RUN TEST \"%s\"\n", argv[1]);
 
     int status;
-    /*if (strcmp("empty", argv[1]) == 0)
-      status = test_empty(argc, argv);*/
+    /*    if (strcmp("empty", argv[1]) == 0)
+	  status = test_empty(argc, argv);*/
     if (strcmp("is_edge_coordinates", argv[1]) == 0)
         status = test_is_edge_coordinates(argc, argv); 
     else if (strcmp("is_edge", argv[1]) == 0)
