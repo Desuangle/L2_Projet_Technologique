@@ -100,7 +100,7 @@ int test_restart_game(int argc, char *argv[]){
 }
 
 /* ********** TEST EMPTY ********** */
-
+/*
 int test_empty(int argc, char *argv[])
 {
     game g = new_game_empty();
@@ -120,7 +120,7 @@ int test_empty(int argc, char *argv[])
     g = NULL;
     return EXIT_SUCCESS;
 }
-
+*/
 /* ********** USAGE ********** */
 
 #ifndef TESTFW
@@ -153,8 +153,8 @@ int main(int argc, char *argv[])
         status = test_get_current_dir(argc, argv);
     else if (strcmp("restart", argv[1]) == 0)
         status = test_restart_game(argc, argv);
-    else if (strcmp("empty", argv[1]) == 0)
-        status = test_empty(argc, argv);
+    /*else if (strcmp("empty", argv[1]) == 0)
+      status = test_empty(argc, argv);*/
     else
     {
         fprintf(stderr, "Error: test %s not found!\n", argv[1]);

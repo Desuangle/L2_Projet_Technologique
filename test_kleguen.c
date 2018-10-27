@@ -6,7 +6,7 @@
 #include "game.h"
 
 /* ********** TEST SUCCESS ********** */
-/**
+/*
   |  ┘ ^ < └ v  |  ┌ < > ┐ v  |
   |  ┬ ┤ ┴ ├ ├  |  ├ ┬ ┬ ┴ ┤  |
   |  > ^ ┤ < -  |  ^ ^ ├ < |  |
@@ -15,7 +15,7 @@
   |             |             |
   |    start    |   solution  |
 
-**/
+*/
     //on remplit de gauche a droite de bas vers le haut
 
 
@@ -225,7 +225,7 @@ int test_shuffle_dir(int argc, char *argv[])
 }
 
 /* ********** TEST EMPTY ********** */
-
+/*
 int test_empty(int argc, char *argv[])
 {
     game g = new_game_empty();
@@ -245,6 +245,7 @@ int test_empty(int argc, char *argv[])
     g = NULL;
     return EXIT_SUCCESS;
 }
+*/
 /* ********** TEST game_new_game ********** */
 int test_game_new_game (int argc, char *argv[])
 {
@@ -360,8 +361,8 @@ int main(int argc, char *argv[])
     else if (strcmp("game_height", argv[1]) == 0)
         status = test_game_height(argc, argv);
 
-    else if (strcmp("empty", argv[1]) == 0)
-        status = test_empty(argc, argv);
+    /*else if (strcmp("empty", argv[1]) == 0)
+      status = test_empty(argc, argv);*/
     else
     {
         fprintf(stderr, "Error: test %s not found!\n", argv[1]);

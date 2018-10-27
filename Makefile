@@ -15,14 +15,28 @@ test_walouini.o: test_walouini.c libs
 	$(CC) $(CFLAGS) -c $<
 test_kleguen.o: test_kleguen.c libs
 	$(CC) -c $< $(CFLAGS)
+testfw_avialar.o: test_avialar.c libs
+	$(CC) -c $< $(CFLAGS) -DTESTFW -o $@
+testfw_mgendron.o : test_mgendron.c libs
+	$(CC) -c $< $(CFLAGS) -DTESTFW -o $@
+testfw_walouini.o: test_walouini.c libs
+	$(CC) $(CFLAGS) -c $< -DTESTFW -o $@
+testfw_kleguen.o: test_kleguen.c libs
+	$(CC) -c $< $(CFLAGS) -DTESTFW -o $@
 libgame.a : game.o game_io.o
 	ar rcs $@ $^
 
-libs : libgame.a
+libs : libgame.a libtestfw.a libtestfw_main.a
 net_text : net_text.o
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
+testfw: testfw_all
+	./testfw_all -t 2 -o test.log -c
+
 test: run_test_kleguen run_test_walouini run_test_avialar run_test_mgendron
+
+testfw_all: testfw_avialar.o testfw_mgendron.o testfw_walouini.o testfw_kleguen.o
+	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -ltestfw_main -ltestfw -ldl -rdynamic
 
 run_test_kleguen: test_kleguen
 	./test_kleguen set_piece
@@ -36,6 +50,7 @@ run_test_avialar: test_avialar
 	./test_avialar rotate_piece_one
 	./test_avialar rotate_piece
 	./test_avialar set_piece_current_dir
+	./test_avialar empty
 
 run_test_mgendron: test_mgendron
 	./test_mgendron delete
@@ -64,5 +79,5 @@ test_mgendron : test_mgendron.o
 
 
 clean :
-	rm net_text net_text.o test_*.o *.a test_walouini test_kleguen test_avialar test_mgendron
+	rm net_text net_text.o testfw_*.o test_*.o libgame.a test_walouini test_kleguen test_avialar testfw_all test_mgendron *~ *.log
 .PHONY : clean libs test
