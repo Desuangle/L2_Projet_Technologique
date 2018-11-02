@@ -571,6 +571,17 @@ int test_copy_game (int argc, char *argv[]){
     game g_copy=copy_game (g);
     assert(g_copy);
 
+    if ( game_width(g) != game_width(g_copy))
+    {
+        fprintf(stderr, "Error: copy game width !\n");
+        return EXIT_FAILURE;
+    }
+    if ( game_height(g) != game_height(g_copy))
+    {
+        fprintf(stderr, "Error: copy game height !\n");
+        return EXIT_FAILURE;
+    }
+
     int w = game_width(g);
     int h = game_height(g);
     for (int y = 0; y < h; y++){
