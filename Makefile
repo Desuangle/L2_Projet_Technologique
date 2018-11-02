@@ -70,6 +70,7 @@ run_test_walouini: test_walouini
 	./test_walouini is_edge
 	./test_walouini opposite_dir
 	./test_walouini copy_game
+	
 
 
 test_kleguen : test_kleguen.o

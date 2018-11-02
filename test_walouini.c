@@ -653,7 +653,7 @@ int main(int argc, char *argv[])
     printf("=> RUN TEST \"%s\"\n", argv[1]);
 
     int status;
-    /*    if (strcmp("empty", argv[1]) == 0)
+    /*if (strcmp("empty", argv[1]) == 0)
 	  status = test_empty(argc, argv);*/
     if (strcmp("is_edge_coordinates", argv[1]) == 0)
         status = test_is_edge_coordinates(argc, argv); 
@@ -662,7 +662,7 @@ int main(int argc, char *argv[])
     else if (strcmp("opposite_dir", argv[1]) == 0)
         status = test_opposite_dir(argc, argv); 
     else if (strcmp("copy_game", argv[1]) == 0)
-        status = test_copy_game(argc, argv);                
+        status = test_copy_game(argc, argv);             
     else
     {
         fprintf(stderr, "Error: test %s not found!\n", argv[1]);
