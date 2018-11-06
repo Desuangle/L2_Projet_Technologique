@@ -168,6 +168,8 @@ int test_set_piece(int argc, char *argv[])
 
   delete_game(g);
   g = NULL;
+
+
   return EXIT_SUCCESS;
 
 }
@@ -194,13 +196,33 @@ int test_shuffle_dir(int argc, char *argv[])
   //  └
   //taille de 5*5 obli
   game(g) = new_game(p1, p2);
+  game(g1)= new_game(p1, p2);
+  int compare = 0;
+  shuffle_dir(g);
+  shuffle_dir(g1);
 
   int w = game_width(g);
   int h = game_height(g);
 
   int No = 0; int So = 0; int We = 0; int Ea =0;
 
-  shuffle_dir(g);
+  for (int y = 0; y < h; y++)
+  {
+      for (int x = 0; x < w; x++)
+      {
+        char dir1 = get_current_dir(g, x, y);
+        char dir2 = get_current_dir(g1, x, y);
+        if (dir1 == dir2)
+        {
+          compare +=1;
+        }
+      }
+  }
+  if(compare == 25) //si les shuffles donne le même jeux
+  {
+    fprintf(stderr, "La fonction shuffle n'est pas aléatoire\n");
+    return EXIT_FAILURE;
+  }
 
   for (int y = 0; y < h; y++)
   {
@@ -226,11 +248,11 @@ int test_shuffle_dir(int argc, char *argv[])
       }
   }
     int moit = (w * h)/2;
-    if (No>moit || So>moit || Ea>moit|| We>moit)
+    if (No>moit || So>moit || Ea>moit|| We>moit || No==0||So==0||Ea==0||We==0 ||(No == 8 && So == 7 && Ea== 6 && We == 4) ) // si une direction à plus de 50% ou n'est pas présente ou que les dir n'ont pas changé
     {
       delete_game(g);
       g = NULL;
-      fprintf(stderr, "La fonction shuffle ne semble pas être aléatoire, une des directions est présente sur plus de la moitié des pièces\n");
+      fprintf(stderr, "La fonction shuffle ne semble pas être aléatoire, une des directions est présente sur plus de la moitié des pièces ou une direction est absente\n");
       return EXIT_FAILURE;
     }
     delete_game(g);
@@ -240,6 +262,7 @@ int test_shuffle_dir(int argc, char *argv[])
 
 
 }
+
 
 /* ********** TEST EMPTY ********** */
 /*
