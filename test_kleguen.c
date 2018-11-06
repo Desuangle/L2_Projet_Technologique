@@ -196,13 +196,33 @@ int test_shuffle_dir(int argc, char *argv[])
   //  └
   //taille de 5*5 obli
   game(g) = new_game(p1, p2);
+  game(g1)= new_game(p1, p2);
+  int compare = 0;
+  shuffle_dir(g);
+  shuffle_dir(g1);
 
   int w = game_width(g);
   int h = game_height(g);
 
   int No = 0; int So = 0; int We = 0; int Ea =0;
 
-  shuffle_dir(g);
+  for (int y = 0; y < h; y++)
+  {
+      for (int x = 0; x < w; x++)
+      {
+        char dir1 = get_current_dir(g, x, y);
+        char dir2 = get_current_dir(g1, x, y);
+        if (dir1 == dir2)
+        {
+          compare +=1;
+        }
+      }
+  }
+  if(compare == 25) //si les shuffles donne le même jeux
+  {
+    fprintf(stderr, "La fonction shuffle n'est pas aléatoire\n");
+    return EXIT_FAILURE;
+  }
 
   for (int y = 0; y < h; y++)
   {
@@ -242,6 +262,7 @@ int test_shuffle_dir(int argc, char *argv[])
 
 
 }
+
 
 /* ********** TEST EMPTY ********** */
 /*
