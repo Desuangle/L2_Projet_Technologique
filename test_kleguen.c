@@ -168,6 +168,8 @@ int test_set_piece(int argc, char *argv[])
 
   delete_game(g);
   g = NULL;
+
+
   return EXIT_SUCCESS;
 
 }
@@ -226,11 +228,11 @@ int test_shuffle_dir(int argc, char *argv[])
       }
   }
     int moit = (w * h)/2;
-    if (No>moit || So>moit || Ea>moit|| We>moit)
+    if (No>moit || So>moit || Ea>moit|| We>moit || No==0||So==0||Ea==0||We==0 ||(No == 8 && So == 7 && Ea== 6 && We == 4) ) // si une direction à plus de 50% ou n'est pas présente ou que les dir n'ont pas changé
     {
       delete_game(g);
       g = NULL;
-      fprintf(stderr, "La fonction shuffle ne semble pas être aléatoire, une des directions est présente sur plus de la moitié des pièces\n");
+      fprintf(stderr, "La fonction shuffle ne semble pas être aléatoire, une des directions est présente sur plus de la moitié des pièces ou une direction est absente\n");
       return EXIT_FAILURE;
     }
     delete_game(g);
