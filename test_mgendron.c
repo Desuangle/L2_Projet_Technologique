@@ -6,9 +6,33 @@
 #include "game.h"
 
 int test_delete_game (int argc, char *argv[]){
-    game g = new_game_empty();
+    /*
+    Setting up the parameters of the game
+    */
+    piece p1[] = {
+        LEAF, TEE, LEAF, LEAF, LEAF,
+        LEAF, TEE, TEE, CORNER, SEGMENT,
+        LEAF, LEAF, TEE, LEAF, SEGMENT,
+        TEE, TEE, TEE, TEE, TEE,
+        CORNER, LEAF, LEAF, CORNER, LEAF
+    };
+    direction p2[] = {
+        E, W, S, E, S,
+        S, S, N, W, N,
+        E, N, W, W, E,
+        S, W, N, E, E,
+        W, N, W, N, S,
+    };
+    game g = new_game(p1, p2);
     assert(g);
     delete_game(g);
+
+    if( g != NULL )  
+    {
+        fprintf(stderr, "Error: delete game!\n");
+        return EXIT_FAILURE;
+    }
+    g = NULL;
     return EXIT_SUCCESS;    
 }
 
