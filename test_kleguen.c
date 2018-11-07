@@ -23,153 +23,87 @@
 
 int test_set_piece(int argc, char *argv[])
 {
-  game g = new_game_empty();
+   /*
+    Setting up the parameters of the game
+    */
+    piece p1[] = {
+        LEAF, TEE, LEAF, LEAF, LEAF,
+        LEAF, TEE, TEE, CORNER, SEGMENT,
+        LEAF, LEAF, TEE, LEAF, SEGMENT,
+        TEE, TEE, TEE, TEE, TEE,
+        CORNER, LEAF, LEAF, CORNER, LEAF
+    };
+    direction p2[] = {
+        E, W, S, E, S,
+        S, S, N, W, N,
+        E, N, W, W, E,
+        S, W, N, E, E,
+        W, N, W, N, S,
+    };
+  game g = new_game(p1, p2);
+  assert(g);
 
-  int h = 5;
-  int w = 5;
-    for (int y = 0; y < h; y++)
-    {
-        for (int x = 0; x < w; x++)
+/*
+  |  ┘ ^ < └ v  |  
+  |  ┬ ┤ ┴ ├ ├  | 
+  |  > ^ ┤ < -  |  
+  |  v ┬ ┴ ┘ |  | 
+  |  > ┤ v > v  |  
+  |             |             
+  |    start    |     
+
+*/
+  game g_copy = new_game_empty();
+  assert(g_copy);
+  set_piece(g_copy,0,0,LEAF,E);
+  set_piece(g_copy,0,1,TEE,W);
+  set_piece(g_copy,0,2,LEAF,S);
+  set_piece(g_copy,0,3,LEAF,E);
+  set_piece(g_copy,0,4,LEAF,S);
+  set_piece(g_copy,1,0,LEAF,S);
+  set_piece(g_copy,1,1,TEE,S);
+  set_piece(g_copy,1,2,TEE,N);
+  set_piece(g_copy,1,3,CORNER,W);
+  set_piece(g_copy,1,4,SEGMENT,N);
+  set_piece(g_copy,2,0,LEAF,E);
+  set_piece(g_copy,2,1,LEAF,N);
+  set_piece(g_copy,2,2,TEE,W);
+  set_piece(g_copy,2,3,LEAF,W);
+  set_piece(g_copy,2,4,SEGMENT,E);
+  set_piece(g_copy,3,0,TEE,S);
+  set_piece(g_copy,3,1,TEE,W);
+  set_piece(g_copy,3,2,TEE,N);
+  set_piece(g_copy,3,3,TEE,E);
+  set_piece(g_copy,3,4,TEE,E);
+  set_piece(g_copy,4,0,CORNER,W);
+  set_piece(g_copy,4,1,LEAF,N);
+  set_piece(g_copy,4,2,LEAF,W);
+  set_piece(g_copy,4,3,CORNER,N);
+  set_piece(g_copy,4,4,LEAF,S);
+          
+  int w = game_width(g); // ou int w = game_width(g_copy);
+  int h = game_height(g); // ou int h = game_height(g_copy);
+  for (int y = 0; y < h; y++){
+     for (int x = 0; x < w; x++)            
+     {
+        direction d = get_current_dir(g, x, y);
+        direction d_copy = get_current_dir(g_copy, x, y);
+        if(  (get_piece(g, x, y) != get_piece(g_copy, x, y) )  && ( d != d_copy )  )  
         {
-          set_piece(g,x,y,LEAF,N);
-
-          if (get_piece(g, x, y) != LEAF || get_current_dir(g, x, y)!= N)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un Leaf en direction N\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,LEAF,S);
-          if (get_piece(g, x, y) != LEAF || get_current_dir(g, x, y)!= S)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un Leaf en direction S \n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,LEAF,E);
-          if (get_piece(g, x, y) != LEAF || get_current_dir(g, x, y)!= E)
-          {
-          delete_game(g);
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un Leaf en direction E \n");
-          g = NULL;
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,LEAF,W);
-          if (get_piece(g, x, y) != LEAF || get_current_dir(g, x, y)!= W)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un Leaf en direction W \n");
-          return EXIT_FAILURE;
-          }
-
-          set_piece(g,x,y,TEE,N);
-          if (get_piece(g, x, y) != TEE || get_current_dir(g, x, y)!= N)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un TEE en direction N\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,TEE,S);
-          if (get_piece(g, x, y) != TEE || get_current_dir(g, x, y)!= S)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un TEE en direction S\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,TEE,E);
-          if (get_piece(g, x, y) != TEE || get_current_dir(g, x, y)!= E)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un TEE en direction E\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,TEE,W);
-          if (get_piece(g, x, y) != TEE || get_current_dir(g, x, y)!= W)
-          {
-          delete_game(g);
-          g = NULL;
- 	  fprintf(stderr, "Error: La pièce inséré n'est pas un TEE en direction W\n");
-          return EXIT_FAILURE;
-          }
-
-
-          set_piece(g,x,y,CORNER,N);
-          if (get_piece(g, x, y) != CORNER|| get_current_dir(g, x, y)!= N)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un CORNER en direction N\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,CORNER,S);
-           if (get_piece(g, x, y) != CORNER|| get_current_dir(g, x, y)!= S)
-           {
            delete_game(g);
            g = NULL;
-	   fprintf(stderr, "Error: La pièce inséré n'est pas un CORNER en direction S\n");
+           delete_game(g_copy);
+           g_copy = NULL;
+           fprintf(stderr, "Error: set piece (%d,%d)!\n", x, y);
            return EXIT_FAILURE;
-           }
-          set_piece(g,x,y,CORNER,E);
-          if (get_piece(g, x, y) != CORNER|| get_current_dir(g, x, y)!= E)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un CORNER en direction E\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,CORNER,W);
-          if (get_piece(g, x, y) != CORNER|| get_current_dir(g, x, y)!= W)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un CORNER en direction W\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,SEGMENT,N);
-          if (get_piece(g, x, y) != SEGMENT|| get_current_dir(g, x, y)!= N)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un SEGMENT en direction N\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,SEGMENT,S);
-          if (get_piece(g, x, y) != SEGMENT|| get_current_dir(g, x, y)!= S)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un SEGMENT en direction S\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,SEGMENT,E);
-          if (get_piece(g, x, y) != SEGMENT|| get_current_dir(g, x, y)!= E)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un SEGMENT en direction E\n");
-          return EXIT_FAILURE;
-          }
-          set_piece(g,x,y,SEGMENT,W);
-          if (get_piece(g, x, y) != SEGMENT|| get_current_dir(g, x, y)!= W)
-          {
-          delete_game(g);
-          g = NULL;
-	  fprintf(stderr, "Error: La pièce inséré n'est pas un SEGMENT en direction W\n");
-          return EXIT_FAILURE;
-          }
         }
       }
+  }
 
   delete_game(g);
   g = NULL;
-
-
+  delete_game(g_copy);
+  g_copy = NULL;
   return EXIT_SUCCESS;
 
 }
