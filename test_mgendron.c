@@ -25,15 +25,13 @@ int test_delete_game (int argc, char *argv[]){
     };
     game g = new_game(p1, p2);
     assert(g);
-    delete_game(g);
-
-   //la mémoire est libérée aprés l'appel de la fonction delete_game  
-   //On ne peut donc ni accéder au jeu, ni vérifier que le pointeur pointe sur le jeu
-   //chaque tentative d'accès au jeu renvoit un seg fault
-   //y a pas de solution pour cette fonction 
-   
+    delete_game(g);   
     return EXIT_SUCCESS;    
 }
+
+/*Impossible de vérifier que delete game fonctionne sans risquer de provoquer une
+ *erreur fatale pour le moment
+ */
 
 int test_get_piece(int argc, char *argv[]){
     piece p1[] = {
