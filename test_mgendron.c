@@ -27,12 +27,11 @@ int test_delete_game (int argc, char *argv[]){
     assert(g);
     delete_game(g);
 
-    if( g != NULL )  
-    {
-        fprintf(stderr, "Error: delete game!\n");
-        return EXIT_FAILURE;
-    }
-    g = NULL;
+   //la mémoire est libérée aprés l'appel de la fonction delete_game  
+   //On ne peut donc ni accéder au jeu, ni vérifier que le pointeur pointe sur le jeu
+   //chaque tentative d'accès au jeu renvoit un seg fault
+   //y a pas de solution pour cette fonction 
+   
     return EXIT_SUCCESS;    
 }
 
