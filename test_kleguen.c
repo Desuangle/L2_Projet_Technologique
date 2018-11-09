@@ -27,11 +27,12 @@ int test_set_piece(int argc, char *argv[])
     Setting up the parameters of the game
     */
     piece p1[] = {
-        LEAF, TEE, LEAF, LEAF, LEAF,
-        LEAF, TEE, TEE, CORNER, SEGMENT,
-        LEAF, LEAF, TEE, LEAF, SEGMENT,
+        LEAF, LEAF, LEAF, LEAF, LEAF,
         TEE, TEE, TEE, TEE, TEE,
-        CORNER, LEAF, LEAF, CORNER, LEAF
+        SEGMENT, SEGMENT, SEGMENT, SEGMENT, SEGMENT,
+        CORNER, CORNER, CORNER, CORNER, CORNER,
+        TEE, TEE, TEE, TEE, TEE,
+       
     };
     direction p2[] = {
         E, W, S, E, S,
@@ -53,33 +54,34 @@ int test_set_piece(int argc, char *argv[])
   |    start    |     
 
 */
+
   game g_copy = new_game_empty();
   assert(g_copy);
   set_piece(g_copy,0,0,LEAF,E);
-  set_piece(g_copy,0,1,TEE,W);
-  set_piece(g_copy,0,2,LEAF,S);
-  set_piece(g_copy,0,3,LEAF,E);
-  set_piece(g_copy,0,4,LEAF,S);
-  set_piece(g_copy,1,0,LEAF,S);
+  set_piece(g_copy,1,0,LEAF,W);
+  set_piece(g_copy,2,0,LEAF,S);
+  set_piece(g_copy,3,0,LEAF,E);
+  set_piece(g_copy,4,0,LEAF,S);
+  set_piece(g_copy,0,1,TEE,S);
   set_piece(g_copy,1,1,TEE,S);
-  set_piece(g_copy,1,2,TEE,N);
-  set_piece(g_copy,1,3,CORNER,W);
-  set_piece(g_copy,1,4,SEGMENT,N);
-  set_piece(g_copy,2,0,LEAF,E);
-  set_piece(g_copy,2,1,LEAF,N);
-  set_piece(g_copy,2,2,TEE,W);
-  set_piece(g_copy,2,3,LEAF,W);
-  set_piece(g_copy,2,4,SEGMENT,E);
-  set_piece(g_copy,3,0,TEE,S);
+  set_piece(g_copy,2,1,TEE,N);
   set_piece(g_copy,3,1,TEE,W);
-  set_piece(g_copy,3,2,TEE,N);
-  set_piece(g_copy,3,3,TEE,E);
-  set_piece(g_copy,3,4,TEE,E);
-  set_piece(g_copy,4,0,CORNER,W);
-  set_piece(g_copy,4,1,LEAF,N);
-  set_piece(g_copy,4,2,LEAF,W);
-  set_piece(g_copy,4,3,CORNER,N);
-  set_piece(g_copy,4,4,LEAF,S);
+  set_piece(g_copy,4,1,TEE,N);
+  set_piece(g_copy,0,2,SEGMENT,E);
+  set_piece(g_copy,1,2,SEGMENT,N);
+  set_piece(g_copy,2,2,SEGMENT,W);
+  set_piece(g_copy,3,2,SEGMENT,W);
+  set_piece(g_copy,4,2,SEGMENT,E);
+  set_piece(g_copy,0,3,CORNER,S);
+  set_piece(g_copy,1,3,CORNER,W);
+  set_piece(g_copy,2,3,CORNER,N);
+  set_piece(g_copy,3,3,CORNER,E);
+  set_piece(g_copy,4,3,CORNER,E);
+  set_piece(g_copy,0,4,TEE,W);
+  set_piece(g_copy,1,4,TEE,N);
+  set_piece(g_copy,2,4,TEE,W);
+  set_piece(g_copy,3,4,TEE,N);
+  set_piece(g_copy,4,4,TEE,S);
           
   int w = game_width(g); // ou int w = game_width(g_copy);
   int h = game_height(g); // ou int h = game_height(g_copy);
