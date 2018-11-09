@@ -41,14 +41,12 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -59,14 +57,12 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -78,7 +74,6 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -89,7 +84,6 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -100,7 +94,6 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -111,7 +104,6 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -123,14 +115,12 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -141,14 +131,12 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -159,14 +147,12 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -177,14 +163,12 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -196,21 +180,18 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -221,21 +202,18 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -246,21 +224,18 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -271,21 +246,18 @@ int test_is_edge(int argc, char *argv[])
                 if ( ! is_edge(p , d , E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge(p , d , S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -295,7 +267,6 @@ int test_is_edge(int argc, char *argv[])
         }
     }    
     delete_game(g);
-    g = NULL;
     return EXIT_SUCCESS;
 }
 
@@ -333,14 +304,12 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y , S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -351,14 +320,12 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y , W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y , E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -370,7 +337,6 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -382,7 +348,6 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y , S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -393,7 +358,6 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y, W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -404,7 +368,6 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y, E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -416,14 +379,12 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y , N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y , E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -434,14 +395,12 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y, S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -452,14 +411,12 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y, W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -470,14 +427,12 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y, E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -489,21 +444,18 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y, N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -514,21 +466,18 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y, S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -539,21 +488,18 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y, W) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -564,21 +510,18 @@ int test_is_edge_coordinates(int argc, char *argv[])
                 if ( ! is_edge_coordinates(g, x , y, E) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, N) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
                 if ( ! is_edge_coordinates(g, x , y, S) )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: connection piece (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -589,7 +532,6 @@ int test_is_edge_coordinates(int argc, char *argv[])
     }    
 
     delete_game(g);
-    g = NULL;
     return EXIT_SUCCESS;
 }
 
@@ -626,7 +568,6 @@ int test_opposite_dir(int argc, char *argv[])
                 if ( opposite_dir( d ) != S )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: opposite direction (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -635,7 +576,6 @@ int test_opposite_dir(int argc, char *argv[])
                 if ( opposite_dir( d ) != N )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: opposite direction (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -644,7 +584,6 @@ int test_opposite_dir(int argc, char *argv[])
                 if ( opposite_dir( d ) != E )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: opposite direction (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -653,7 +592,6 @@ int test_opposite_dir(int argc, char *argv[])
                 if ( opposite_dir( d ) != W )
                 {
                     delete_game(g);
-                    g = NULL;
                     fprintf(stderr, "Error: opposite direction (%d,%d)!\n", x, y);
                     return EXIT_FAILURE;
                 }
@@ -661,7 +599,6 @@ int test_opposite_dir(int argc, char *argv[])
         }
     }    
     delete_game(g);
-    g = NULL;
     return EXIT_SUCCESS;
 }
 
@@ -693,14 +630,12 @@ int test_copy_game (int argc, char *argv[]){
     if ( game_width(g) != game_width(g_copy))
     {
         delete_game(g);
-        g = NULL;
         fprintf(stderr, "Error: copy game width !\n");
         return EXIT_FAILURE;
     }
     if ( game_height(g) != game_height(g_copy))
     {
         delete_game(g);
-        g = NULL;
         fprintf(stderr, "Error: copy game height !\n");
         return EXIT_FAILURE;
     }
@@ -716,18 +651,14 @@ int test_copy_game (int argc, char *argv[]){
             if (   (get_piece(g, x, y) != get_piece(g_copy, x, y) )  && ( d != d_copy )   )
             {
                 delete_game(g);
-                g = NULL;
                 delete_game(g_copy);
-                g_copy = NULL;   
                 fprintf(stderr, "Error: copy game (%d,%d)!\n", x, y);
                 return EXIT_FAILURE;
             }
         }
     }
     delete_game(g);
-    g = NULL;
     delete_game(g_copy);
-    g_copy = NULL;    
     return EXIT_SUCCESS;
 }
 
