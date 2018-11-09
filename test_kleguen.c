@@ -53,8 +53,10 @@ int test_set_piece(int argc, char *argv[])
   |    start    |     
 
 */
+
   game g_copy = new_game_empty();
   assert(g_copy);
+
   set_piece(g_copy,0,0,LEAF,E);
   set_piece(g_copy,1,0,TEE,W);
   set_piece(g_copy,2,0,LEAF,S);
@@ -80,6 +82,7 @@ int test_set_piece(int argc, char *argv[])
   set_piece(g_copy,2,4,LEAF,W);
   set_piece(g_copy,3,4,CORNER,N);
   set_piece(g_copy,4,4,LEAF,S);
+
           
   int w = game_width(g); // ou int w = game_width(g_copy);
   int h = game_height(g); // ou int h = game_height(g_copy);
