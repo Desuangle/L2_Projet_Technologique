@@ -152,13 +152,18 @@ int test_shuffle_dir(int argc, char *argv[])
         }
       }
   }
-  if(compare == 25) //si les shuffles donne le même jeux
+  if(compare == 25) //si les shuffles donne le même jeux alors erreur
   {
+    delete_game(g);
+      g = NULL;
+    delete_game(g1);
+      g1 = NULL;
     fprintf(stderr, "La fonction shuffle n'est pas aléatoire\n");
+
     return EXIT_FAILURE;
   }
 
-  for (int y = 0; y < h; y++)
+  for (int y = 0; y < h; y++) //compte le nombre de piece dans chaque direction
   {
       for (int x = 0; x < w; x++)
       {
@@ -181,6 +186,11 @@ int test_shuffle_dir(int argc, char *argv[])
         }
       }
   }
+printf("No :%d \n",No);
+printf("So :%d \n",So);
+printf("Ea :%d \n",Ea);
+printf("We :%d \n",We);
+ 
     int moit = (w * h)/2;
     if (No>moit || So>moit || Ea>moit|| We>moit || No==0||So==0||Ea==0||We==0 ||(No == 8 && So == 7 && Ea== 6 && We == 4) ) // si une direction à plus de 50% ou n'est pas présente ou que les dir n'ont pas changé
     {
@@ -189,8 +199,28 @@ int test_shuffle_dir(int argc, char *argv[])
       fprintf(stderr, "La fonction shuffle ne semble pas être aléatoire, une des directions est présente sur plus de la moitié des pièces ou une direction est absente\n");
       return EXIT_FAILURE;
     }
+    if (No == 0 || So==0 || We == 0 || Ea ==0 || (No+So+We+Ea != (w*h) )) //on verif que le shuffle place tous les directions et que la somme = 25
+    {
+      delete_game(g);
+      g = NULL;
+      fprintf(stderr, "La fonction shuffle ne place pas toute les directions\n");
+      return EXIT_FAILURE;
+    }
+
+ for(int y=0; y<game_height(g);y+=1) //Verifie que shuffle ne touche pas aux directions
+ {
+   for(int x=0; x<game_width(g);x+=1)
+   {
+      if(get_piece(g,x,y)!=p1[y*5+x])
+      {
+      return EXIT_FAILURE;
+      }
+   }
+ }
     delete_game(g);
     g = NULL;
+    delete_game(g1);
+    g1 = NULL;
     return EXIT_SUCCESS;
 
 
@@ -270,37 +300,19 @@ int test_game_new_game (int argc, char *argv[])
 /* ********** TEST game_height ********** */
 int test_game_height (int argc, char *argv[])
 {
-  piece p1[] = {
-  LEAF, TEE, LEAF, LEAF, LEAF,
-  LEAF, TEE, TEE, CORNER, SEGMENT,
-  LEAF, LEAF, TEE, LEAF, SEGMENT,
-  TEE, TEE, TEE, TEE, TEE,
-  CORNER, LEAF, LEAF, CORNER, LEAF
-  };
-
-  direction p2[] = {E,N,W,N,N, //1er ligne du bass
-                    E,S,N,S,S,
-                    N,N,E,W,N,
-                    E,S,S,N,W,
-                    E,W,E,S,S  //dernier ligne du haut
-                    };
-
-  game(g) = new_game(p1, p2);
-
-  if (game_height(g) != 5)
-  {
-    delete_game(g);
-    g = NULL;
-    return EXIT_FAILURE;
-    fprintf(stderr, "Error: La hauteur ne correspond pas à celle attendu\n");
+  game g1 = new_game_empty();
+  piece p1[] = {};
+  direction p2[] = {};
+  game g2 = new_game(p1, p2);
+  int w1 = game_height(g1), w2 = game_height(g2);
+  if(w1 == 5 && w2 == 5){ // /!\ DEFAULT_SIZE = 5
+    delete_game(g1);
+    delete_game(g2);
+    return EXIT_SUCCESS;
   }
-  delete_game(g);
-  g = NULL;
-  return EXIT_SUCCESS;
-
+  fprintf(stderr, "Error : wrong size.\n");
+  return EXIT_FAILURE;
 }
-
-
 
 /* ********** USAGE ********** */
 
