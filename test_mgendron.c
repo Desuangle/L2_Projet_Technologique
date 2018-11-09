@@ -25,12 +25,12 @@ int test_delete_game (int argc, char *argv[]){
     };
     game g = new_game(p1, p2);
     assert(g);
-    delete_game(g);   
-    return EXIT_SUCCESS;    
+    delete_game(g);
+    set_piece(g,0,0,LEAF,N);
+    return EXIT_FAILURE;
 }
 
-/*Impossible de vérifier que delete game fonctionne sans risquer de provoquer une
- *erreur fatale pour le moment
+/*For now delete_game is verified by provoking a segfault
  */
 
 int test_get_piece(int argc, char *argv[]){
