@@ -27,7 +27,7 @@ testfw_kleguen.o: test_kleguen.c libs
 	$(CC) -c $< $(CFLAGS) -DTESTFW -o $@
 
 
-libgame.a : game.o game_io.o
+libgame.a : game.o game_io.o 
 	ar rcs $@ $^
 
 libs : libgame.a libtestfw.a libtestfw_main.a
