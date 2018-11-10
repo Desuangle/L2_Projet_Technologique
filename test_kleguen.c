@@ -91,7 +91,25 @@ int test_set_piece(int argc, char *argv[])
      {
         direction d = get_current_dir(g, x, y);
         direction d_copy = get_current_dir(g_copy, x, y);
-        if(  (get_piece(g, x, y) != get_piece(g_copy, x, y) )  && ( d != d_copy )  )  
+        if(  (get_piece(g, x, y) != get_piece(g_copy, x, y) )  || ( d != d_copy )  )  
+        {
+           delete_game(g);
+           g = NULL;
+           delete_game(g_copy);
+           g_copy = NULL;
+           fprintf(stderr, "Error: set piece (%d,%d)!\n", x, y);
+           return EXIT_FAILURE;
+        }
+      }
+  }
+	
+restart_game(g_copy);
+for (int y = 0; y < h; y++){
+     for (int x = 0; x < w; x++)            
+     {
+        direction d = get_current_dir(g, x, y);
+        direction d_copy = get_current_dir(g_copy, x, y);
+        if(  (get_piece(g, x, y) != get_piece(g_copy, x, y) )  || ( d != d_copy )  )  
         {
            delete_game(g);
            g = NULL;
