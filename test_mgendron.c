@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <signal.h>
 
 #include "game.h"
 
-int test_delete_game (int argc, char *argv[]){
+int test_delete_game(int argc, char *argv[]){
     /*
     Setting up the parameters of the game
     */
@@ -26,10 +27,9 @@ int test_delete_game (int argc, char *argv[]){
     game g = new_game(p1, p2);
     assert(g);
     delete_game(g);
-    set_piece(g,0,0,LEAF,N);
-    return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }
-
+    
 /*For now delete_game is verified by provoking a segfault
  */
 
