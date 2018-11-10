@@ -15,6 +15,10 @@ test_walouini.o: test_walouini.c libs
 	$(CC) $(CFLAGS) -c $<
 test_kleguen.o: test_kleguen.c libs
 	$(CC) -c $< $(CFLAGS)
+game.o: game.c game.h 
+	$(CC) $(CFLAGS) -c $< 
+game_io.o: game_io.c game.h game_io.h
+	$(CC) $(CFLAGS) -c $< 		
 
 
 testfw_avialar.o: test_avialar.c libs
@@ -87,5 +91,5 @@ test_mgendron : test_mgendron.o
 
 
 clean :
-	rm net_text net_text.o testfw_*.o test_*.o libgame.a test_walouini test_kleguen test_avialar testfw_all test_mgendron *~ *.log
+	rm net_text net_text.o testfw_*.o test_*.o libgame.a test_walouini test_kleguen test_avialar testfw_all test_mgendron *~ *.log game.o game_io.o
 .PHONY : clean libs test
