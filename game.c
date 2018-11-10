@@ -2,17 +2,23 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "game.h"
-#include "game_io.h"
+
 
 
 struct game_s {
+
+    int width;
+    int height;
+    int **matrice;
+    piece *p1;
+    direction *p2;
 
 };
 
 
 game new_game_empty();
     // TO DO
-
+   
 
 game new_game(piece *pieces, direction *initial_directions);
     // TO DO
@@ -28,7 +34,7 @@ void shuffle_dir(game g);
 
 int game_height(cgame game);
     // TO DO
- 
+  
 
  int game_width(cgame game);
      // TO DO
@@ -48,6 +54,7 @@ void set_piece_current_dir (game game, int x, int y, direction dir);
 
 bool is_edge_coordinates(cgame g, int x, int y, direction dir);
      // TO DO
+
 
 
 bool is_edge(piece piece, direction orientation, direction dir);
