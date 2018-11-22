@@ -9,9 +9,9 @@ struct game_s {
 
     int width;
     int height;
-    int **matrice;
-    piece *p1;
-    direction *p2;
+    piece *p;
+    direction *d;
+    direction *d_init;
 
 };
 
@@ -47,12 +47,20 @@ int game_height(cgame game){
   
 
 int game_width(cgame game){
-	return EXIT_SUCCESS;
+     if(game){
+         return game->width;
+     }
+     fprintf(stderr,"Appel de game_width avec un pointeur NULL\n");
+     exit(EXIT_FAILURE);
 }
      // TO DO
 
 
 void rotate_piece_one(game game, int x, int y){
+  if(game){
+    if(x < game->width&& y < game->height){
+      game->p[y*game->width+x] = (game->p[y*game->width+x] + 1) % 4;
+  }
 }
     // TO DO
 
@@ -60,9 +68,19 @@ void rotate_piece_one(game game, int x, int y){
 void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
 }
      // TO DO
+ if(game){
+   if(x < game->width&& y < game->height){
+     game->p[y*game->width+x] = (game->p[y*game->width+x] + nb_cw_quarter_turn) % 4;
+   }
+ }
 
 
 void set_piece_current_dir (game game, int x, int y, direction dir){
+  if(game){
+   if(x < game->width&& y < game->height){
+     game->p[y*game->width+x] = dir;
+   }
+ }
 }
      // TO DO
 
