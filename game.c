@@ -16,6 +16,7 @@ struct game_s {
 };
 
 
+
 game new_game_empty(){
 	game g=NULL;
 	return g;
@@ -53,26 +54,24 @@ int game_width(cgame game){
      fprintf(stderr,"Appel de game_width avec un pointeur NULL\n");
      exit(EXIT_FAILURE);
 }
-     // TO DO
 
 
 void rotate_piece_one(game game, int x, int y){
   if(game){
     if(x < game->width&& y < game->height){
       game->p[y*game->width+x] = (game->p[y*game->width+x] + 1) % 4;
+    }
   }
 }
-    // TO DO
 
 
 void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
-}
-     // TO DO
  if(game){
    if(x < game->width&& y < game->height){
      game->p[y*game->width+x] = (game->p[y*game->width+x] + nb_cw_quarter_turn) % 4;
    }
  }
+}
 
 
 void set_piece_current_dir (game game, int x, int y, direction dir){
@@ -82,7 +81,6 @@ void set_piece_current_dir (game game, int x, int y, direction dir){
    }
  }
 }
-     // TO DO
 
 
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
