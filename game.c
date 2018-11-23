@@ -14,31 +14,128 @@ struct game_s {
     direction *d_init;
 
 };
-
-
+#define DEFAULT_SIZE 5
 
 game new_game_empty(){
-	game g=NULL;
+
+	  game g = malloc(sizeof(struct game_s));
+    g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
+    if  (g->p == NULL)
+    {
+       fprintf(stderr, "Error: malloc\n");
+        EXIT_FAILURE; 
+    }
+    g->d = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
+    if  (g->d == NULL)
+    {
+       fprintf(stderr, "Error: malloc\n");
+        EXIT_FAILURE; 
+    }
+    g->d_init = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
+        if  (g->d_init == NULL)
+    {
+       fprintf(stderr, "Error: malloc\n");
+        EXIT_FAILURE; 
+    }
+
+    for(int i=0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
+      g->p[i] = EMPTY;
+    }
+    g->height = DEFAULT_SIZE;
+    g->width = DEFAULT_SIZE;
+
 	return g;
 }
     // TO DO
    
 
 game new_game(piece *pieces, direction *initial_directions){
-	game g=NULL;
+    if (pieces == NULL || initial_directions == NULL)
+    {
+        fprintf(stderr,"Pas de pieces ou de direction");
+        EXIT_FAILURE;
+    }
+    game g = (game)malloc(sizeof(struct game_s));
+    g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
+    if  (g->p == NULL)
+    {
+       fprintf(stderr, "Error: malloc\n");
+        EXIT_FAILURE; 
+    }
+
+    g->d =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
+    if  (g->d == NULL)
+    {
+       fprintf(stderr, "Error: malloc\n");
+        EXIT_FAILURE; 
+    }
+    g->d_init =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
+        if  (g->d_init == NULL)
+    {
+       fprintf(stderr, "Error: malloc\n");
+        EXIT_FAILURE; 
+    }
+    for(int i = 0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
+  	  g->p[i] = pieces[i];
+      g->d[i] = initial_directions[i];
+      g->d_init[i] = initial_directions[i];
+    }
+    g->height = DEFAULT_SIZE;
+    g->width = DEFAULT_SIZE;
 	return g;
-}
+} 
     // TO DO
  
 
-void set_piece(game g, int x, int y, piece piece, direction orientation){
+void set_piece(game g, int x, int y, piece piece, direction orientation)
+{
+    
+    if (g == NULL)
+    {
+        fprintf(stderr,"g = NULL");
+        EXIT_FAILURE;
+    }
+    if (piece < -1 || piece > 3 || orientation <0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0)
+    {
+        delete_game(g);
+        g = NULL;
+        fprintf(stderr, "Error: Incorrect param!\n");
+        EXIT_FAILURE; 
+    }
+ 
+    int w = g->width;
+    g->p[x+y*w]= piece;
+    g->d[x+y*w] = orientation;
+    g->d_init[x+y*w] = orientation;
+  
 }
-    // TO DO
 
 
-void shuffle_dir(game g){
+void shuffle_dir(game g)
+{
+    int w = g->width; 
+    int h = g->height; 
+    for (int y = 0; y < h; y++)
+    {
+       for (int x = 0; x < w; x++)
+        {
+           
+        g->d[x+(w*y)]= rand()%4;
+
+        /*
+        int alea = rand()%4;
+        switch(alea)
+        {
+         case 0: g->d[x+(5*y)]= N; break;
+         case 1: g->d[x+(5*y)]= S; break;
+         case 2: g->d[x+(5*y)]= E; break;
+         case 3: g->d[x+(5*y)]= W; break;
+        }
+        */
+        }
+        
+    }
 }
-    // TO DO
 
 
 int game_height(cgame game){

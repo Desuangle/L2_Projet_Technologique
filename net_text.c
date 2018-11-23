@@ -31,45 +31,39 @@ void show_grid(game g){
     printf("# ");
     for(int x = 0; x < game_width(g); x++){ // horizontal
       switch(get_piece(g,x,y)){
-
-        case EMPTY: printf(" "); break;
-
-        case LEAF:
-        switch(get_current_dir(g, x, y)){
-        case N: printf("^"); break;
-        case S: printf("v"); break;
-        case E: printf(">"); break;
-        case W: printf("<"); break;
-        } break;
-        
-        case SEGMENT:
-        if(get_current_dir(g, x, y) == N || get_current_dir(g, x, y) == S){
-          printf("|");
-        }
-        else{
-          printf("-");
-        } break;
-
-        case CORNER:
-        switch(get_current_dir(g, x, y)){
-        case N: printf("└"); break;
-        case S: printf("┐"); break;
-        case E: printf("┌"); break;
-        case W: printf("┘"); break;
-        } break;
-
-        case TEE:
-        switch(get_current_dir(g, x, y)){
-        case N: printf("┴"); break;
-        case S: printf("┬"); break;
-        case E: printf("├"); break;
-        case W: printf("┤"); break;
-        } break;
-
+      case EMPTY: printf(" "); break;
+      case LEAF:
+	      switch(get_current_dir(g, x, y)){
+	        case N: printf("^"); break;
+	        case S: printf("v"); break;
+	        case E: printf(">"); break;
+	        case W: printf("<"); break;
+	      } break;
+      case SEGMENT:
+	      if(get_current_dir(g, x, y) == N || get_current_dir(g, x, y) == S){
+	        printf("|");
+	      }
+	      else{
+	        printf("-");
+	      } break;
+      case CORNER:
+	      switch(get_current_dir(g, x, y)){
+	      case N: printf("└"); break;
+	      case S: printf("┐"); break;
+	      case E: printf("┌"); break;
+	      case W: printf("┘"); break;
+	      } break;
+      case TEE:
+	      switch(get_current_dir(g, x, y)){
+	      case N: printf("┴"); break;
+	      case S: printf("┬"); break;
+	      case E: printf("├"); break;
+	      case W: printf("┤"); break;
+	      } break;
       }
       printf(" ");
     } // end of x loop
-      printf("#\n");
+    printf("#\n");
   }
   printf("\n");
 }
