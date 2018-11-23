@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "game.h"
 
+typedef unsigned int uint;
 
 
 struct game_s {
@@ -471,13 +472,112 @@ direction get_current_dir(cgame g, int x, int y){
      // TO DO
 
 
+bool is_connected_coordinates(cgame g, int x, int y, direction d);
+bool all_pieces_connected(cgame g);
+void aux_all_pieces_connected(cgame g, int x, int y, bool *v);
 bool is_game_over (cgame g){
-	return true;
+	if(!g && !g->p && !g->d && !g->d_init){
+		fprintf(stderr,"error is_game_over : NULL pointer\n");
+		exit(EXIT_FAILURE);
+	}
+	for (uint i = 0; i < g->width*g->height; i++){ // i = index
+		for (direction d = 0; d < 4; d++){ // d = direction
+			// 1-
+			if (
+			is_edge_coordinates(g, i%g->width /*x*/, i/g->width /*y*/, d) && 
+			!is_connected_coordinates(g, i%g->width /*x*/, i/g->width /*y*/, d)
+			){
+				return false;
+			}
+		}
+	}
+	bool r = all_pieces_connected(g);
+	return r;
 }
-     // TO DO
+
 
 
 void restart_game(game g){
 }
      // TO DO
+
+/*
+A partir d'ici : fonctions auxiliaires
+*/
+
+/*
+Présupposé :
+La pièce donnée est connectable dans la direction donnée
+Entrées :
+g : jeu
+x : abscisse
+y : ordonnée
+d : direction où tester
+Sortie :
+Renvoie si la pièce est connectée dans la direction donnée
+*/
+bool is_connected_coordinates(cgame g, int x, int y, direction d){
+	if (!g){
+		fprintf(stderr, "NULL pointer error\n");
+		exit(EXIT_FAILURE);
+	}
+	switch (d){
+		case N:
+			return (is_edge_coordinates(g, x, y+1, S));
+		break;
+		case E:
+			return (is_edge_coordinates(g, x+1, y, W));
+		break;
+		case S:
+			return (is_edge_coordinates(g, x, y-1, N));
+		break;
+		default: // W
+			return (is_edge_coordinates(g, x-1, y, E));
+	}
+}
+
+/*
+Entrée :
+g : jeu
+Sortie :
+Renvoie si en partant de (soit du milieu, soit de (0,0) ; à débattre, là on teste avec (0,0)), on touche toutes les pièces du tableau
+*/
+bool all_pieces_connected(cgame g){
+	if (!g){
+	//error
+	}
+	// bool virus[g->width*g->height];
+	bool *virus = (bool*) calloc(g->width*g->height, sizeof(bool));
+	aux_all_pieces_connected(g, 0, 0, virus);
+	for(uint i = 0; i < g->width*g->height; i++){
+		if (virus[i] == false){ // la pièce n'est pas contaminée
+			return false;
+		}
+	}	
+	return true;
+}
+void aux_all_pieces_connected(cgame g, int x, int y, bool *v){ // v : virus ; fonction récursive
+	int index = x + y * g->width;
+	if(!v[index]){ // si la piece n'est pas encore infectée
+		v[index] = true; // on l'infecte
+		for(direction d = 0; d < 4; d++){
+			if(is_edge_coordinates(g, x, y, d)){
+				switch (d){
+					case N:
+						aux_all_pieces_connected(g, x, y+1, v);
+					break;
+					case E:
+						aux_all_pieces_connected(g, x+1, y, v);
+					break;
+					case S:
+						aux_all_pieces_connected(g, x, y-1, v);
+					break;
+					default: // W
+						aux_all_pieces_connected(g, x-1, y, v);
+				}
+			}
+		}
+	}
+}
+
 
