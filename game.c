@@ -161,7 +161,7 @@ int game_width(cgame game){
 void rotate_piece_one(game game, int x, int y){
   if(game){
     if(x < game->width&& y < game->height){
-      game->p[y*game->width+x] = (game->p[y*game->width+x] + 1) % 4;
+      game->d[y*game->width+x] = (game->d[y*game->width+x] + 1) % 4;
     }
   }
 }
@@ -170,7 +170,7 @@ void rotate_piece_one(game game, int x, int y){
 void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
  if(game){
    if(x < game->width&& y < game->height){
-     game->p[y*game->width+x] = (game->p[y*game->width+x] + nb_cw_quarter_turn) % 4;
+     game->d[y*game->width+x] = (game->d[y*game->width+x] + nb_cw_quarter_turn) % 4;
    }
  }
 }
@@ -179,7 +179,7 @@ void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
 void set_piece_current_dir (game game, int x, int y, direction dir){
   if(game){
    if(x < game->width&& y < game->height){
-     game->p[y*game->width+x] = dir;
+     game->d[y*game->width+x] = dir;
    }
  }
 }
