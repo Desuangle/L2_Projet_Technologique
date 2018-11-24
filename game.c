@@ -456,20 +456,46 @@ game copy_game (cgame g_src){
 
 
 void delete_game (game g){
+    if(g!=NULL){
+        free(g->p);
+        free(g->d);
+        free(g->d_init);
+        g->p=NULL;
+        g->d=NULL;
+        g->d_init=NULL;
+        free(g);
+    }
 }
-     // TO DO
 
 
 piece get_piece(cgame game, int x, int y){
-	return 0;
+	if(game==NULL || game->p==NULL){
+        fprintf(stderr, "Call of get_piece on NULL pointer");
+        exit(EXIT_FAILURE);
+    }
+    int wid = game->width;
+    int hei = game->height;
+    if(x<0 || x>=wid || y<0 || y>=hei){
+        fprintf(stderr, "Call of get_piece on unvalid coordinates");
+        exit(EXIT_FAILURE);
+    }
+    return *(game->p+x+y*wid);
 }
-     // TO DO
 
 
 direction get_current_dir(cgame g, int x, int y){
-	return 0;
+	if(g==NULL || g->d==NULL){
+        fprintf(stderr, "Call of get_current_dir on NULL pointer");
+        exit(EXIT_FAILURE);
+    }
+	int wid = g->width;
+    int hei = g->height;
+    if(x<0 || x>=wid || y<0 || y>=hei){
+        fprintf(stderr, "Call of get_current_dir on unvalid coordinates");
+        exit(EXIT_FAILURE);
+    }
+    return *(g->d+x+y*wid);
 }
-     // TO DO
 
 
 bool is_connected_coordinates(cgame g, int x, int y, direction d);
@@ -498,8 +524,18 @@ bool is_game_over (cgame g){
 
 
 void restart_game(game g){
+    if(g==NULL){
+        fprintf(stderr, "Call of restart_game on NULL pointer");
+        exit(EXIT_FAILURE);
+    }
+    int wid = g->width;
+    int hei = g->height;
+    for(int y=0;y<hei;y++){
+        for(int x=0;x<wid;x++){
+            set_piece_current_dir(g,x,y,g->d_init[x+y*wid]);
+        }
+    }
 }
-     // TO DO
 
 /*
 A partir d'ici : fonctions auxiliaires
