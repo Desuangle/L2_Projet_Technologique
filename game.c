@@ -189,11 +189,8 @@ bool is_edge_coordinates(cgame g, int x, int y, direction dir){
  
   int w = (*g).width;
   int h = (*g).height;
-  for (int y = 0; y < h; y++){
-        for (int x = 0; x < w; x++)
-        {
-            direction orientation = get_current_dir(g,x,y);
-            piece piece = get_piece(g,x,y);
+  direction orientation = get_current_dir(g,x,y);
+  piece piece = get_piece(g,x,y);
             if ( (x == 0) || (x == g->width-1) || (y == 0) || (y == g->height-1) ){
 
                 if(y==0){ /// ligne de bas dans la matrice ///
@@ -934,8 +931,7 @@ bool is_edge_coordinates(cgame g, int x, int y, direction dir){
             
             }else{
             return is_edge(piece, orientation, dir);
-	    }
-        }
+	
     }
  return false;
 }
