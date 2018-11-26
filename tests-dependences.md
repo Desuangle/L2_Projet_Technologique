@@ -86,7 +86,7 @@ test_mgendron
 * get_piece
 * get_current_dir
 
-test_wallouini
+test_walouini
 -----
 
 ### test_is_edge
