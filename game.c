@@ -21,7 +21,7 @@ struct game_s {
 
 game new_game_empty(){
 
-	  game g = malloc(sizeof(struct game_s));
+	game g = malloc(sizeof(struct game_s));
     g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
     if  (g->p == NULL)
     {
@@ -221,9 +221,8 @@ bool is_edge_coordinates(cgame g, int x, int y, direction dir){
     }
 
 }   
-int index=x+(y*w);
-piece p = g->p[index];
-direction d = g->d[index];
+piece p = get_piece( g, x, y );
+direction d = get_current_dir(g, x, y);
 return is_edge(p, d, dir);
 
 }
