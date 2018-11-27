@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
+
 #include "game.h"
 
 typedef unsigned int uint;
@@ -186,11 +188,11 @@ void set_piece_current_dir (game game, int x, int y, direction dir){
 
 
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
-  
+
+  assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
   int w = (*g).width;
   int h = (*g).height;
-  
-if ( (x == 0) || (x == w-1) || (y == 0) || (y == h-1) ){
+  if ( (x == 0) || (x == w-1) || (y == 0) || (y == h-1) ){
 
     switch (dir){
     case N:
@@ -218,12 +220,11 @@ if ( (x == 0) || (x == w-1) || (y == 0) || (y == h-1) ){
         break;  
     }
 
-}
-   
-  int index=x+(y*w);
-  piece p = g->p[index];
-  direction d = g->d[index];
-  return is_edge(p, d, dir);
+}   
+int index=x+(y*w);
+piece p = g->p[index];
+direction d = g->d[index];
+return is_edge(p, d, dir);
 
 }
 
@@ -394,53 +395,18 @@ direction opposite_dir(direction dir){
 
 
 game copy_game (cgame g_src){
-	 struct game_s* g=(struct game_s*) malloc (sizeof(struct game_s));
-      // On verifie si la memoire a ete allouee
-    if (g == NULL) { 
-        fprintf(stderr, "not enough memory!\n");
-        exit (EXIT_FAILURE);
-    }
-    
-      /////////////////////////  
-
+	 
+    game g =new_game_empty(); 
     (*g).width = (*g_src).width;
     (*g).height = (*g_src).height;
-    if ( (*g).width == 0 ) 
-    {
-        fprintf(stderr, "paramétre copy invalid! width = 0!\n");
-        exit (EXIT_FAILURE);
-    }
-    if ((*g).height == 0) {
-        fprintf(stderr, "paramétre copy invalid! height = 0!\n");
-        exit (EXIT_FAILURE);
-    }
+   
+    for(int i=0 ; i<(*g).width*(*g).height; i++){ 
 
-      //////////////////////////
+        (*g).p[i]=(*g_src).p[i];
+        (*g).d[i]=(*g_src).d[i];  
+        (*g).d_init[i]= (*g_src).d_init[i];
 
-    (*g).p =(piece*) malloc ( (*g).width * (*g).height * (sizeof(piece)  ) );
-      // On verifie si la memoire a ete allouee
-    if ((*g).p == NULL) {
-        fprintf(stderr, "not enough memory!\n");
-        exit(EXIT_FAILURE);
     }
-    (*g).p=(*g_src).p;
-
-    (*g).d =(direction*) malloc ( (*g).width * (*g).height * (sizeof( direction )  ) );
-      // On verifie si la memoire a ete allouee
-    if ((*g).d == NULL) {
-        fprintf(stderr, "not enough memory!\n");
-        exit(EXIT_FAILURE);
-    }
-    (*g).d=(*g_src).d;
-    
-    (*g).d_init =(direction*) malloc (   (*g).width * (*g).height * (sizeof( direction )  ) );
-      // On verifie si la memoire a ete allouee
-    if ((*g).d_init == NULL) {
-        fprintf(stderr, "not enough memory!\n");
-        exit(EXIT_FAILURE);
-    }
-    (*g).d_init = (*g_src).d_init;
-    
       ///////////////////////////
     
 	return g;
