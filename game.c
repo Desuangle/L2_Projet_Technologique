@@ -25,22 +25,20 @@ game new_game_empty(){
     g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
     if  (g->p == NULL)
     {
-	delete_game(g);
-        fprintf(stderr, "Error: malloc\n");
+	
+       fprintf(stderr, "Error: malloc\n");
         EXIT_FAILURE; 
     }
     g->d = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
     if  (g->d == NULL)
     {
-        delete_game(g);
-        fprintf(stderr, "Error: malloc\n");
+       fprintf(stderr, "Error: malloc\n");
         EXIT_FAILURE; 
     }
     g->d_init = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
         if  (g->d_init == NULL)
     {
-	delete_game(g);
-        fprintf(stderr, "Error: malloc\n");
+       fprintf(stderr, "Error: malloc\n");
         EXIT_FAILURE; 
     }
 
@@ -64,7 +62,6 @@ game new_game(piece *pieces, direction *initial_directions){
     g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
     if  (g->p == NULL)
     {
-	delete_game(g);
        fprintf(stderr, "Error: malloc\n");
         EXIT_FAILURE; 
     }
@@ -72,14 +69,12 @@ game new_game(piece *pieces, direction *initial_directions){
     g->d =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
     if  (g->d == NULL)
     {
-	delete_game(g);
        fprintf(stderr, "Error: malloc\n");
         EXIT_FAILURE; 
     }
     g->d_init =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
         if  (g->d_init == NULL)
     {
-	delete_game(g);
        fprintf(stderr, "Error: malloc\n");
         EXIT_FAILURE; 
     }
@@ -435,7 +430,7 @@ void delete_game (game g){
 
 
 piece get_piece(cgame game, int x, int y){
-    if(game==NULL || game->p==NULL){
+	if(game==NULL || game->p==NULL){
         fprintf(stderr, "Call of get_piece on NULL pointer");
         exit(EXIT_FAILURE);
     }
@@ -454,7 +449,7 @@ direction get_current_dir(cgame g, int x, int y){
         fprintf(stderr, "Call of get_current_dir on NULL pointer");
         exit(EXIT_FAILURE);
     }
-    int wid = g->width;
+	int wid = g->width;
     int hei = g->height;
     if(x<0 || x>=wid || y<0 || y>=hei){
         fprintf(stderr, "Call of get_current_dir on unvalid coordinates");
