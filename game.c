@@ -190,6 +190,7 @@ void set_piece_current_dir (game game, int x, int y, direction dir){
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
 
   assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
+/*
   int w = (*g).width;
   int h = (*g).height;
   if ( (x == 0) || (x == w-1) || (y == 0) || (y == h-1) ){
@@ -220,7 +221,7 @@ bool is_edge_coordinates(cgame g, int x, int y, direction dir){
         break;  
     }
 
-}  
+}  */
 piece p = get_piece( g, x, y );
 direction d = get_current_dir(g, x, y);
 return is_edge(p, d, dir);
