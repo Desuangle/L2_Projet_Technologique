@@ -21,11 +21,10 @@ struct game_s {
 
 game new_game_empty(){
 
-    game g = malloc(sizeof(struct game_s));
+	game g = malloc(sizeof(struct game_s));
     g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
     if  (g->p == NULL)
     {
-	
        fprintf(stderr, "Error: malloc\n");
         EXIT_FAILURE; 
     }
@@ -50,6 +49,7 @@ game new_game_empty(){
 
 	return g;
 }
+    // TO DO
    
 
 game new_game(piece *pieces, direction *initial_directions){
@@ -79,7 +79,7 @@ game new_game(piece *pieces, direction *initial_directions){
         EXIT_FAILURE; 
     }
     for(int i = 0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
-      g->p[i] = pieces[i];
+  	  g->p[i] = pieces[i];
       g->d[i] = initial_directions[i];
       g->d_init[i] = initial_directions[i];
     }
@@ -87,6 +87,7 @@ game new_game(piece *pieces, direction *initial_directions){
     g->width = DEFAULT_SIZE;
 	return g;
 } 
+    // TO DO
  
 
 void set_piece(game g, int x, int y, piece piece, direction orientation)
@@ -94,8 +95,6 @@ void set_piece(game g, int x, int y, piece piece, direction orientation)
     
     if (g == NULL)
     {
-	delete_game(g);
-        g = NULL;
         fprintf(stderr,"g = NULL");
         EXIT_FAILURE;
     }
@@ -143,7 +142,7 @@ void shuffle_dir(game g)
 
 
 int game_height(cgame game){
-     if(game){
+	if(game){
          return game->height;
      }
      fprintf(stderr,"Appel de game_width avec un pointeur NULL\n");
@@ -191,11 +190,6 @@ void set_piece_current_dir (game game, int x, int y, direction dir){
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
 
   assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
-
-  piece p = get_piece( g, x, y );
-  direction d = get_current_dir(g, x, y);
-  return is_edge(p, d, dir);
-/*
   int w = (*g).width;
   int h = (*g).height;
   if ( (x == 0) || (x == w-1) || (y == 0) || (y == h-1) ){
@@ -226,8 +220,10 @@ bool is_edge_coordinates(cgame g, int x, int y, direction dir){
         break;  
     }
 
-  }  */
-
+}  
+piece p = get_piece( g, x, y );
+direction d = get_current_dir(g, x, y);
+return is_edge(p, d, dir);
 }
 
 
