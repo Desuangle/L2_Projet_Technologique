@@ -26,19 +26,19 @@ game new_game_empty(){
     if  (g->p == NULL)
     {
        fprintf(stderr, "Error: malloc\n");
-        EXIT_FAILURE; 
+       exit(EXIT_FAILURE); 
     }
     g->d = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
     if  (g->d == NULL)
     {
        fprintf(stderr, "Error: malloc\n");
-        EXIT_FAILURE; 
+       exit(EXIT_FAILURE); 
     }
     g->d_init = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
         if  (g->d_init == NULL)
     {
        fprintf(stderr, "Error: malloc\n");
-        EXIT_FAILURE; 
+       exit(EXIT_FAILURE); 
     }
 
     for(int i=0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
@@ -56,27 +56,27 @@ game new_game(piece *pieces, direction *initial_directions){
     if (pieces == NULL || initial_directions == NULL)
     {
         fprintf(stderr,"Pas de pieces ou de direction");
-        EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
     game g = (game)malloc(sizeof(struct game_s));
     g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
     if  (g->p == NULL)
     {
        fprintf(stderr, "Error: malloc\n");
-        EXIT_FAILURE; 
+       exit(EXIT_FAILURE); 
     }
 
     g->d =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
     if  (g->d == NULL)
     {
        fprintf(stderr, "Error: malloc\n");
-        EXIT_FAILURE; 
+       exit(EXIT_FAILURE); 
     }
     g->d_init =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
         if  (g->d_init == NULL)
     {
        fprintf(stderr, "Error: malloc\n");
-        EXIT_FAILURE; 
+       exit(EXIT_FAILURE); 
     }
     for(int i = 0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
   	  g->p[i] = pieces[i];
@@ -96,14 +96,14 @@ void set_piece(game g, int x, int y, piece piece, direction orientation)
     if (g == NULL)
     {
         fprintf(stderr,"g = NULL");
-        EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
     if (piece < -1 || piece > 3 || orientation <0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0)
     {
         delete_game(g);
         g = NULL;
         fprintf(stderr, "Error: Incorrect param!\n");
-        EXIT_FAILURE; 
+        exit(EXIT_FAILURE); 
     }
  
     int w = g->width;
