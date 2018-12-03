@@ -96,13 +96,13 @@ void set_piece(game g, int x, int y, piece piece, direction orientation)
     if (g == NULL)
     {
         fprintf(stderr,"g = NULL");
+        delete_game (g);
         exit(EXIT_FAILURE);
     }
     if (piece < -1 || piece > 3 || orientation <0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0)
     {
-        delete_game(g);
-        g = NULL;
         fprintf(stderr, "Error: Incorrect param!\n");
+        delete_game(g);
         exit(EXIT_FAILURE); 
     }
  
@@ -454,6 +454,7 @@ bool is_game_over (cgame g){
 void restart_game(game g){
     if(g==NULL){
         fprintf(stderr, "Call of restart_game on NULL pointer");
+        delete_game (g);
         exit(EXIT_FAILURE);
     }
     int wid = g->width;
