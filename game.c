@@ -519,6 +519,8 @@ bool all_pieces_connected(cgame g){
 			return false;
 		}
 	}	
+    free(virus);
+    virus=NULL;
 	return true;
 }
 void aux_all_pieces_connected(cgame g, int x, int y, bool *v){ // v : virus ; fonction récursive
