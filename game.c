@@ -188,10 +188,8 @@ void set_piece_current_dir (game game, int x, int y, direction dir){
 
 
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
-
-  //  assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
-
-  int width = g->width;
+//  assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
+int width = g->width;
 piece p = g->p[y*width+x];
 direction d = g->d[y*width+x];
 return is_edge(p, d, dir);
@@ -438,8 +436,8 @@ bool is_game_over (cgame g){
 		for (direction d = 0; d < 4; d++){ // d = direction
 			// 1-
 			if (
-			is_edge_coordinates(g, i%g->width /*x*/, i/g->width /*y*/, d) && 
-			!is_connected_coordinates(g, i%g->width /*x*/, i/g->width /*y*/, d)
+			is_edge_coordinates(g, i%g->width /*x*/, i%g->width /*y*/, d) && 
+			!is_connected_coordinates(g, i%g->width /*x*/, i%g->width /*y*/, d)
 			){
 				return false;
 			}
@@ -519,8 +517,8 @@ bool all_pieces_connected(cgame g){
 			return false;
 		}
 	}	
-    free(virus);
-    virus=NULL;
+    //free(virus);
+    //virus=NULL;
 	return true;
 }
 void aux_all_pieces_connected(cgame g, int x, int y, bool *v){ // v : virus ; fonction récursive

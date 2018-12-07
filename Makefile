@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99 -Wall
+CFLAGS = -std=c99 -Wall -g
 CPPFLAGS = -I ../include
 LDFLAGS = -L. -lgame 
 all : libs net_text
