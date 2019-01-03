@@ -19,6 +19,18 @@ struct game_s {
 };
 #define DEFAULT_SIZE 5
 
+game new_game_empty_ext(int width, int height, bool wrapping){
+    return EXIT_SUCCESS;
+}
+
+game new_game_ext(int width, int height, piece *pieces, direction *initial_directions, bool wrapping){
+     return EXIT_SUCCESS;
+}
+
+bool is_wrapping(cgame g){
+    return EXIT_SUCCESS;
+}
+
 game new_game_empty(){
 
 	game g = malloc(sizeof(struct game_s));

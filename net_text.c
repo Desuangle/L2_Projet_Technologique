@@ -60,6 +60,14 @@ void show_grid(game g){
 	      case E: printf("├"); break;
 	      case W: printf("┤"); break;
 	      } break;
+      case CROSS:
+	      switch(get_current_dir(g, x, y)){
+	      case N: printf("+"); break;
+	      case S: printf("+"); break;
+	      case E: printf("+"); break;
+	      case W: printf("+"); break;
+	      } break;
+
       }
       printf(" ");
     } // end of x loop
