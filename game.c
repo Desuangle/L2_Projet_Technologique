@@ -19,16 +19,50 @@ struct game_s {
 };
 #define DEFAULT_SIZE 5
 
-game new_game_empty_ext(int width, int height, bool wrapping){
-    return EXIT_SUCCESS;
-}
+
 
 game new_game_ext(int width, int height, piece *pieces, direction *initial_directions, bool wrapping){
-     return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
 
 bool is_wrapping(cgame g){
     return EXIT_SUCCESS;
+}
+
+
+
+game new_game_empty_ext(int width, int height, bool wrapping){
+    if(wrapping){
+        game g = malloc(sizeof(struct game_s));
+        g->p = (piece*)malloc((width*height)*sizeof(piece));
+        if  (g->p == NULL)
+        {
+        fprintf(stderr, "Error: malloc\n");
+        exit(EXIT_FAILURE); 
+        }
+        g->d = (direction*)calloc(width*height, sizeof(direction));
+        if  (g->d == NULL)
+        {
+        fprintf(stderr, "Error: malloc\n");
+        exit(EXIT_FAILURE); 
+        }
+        g->d_init = (direction*)calloc(width*height, sizeof(direction));
+            if  (g->d_init == NULL)
+        {
+        fprintf(stderr, "Error: malloc\n");
+        exit(EXIT_FAILURE); 
+        }
+
+        for(int i=0; i < width*height; i++){
+        g->p[i] = EMPTY;
+        }
+        g->height = height;
+        g->width = width;
+
+        return g;
+    }
+    fprintf(stderr, "game Not wrapping");
+    exit(EXIT_FAILURE); 
 }
 
 game new_game_empty(){
@@ -60,9 +94,7 @@ game new_game_empty(){
     g->width = DEFAULT_SIZE;
 
 	return g;
-}
-    // TO DO
-   
+}   
 
 game new_game(piece *pieces, direction *initial_directions){
     if (pieces == NULL || initial_directions == NULL)
@@ -98,12 +130,9 @@ game new_game(piece *pieces, direction *initial_directions){
     g->height = DEFAULT_SIZE;
     g->width = DEFAULT_SIZE;
 	return g;
-} 
-    // TO DO
- 
+}  
 
-void set_piece(game g, int x, int y, piece piece, direction orientation)
-{
+void set_piece(game g, int x, int y, piece piece, direction orientation){
     
     if (g == NULL)
     {
@@ -125,9 +154,7 @@ void set_piece(game g, int x, int y, piece piece, direction orientation)
   
 }
 
-
-void shuffle_dir(game g)
-{
+void shuffle_dir(game g){
     int w = g->width; 
     int h = g->height; 
     for (int y = 0; y < h; y++)
@@ -152,7 +179,6 @@ void shuffle_dir(game g)
     }
 }
 
-
 int game_height(cgame game){
 	if(game){
          return game->height;
@@ -160,8 +186,6 @@ int game_height(cgame game){
      fprintf(stderr,"Appel de game_width avec un pointeur NULL\n");
      exit(EXIT_FAILURE);
 }
- 
-  
 
 int game_width(cgame game){
      if(game){
@@ -171,7 +195,6 @@ int game_width(cgame game){
      exit(EXIT_FAILURE);
 }
 
-
 void rotate_piece_one(game game, int x, int y){
   if(game){
     if(x < game->width&& y < game->height){
@@ -179,7 +202,6 @@ void rotate_piece_one(game game, int x, int y){
     }
   }
 }
-
 
 void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
  if(game){
@@ -189,7 +211,6 @@ void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
  }
 }
 
-
 void set_piece_current_dir (game game, int x, int y, direction dir){
   if(game){
    if(x < game->width&& y < game->height){
@@ -198,16 +219,13 @@ void set_piece_current_dir (game game, int x, int y, direction dir){
  }
 }
 
-
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
-//  assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
-int width = g->width;
-piece p = g->p[y*width+x];
-direction d = g->d[y*width+x];
-return is_edge(p, d, dir);
+    //  assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
+    int width = g->width;
+    piece p = g->p[y*width+x];
+    direction d = g->d[y*width+x];
+    return is_edge(p, d, dir);
 }
-
-
 
 bool is_edge(piece piece, direction orientation, direction dir){
 	///////////////_SEGMENT_/////////////////
@@ -242,7 +260,7 @@ bool is_edge(piece piece, direction orientation, direction dir){
         } 
     }
 
-///////////////_test_LEAF_////////////////////        
+    ///////////////_test_LEAF_////////////////////        
 	if(piece==LEAF){ 
         switch(orientation){
             
@@ -274,7 +292,7 @@ bool is_edge(piece piece, direction orientation, direction dir){
         } 
     }
 
-///////////////_test_CORNER_///////////////////
+    ///////////////_test_CORNER_///////////////////
     if(piece==CORNER){ 
         switch(orientation){
             
@@ -306,7 +324,7 @@ bool is_edge(piece piece, direction orientation, direction dir){
         } 
     }
 
-///////////////_test_TEE_///////////////////
+    ///////////////_test_TEE_///////////////////
     if(piece==TEE){ 
         switch(orientation){
 
@@ -338,12 +356,10 @@ bool is_edge(piece piece, direction orientation, direction dir){
         } 
     }
 
-///////////////////////////////////////////////
+    ///////////////////////////////////////////////
     return false;
 }
   
-
-
 direction opposite_dir(direction dir){
 	
 	if ( dir == S )
@@ -371,8 +387,6 @@ direction opposite_dir(direction dir){
     }   
 } 
 
-
-
 game copy_game (cgame g_src){
 	 
     game g =new_game_empty(); 
@@ -391,8 +405,6 @@ game copy_game (cgame g_src){
 	return g;
 }
   
-
-
 void delete_game (game g){
     if(g!=NULL){
         free(g->p);
@@ -404,7 +416,6 @@ void delete_game (game g){
         free(g);
     }
 }
-
 
 piece get_piece(cgame game, int x, int y){
 	if(game==NULL || game->p==NULL){
@@ -420,7 +431,6 @@ piece get_piece(cgame game, int x, int y){
     return *(game->p+x+y*wid);
 }
 
-
 direction get_current_dir(cgame g, int x, int y){
 	if(g==NULL || g->d==NULL){
         fprintf(stderr, "Call of get_current_dir on NULL pointer");
@@ -434,7 +444,6 @@ direction get_current_dir(cgame g, int x, int y){
     }
     return *(g->d+x+y*wid);
 }
-
 
 bool is_connected_coordinates(cgame g, int x, int y, direction d);
 bool all_pieces_connected(cgame g);

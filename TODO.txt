@@ -1,0 +1,14 @@
+killian:
+
+
+alexandre:
+
+
+
+walid:
+ajout fichier Cmake et TODO.txt
+ajout des implémentations vides des fonctions dans game.c
+définir la fonction "game new_game_empty_ext{..}"
+
+mathis:
+
