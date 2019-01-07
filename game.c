@@ -21,13 +21,62 @@ struct game_s {
 
 
 
+
 game new_game_ext(int width, int height, piece *pieces, direction *initial_directions, bool wrapping){
-    return EXIT_SUCCESS;
+    
+    if (pieces == NULL || initial_directions == NULL)
+    {
+        fprintf(stderr,"Pas de pieces ou de direction");
+        exit(EXIT_FAILURE);
+    }
+    if (width<1 || height <1)
+    {
+        fprintf(stderr,"width or height is wrong");
+        exit(EXIT_FAILURE);    
+    }
+    game g = (game)malloc(sizeof(struct game_s));
+
+    g->p = (piece*)malloc((width*height)*sizeof(piece));
+    if  (g->p == NULL)
+    {
+        fprintf(stderr, "Error: malloc\n");
+        exit(EXIT_FAILURE); 
+    }
+    g->d =(direction*)malloc((width*height)*sizeof(direction));
+    if  (g->d == NULL)
+    {
+        fprintf(stderr, "Error: malloc\n");
+        exit(EXIT_FAILURE); 
+    }
+    g->d_init =(direction*)malloc((width*height)*sizeof(direction));
+    if  (g->d_init == NULL)
+    {
+        fprintf(stderr, "Error: malloc\n");
+        exit(EXIT_FAILURE); 
+    }
+    for(int i = 0; i < width*height; i++)
+    {
+  	    g->p[i] = pieces[i];
+        g->d[i] = initial_directions[i];
+        g->d_init[i] = initial_directions[i];
+    }
+
+    g->height = height;
+    g->width = width;
+    g->wrapping = wrapping;
+	return g;
+} 
+
+bool is_wrapping(cgame g)
+{
+    if (g == NULL)
+    {
+        fprintf(stderr,"g = NULL");
+        exit(EXIT_FAILURE);
+    }
+    return g->wrapping;
 }
 
-bool is_wrapping(cgame g){
-    return EXIT_SUCCESS;
-}
 
 
 

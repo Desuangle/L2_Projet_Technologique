@@ -30,7 +30,7 @@ int test_set_piece(int argc, char *argv[])
         LEAF, TEE, LEAF, LEAF, LEAF,
         LEAF, TEE, TEE, CORNER, SEGMENT,
         LEAF, LEAF, TEE, LEAF, SEGMENT,
-        TEE, TEE, TEE, TEE, TEE,
+        CROSS, TEE, CROSS, TEE, TEE,
         CORNER, LEAF, LEAF, CORNER, LEAF
     };
     direction p2[] = {
@@ -72,9 +72,9 @@ int test_set_piece(int argc, char *argv[])
   set_piece(g_copy,2,2,TEE,W);
   set_piece(g_copy,3,2,LEAF,W);
   set_piece(g_copy,4,2,SEGMENT,E);
-  set_piece(g_copy,0,3,TEE,S);
+  set_piece(g_copy,0,3,CROSS,S);
   set_piece(g_copy,1,3,TEE,W);
-  set_piece(g_copy,2,3,TEE,N);
+  set_piece(g_copy,2,3,CROSS,N);
   set_piece(g_copy,3,3,TEE,E);
   set_piece(g_copy,4,3,TEE,E);
   set_piece(g_copy,0,4,CORNER,W);
@@ -133,13 +133,13 @@ for (int y = 0; y < h; y++){
 
 int test_shuffle_dir(int argc, char *argv[])
 { //le bug pas trouvé était que shuffle ne shuffle que une partie de la grill et il aurait fallut que shuffle un grand nombre de fois et compter les directions pour chaque pièces
-  piece p1[] = {
+  piece p1[] ={
   LEAF, TEE, LEAF, LEAF, LEAF,
   LEAF, TEE, TEE, CORNER, SEGMENT,
-  LEAF, LEAF, TEE, LEAF, SEGMENT,
+  LEAF, CROSS, TEE, LEAF, SEGMENT,
   TEE, TEE, TEE, TEE, TEE,
   CORNER, LEAF, LEAF, CORNER, LEAF
-};
+  };
 
   direction p2[] = {E,N,W,N,N,
                     E,S,N,S,S,
@@ -155,7 +155,6 @@ int test_shuffle_dir(int argc, char *argv[])
   int compare = 0;
   shuffle_dir(g);
   shuffle_dir(g1);
-
   int w = game_width(g);
   int h = game_height(g);
 
@@ -207,11 +206,10 @@ int test_shuffle_dir(int argc, char *argv[])
         }
       }
   }
-printf("No :%d \n",No);
-printf("So :%d \n",So);
-printf("Ea :%d \n",Ea);
-printf("We :%d \n",We);
-
+  printf("No :%d \n",No);
+  printf("So :%d \n",So);
+  printf("Ea :%d \n",Ea);
+  printf("We :%d \n",We);
     int moit = (w * h)/2;
     if (No>moit || So>moit || Ea>moit|| We>moit || No==0||So==0||Ea==0||We==0 ||(No == 8 && So == 7 && Ea== 6 && We == 4) ) // si une direction à plus de 50% ou n'est pas présente ou que les dir n'ont pas changé
     {
@@ -232,7 +230,7 @@ printf("We :%d \n",We);
  {
    for(int x=0; x<game_width(g);x+=1)
    {
-      if(get_piece(g,x,y)!=p1[y*5+x])
+      if(get_piece(g,x,y)!=p1[y*w+x])
       {
         delete_game(g);
         g = NULL;
@@ -243,21 +241,21 @@ printf("We :%d \n",We);
    }
  }
 
-bool *check = (bool*)calloc(game_width(g)*game_height(g), sizeof(bool));
-for (int i = 0; i <= 10; i++)
-{ 
-  shuffle_dir(g);
-  for(int y=0; y<game_height(g);y+=1) //Verifie que shuffle ne touche pas aux directions
-  {
-    for(int x=0; x<game_width(g);x+=1)
-    {    
-      if (get_current_dir(g,x,y) != p2[y*5+x])
-      {
-       check[x + y*5]=true;
+  bool *check = (bool*)calloc(game_width(g)*game_height(g), sizeof(bool));
+  for (int i = 0; i <= 10; i++)
+  { 
+    shuffle_dir(g);
+    for(int y=0; y<game_height(g);y+=1) //Verifie que shuffle ne touche pas aux directions
+    {
+      for(int x=0; x<game_width(g);x+=1)
+      {    
+        if (get_current_dir(g,x,y) != p2[y*w+x])
+        {
+        check[x + y*w]=true;
+        }
       }
     }
   }
-}
 
 for (int a = 0; a< game_width(g)*game_height(g); a++)
 {
@@ -280,7 +278,6 @@ for (int a = 0; a< game_width(g)*game_height(g); a++)
 
 
 }
-
 
 /* ********** TEST EMPTY ********** */
 /*
@@ -316,16 +313,17 @@ int test_game_new_game (int argc, char *argv[])
   CORNER, LEAF, LEAF, CORNER, LEAF
   };
 
-  direction p2[] = {E,N,W,N,N, //1er ligne du bass
+  direction p2[] = {E,N,W,N,N, //1er ligne du bas
                     E,S,N,S,S,
                     N,N,E,W,N,
                     E,S,S,N,W,
                     E,W,E,S,S  //dernier ligne du haut
                     };
 
-  game(g) = new_game(p1, p2);
+  game g = new_game(p1, p2);
   int w = 5;
   int h = 5;
+  
   if (g == NULL)
   {
     delete_game(g);
@@ -349,6 +347,66 @@ int test_game_new_game (int argc, char *argv[])
     delete_game(g);
     g = NULL;
     return EXIT_SUCCESS;
+}
+
+int test_new_game_ext(int argc, char *argv[])
+{
+  piece p1[] = {
+  LEAF, TEE, LEAF, LEAF, LEAF, LEAF, TEE,
+  TEE, CORNER, SEGMENT,LEAF, LEAF, TEE, LEAF,
+  SEGMENT,TEE, TEE, TEE, TEE, TEE, CORNER, 
+  LEAF, LEAF, CORNER, LEAF, CROSS, CROSS, LEAF,
+  SEGMENT,TEE, TEE, TEE, TEE, TEE, CORNER, 
+  TEE, CORNER, SEGMENT,LEAF, LEAF, TEE, LEAF,
+  LEAF, LEAF, CORNER, LEAF, CROSS, CROSS, LEAF,
+  SEGMENT,TEE, TEE, TEE, TEE, TEE, CORNER, 
+  };
+
+  direction p2[] = 
+  {
+   E,N,W,N,N,E,S, //1er ligne du bas
+   E,S,N,S,S,N,W,
+   N,N,E,W,N,S,E,
+   E,S,S,N,W,W,N,
+   E,W,E,S,S,N,S,
+   E,S,S,N,W,W,N,
+   E,W,E,S,S,N,S,
+   E,S,S,N,W,W,N //dernier ligne du haut
+  };
+
+ game g = new_game_ext(7, 8, p1, p2, false);
+
+ 
+ int h = game_height(g);
+ int w = game_width(g);
+
+
+ if (w != 7 || h!=8 || is_wrapping(g) == false)
+ {
+	  delete_game(g);
+    g = NULL;
+    fprintf(stderr, "Error: Le jeu créé ne correspond pas à ses paramètres \n");
+    return EXIT_FAILURE;
+  }
+
+for (int x = 0; x < w; x++)
+{
+  for (int y = 0; x < h; x++)
+  {
+    if (get_piece(g,x,y) != p1[x+w*y] || get_current_dir(g,x,y)!=p2[x+w*y])
+    {
+	    delete_game(g);
+      g = NULL;
+      fprintf(stderr, "Error: Le jeu créé ne correspond pas à ses paramètres \n");
+      return EXIT_FAILURE;
+    }
+  }
+}
+    delete_game(g);
+    g = NULL;
+    return EXIT_SUCCESS;
+
+ 
 }
 
 /* ********** TEST game_height ********** */
