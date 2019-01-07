@@ -78,7 +78,7 @@ bool is_wrapping(cgame g)
 }
 
 
-
+/*
 
 game new_game_empty_ext(int width, int height, bool wrapping){
     if(wrapping){
@@ -113,7 +113,44 @@ game new_game_empty_ext(int width, int height, bool wrapping){
     fprintf(stderr, "game Not wrapping");
     exit(EXIT_FAILURE); 
 }
+*/
 
+game new_game_empty_ext(int width, int height, bool wrapping){
+
+    if (width<1 || height <1)
+    {
+        fprintf(stderr,"width or height is wrong");
+        exit(EXIT_FAILURE);    
+    }
+
+    game g = malloc(sizeof(struct game_s));
+    g->p = (piece*)malloc((width*height)*sizeof(piece));
+    if  (g->p == NULL)
+    {
+       fprintf(stderr, "Error: malloc\n");
+       exit(EXIT_FAILURE); 
+    }
+    g->d = (direction*)calloc((width*height), sizeof(direction));
+    if  (g->d == NULL)
+    {
+       fprintf(stderr, "Error: malloc\n");
+       exit(EXIT_FAILURE); 
+    }
+    g->d_init = (direction*)calloc((width*height), sizeof(direction));
+    if  (g->d_init == NULL)
+    {
+       fprintf(stderr, "Error: malloc\n");
+       exit(EXIT_FAILURE); 
+    }
+
+    for(int i=0; i < (width*height); i++){
+      g->p[i] = EMPTY;
+    }
+    g->height = height;
+    g->width = width;
+    g->wrapping = wrapping;
+	return g;
+}
 game new_game_empty(){
 
 	game g = malloc(sizeof(struct game_s));
