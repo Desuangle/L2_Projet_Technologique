@@ -348,8 +348,8 @@ int test_game_new_game (int argc, char *argv[])
     g = NULL;
     return EXIT_SUCCESS;
 }
-
-int test_new_game_ext(int argc, char *argv[])
+/* ********** TEST game_new_game_ext ********** */
+int test_game_new_game_ext(int argc, char *argv[])
 {
   piece p1[] = {
   LEAF, TEE, LEAF, LEAF, LEAF, LEAF, TEE,
@@ -381,23 +381,24 @@ int test_new_game_ext(int argc, char *argv[])
  int w = game_width(g);
 
 
- if (w != 7 || h!=8 || is_wrapping(g) == false)
+ if (w != 7 || h!=8 || is_wrapping(g) != false)
  {
 	  delete_game(g);
     g = NULL;
-    fprintf(stderr, "Error: Le jeu créé ne correspond pas à ses paramètres \n");
+    printf("h = %d, w = %d",h,w);
+    fprintf(stderr, "Error: Le jeu créé ne correspond pas à ses paramètres (wrapping, height ou width \n");
     return EXIT_FAILURE;
   }
 
-for (int x = 0; x < w; x++)
+for (int x = 0; x < h; x++)
 {
-  for (int y = 0; x < h; x++)
+  for (int y = 0; x < w; x++)
   {
     if (get_piece(g,x,y) != p1[x+w*y] || get_current_dir(g,x,y)!=p2[x+w*y])
     {
 	    delete_game(g);
       g = NULL;
-      fprintf(stderr, "Error: Le jeu créé ne correspond pas à ses paramètres \n");
+      fprintf(stderr, "Error: Le jeu créé ne correspond pas à ses paramètres (piece ou diretion) \n");
       return EXIT_FAILURE;
     }
   }
@@ -408,7 +409,62 @@ for (int x = 0; x < w; x++)
 
  
 }
+/* ********** TEST game_new_game_empty_ext ********** */ //int width, int height, bool wrapping)
+int test_game_new_game_empty_ext(int argc, char *argv[])
+{
+    game g = new_game_empty_ext(6, 7, true);
+    assert(g);
+    int w = game_width(g);
+    int h = game_height(g);
+    for (int y = 0; y < h; y++)
+        for (int x = 0; x < w; x++)
+        {
+            if (get_piece(g, x, y) != EMPTY)
+            {
+                fprintf(stderr, "Error: piece (%d,%d) is not empty!\n", x, y);
+                delete_game(g);
+                return EXIT_FAILURE;
+            }
+        }
 
+    if (is_wrapping(g) != true)
+    {
+      g = NULL;
+      fprintf(stderr, "Error: Le jeux ne wrap pas");
+      delete_game(g);
+      return EXIT_FAILURE;
+    }
+
+    delete_game(g);
+    g = NULL;
+    return EXIT_SUCCESS;
+}
+
+/* ********** TEST game_bool_is_wrapping ********** */
+int test_game_is_wrapping(int argc, char *argv[])
+{
+  game g = new_game_empty_ext(6, 7, true);
+  if (is_wrapping(g)!=true)
+  {
+    return EXIT_FAILURE;
+    g = NULL;
+    delete_game(g);
+  }
+  g = NULL;
+  delete_game(g);
+
+ game g1 = new_game_empty_ext(6, 7, false);
+  if (is_wrapping(g1)!= false)
+  {
+   return EXIT_FAILURE;
+   g1 = NULL;
+    delete_game(g1);
+  }
+ delete_game(g1);
+ g1 = NULL;
+ return EXIT_SUCCESS;
+
+}
 /* ********** TEST game_height ********** */
 int test_game_height (int argc, char *argv[])
 {
@@ -461,6 +517,15 @@ int main(int argc, char *argv[])
 
     else if (strcmp("game_height", argv[1]) == 0)
         status = test_game_height(argc, argv);
+
+    else if (strcmp("is_wrapping", argv[1]) == 0)
+        status = test_game_is_wrapping(argc, argv);
+
+    else if (strcmp("new_game_ext", argv[1]) == 0)
+        status = test_game_new_game_ext(argc, argv);
+
+    else if (strcmp("new_game_empty_ext", argv[1]) == 0)
+        status = test_game_new_game_empty_ext(argc, argv);
 
     /*else if (strcmp("empty", argv[1]) == 0)
       status = test_empty(argc, argv);*/

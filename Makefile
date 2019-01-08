@@ -1,7 +1,7 @@
 CC = gcc
-CFLAGS = -std=c99 -Wall -g
+CFLAGS = -std=c99 -Wall
 CPPFLAGS = -I ../include
-LDFLAGS = -L. -lgame 
+LDFLAGS = -L. -lgame
 all : libs net_text
 
 
@@ -15,10 +15,6 @@ test_walouini.o: test_walouini.c libs
 	$(CC) $(CFLAGS) -c $<
 test_kleguen.o: test_kleguen.c libs
 	$(CC) -c $< $(CFLAGS)
-game.o: game.c game.h 
-	$(CC) $(CFLAGS) -c $< 
-game_io.o: game_io.c game.h game_io.h
-	$(CC) $(CFLAGS) -c $< 		
 
 
 testfw_avialar.o: test_avialar.c libs
@@ -31,29 +27,31 @@ testfw_kleguen.o: test_kleguen.c libs
 	$(CC) -c $< $(CFLAGS) -DTESTFW -o $@
 
 
-libgame.a : game.o game_io.o 
+libgame.a : game.o game_io.o
 	ar rcs $@ $^
 
 libs : libgame.a libtestfw.a libtestfw_main.a
 net_text : net_text.o
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
-testfw: testfw_all 
+testfw: testfw_all
 	./testfw_all -t 2 -o test.log -c
 
 
 test: run_test_kleguen run_test_walouini run_test_avialar run_test_mgendron
- 
 
 testfw_all: testfw_avialar.o testfw_mgendron.o testfw_walouini.o testfw_kleguen.o libgame.a
 	$(CC) $^ -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -ltestfw_main -ltestfw -ldl -rdynamic
 
 
 run_test_kleguen: test_kleguen
-	./test_kleguen set_piece
 	./test_kleguen game_new_game
+	./test_kleguen set_piece
 	./test_kleguen shuffle_dir
 	./test_kleguen game_height
+	./test_kleguen is_wrapping
+	./test_kleguen new_game_ext
+	./test_kleguen new_game_empty_ext
 
 run_test_avialar: test_avialar
 	./test_avialar is_game_over
@@ -74,7 +72,6 @@ run_test_walouini: test_walouini
 	./test_walouini is_edge
 	./test_walouini opposite_dir
 	./test_walouini copy_game
-	
 
 
 test_kleguen : test_kleguen.o
@@ -91,5 +88,5 @@ test_mgendron : test_mgendron.o
 
 
 clean :
-	rm net_text net_text.o testfw_*.o test_*.o libgame.a test_walouini test_kleguen test_avialar testfw_all test_mgendron *~ *.log game.o game_io.o
+	rm net_text net_text.o testfw_*.o test_*.o libgame.a test_walouini test_kleguen test_avialar testfw_all test_mgendron *~ *.log
 .PHONY : clean libs test
