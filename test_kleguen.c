@@ -381,7 +381,7 @@ int test_game_new_game_empty_ext(int argc, char *argv[]){
 		}
 	}
 	if (is_wrapping(g) != true){
-		g = NULL;
+		//		g = NULL;
 		fprintf(stderr, "test_game_new_game_empty_ext : Error Le jeux ne wrap pas");
 		delete_game(g);
 		return EXIT_FAILURE;
@@ -397,22 +397,22 @@ int test_game_is_wrapping(int argc, char *argv[]){
 	game g = new_game_empty_ext(6, 7, true);
 	if (is_wrapping(g)!=true){
 		fprintf(stderr, "test_game_is_wrapping : Error wrapping != true");
-		return EXIT_FAILURE;
-		g = NULL;
+		//		g = NULL;
 		delete_game(g);
+		return EXIT_FAILURE;
 	}
-	g = NULL;
+	//	g = NULL;
 	delete_game(g);
 
 	game g1 = new_game_empty_ext(6, 7, false);
 	if (is_wrapping(g1)!= false){
 		fprintf(stderr, "test_game_is_wrapping : Error wrapping != false");
 		return EXIT_FAILURE;
-		g1 = NULL;
+		//		g1 = NULL;
 		delete_game(g1);
 	}
 	delete_game(g1);
-	g1 = NULL;
+	//	g1 = NULL;
 	return EXIT_SUCCESS;
 
 }

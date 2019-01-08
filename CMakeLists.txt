@@ -98,16 +98,23 @@ set_tests_properties (test_is_edge_coordinates PROPERTIES TIMEOUT 3)
 set_tests_properties (test_is_edge PROPERTIES TIMEOUT 3)
 set_tests_properties (test_opposite_dir PROPERTIES TIMEOUT 3)
 set_tests_properties (test_copy_game PROPERTIES TIMEOUT 3)
+
 set_tests_properties (test_is_game_over PROPERTIES TIMEOUT 3)
 set_tests_properties (test_empty PROPERTIES TIMEOUT 3)
 set_tests_properties (test_game_width PROPERTIES TIMEOUT 3)
 set_tests_properties (test_rotate_piece_one PROPERTIES TIMEOUT 3)
 set_tests_properties (test_rotate_piece PROPERTIES TIMEOUT 3)
 set_tests_properties (test_set_piece_current_dir PROPERTIES TIMEOUT 3)
+
 set_tests_properties (test_set_piece PROPERTIES TIMEOUT 3)
 set_tests_properties (test_new_game PROPERTIES TIMEOUT 3)
 set_tests_properties (test_shuffle_dir PROPERTIES TIMEOUT 3)
 set_tests_properties (test_game_height PROPERTIES TIMEOUT 3)
+set_tests_properties (test_is_wrapping PROPERTIES TIMEOUT 3)
+set_tests_properties (test_new_game_ext PROPERTIES TIMEOUT 3)
+set_tests_properties (test_new_game_empty_ext PROPERTIES TIMEOUT 3)
+
+
 set_tests_properties (test_delete PROPERTIES TIMEOUT 3)
 set_tests_properties (test_get_piece PROPERTIES TIMEOUT 3)
 set_tests_properties (test_current_dir PROPERTIES TIMEOUT 3)
