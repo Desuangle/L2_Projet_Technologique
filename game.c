@@ -274,135 +274,111 @@ bool is_edge_coordinates(cgame g, int x, int y, direction dir){
 
 bool is_edge(piece piece, direction orientation, direction dir){
 	///////////////_SEGMENT_/////////////////
-    if(piece==SEGMENT){ 
-        switch(orientation){
-            
-            case N: //// SEGMENT= | /////
-                    if(dir == N || dir == S)
-                    {
-                        return true;
-                    }
-                    break;
-            case S: //// SEGMENT= | /////
-                    if(dir == N || dir == S)
-                    {
-                        return true;
-                    } 
-                    break;
-            case E: //// SEGMENT= - /////
-                    if ( dir == W || dir == E )
-                    {    
-                        return true;
-                    }
-                    break;        
-            case W: //// SEGMENT= - /////
-                    if ( dir == W || dir == E )
-                    {    
-                        return true;
-                    }        
-                    break;
-            default: return false;
-        } 
-    }
-
-    ///////////////_test_LEAF_////////////////////        
+	if(piece==SEGMENT){ 
+		switch(orientation){
+			case N: //// SEGMENT= | /////
+					if(dir == N || dir == S){
+						return true;
+					}
+					break;
+			case S: //// SEGMENT= | /////
+					if(dir == N || dir == S){
+						return true;
+					} 
+					break;
+			case E: //// SEGMENT= - /////
+					if ( dir == W || dir == E ){    
+						return true;
+					}
+					break;        
+			case W: //// SEGMENT= - /////
+					if ( dir == W || dir == E ){    
+						return true;
+					}        
+					break;
+			default: return false;
+		} 
+	}	
+	///////////////_test_LEAF_////////////////////        
 	if(piece==LEAF){ 
-        switch(orientation){
-            
-            case N: //// LEAF= ^ /////
-                    if(dir == N)
-                    {
-                        return true;
-                    }
-                    break;
-            case S: //// LEAF= v /////
-                    if(dir == S)
-                    {
-                        return true;
-                    } 
-                    break;
-            case E: //// LEAF= > /////
-                    if (dir == E)
-                    {    
-                        return true;
-                    }
-                    break;
-            case W: //// LEAF= < /////
-                    if ( dir == W)
-                    {    
-                        return true;
-                    }
-                    break;        
-            default: return false;
-        } 
-    }
-
-    ///////////////_test_CORNER_///////////////////
-    if(piece==CORNER){ 
-        switch(orientation){
-            
-            case N: //// CORNER= └ /////
-                    if(dir == N || dir == E)
-                    {
-                        return true;
-                    }
-                    break;
-            case S: //// CORNER= ┐ /////
-                    if(dir == S|| dir == W )
-                    {
-                        return true;
-                    } 
-                    break;
-            case E: //// CORNER= ┌ /////
-                    if ( dir == S || dir == E )
-                    {    
-                        return true;
-                    }
-                    break;
-            case W: //// CORNER= ┘ ///// 
-                    if ( dir == W || dir == N)
-                    {    
-                        return true;
-                    }
-                    break;        
-            default: return false;
-        } 
-    }
-
-    ///////////////_test_TEE_///////////////////
-    if(piece==TEE){ 
-        switch(orientation){
-
-            case N:  //// TEE= ┴ /////
-                    if ( dir == N || dir == E || dir == W )
-                    {
-                        return true;
-                    }
-                    break;
-            case S: //// TEE= ┬ /////            
-                    if ( dir == S || dir == E || dir == W )
-                        {
-                            return true;
-                        }
-                    break;
-            case W://// TEE= ┤ /////   
-                    if ( dir == N || dir == S || dir == W )
-                    {
-                        return true;
-                    }
-                    break;    
-            case E: //// TEE= ├ /////
-                    if ( dir == N || dir == E || dir == S )
-                    {
-                        return true;
-                    }
-                    break;  
-            default: return false;
-        } 
-    }
-
-    ///////////////////////////////////////////////
-    return false;
+		switch(orientation){
+			case N: //// LEAF= ^ /////
+			    	if(dir == N){
+			    		return true;
+			    	}
+			    	break;
+			case S: //// LEAF= v /////
+			    	if(dir == S){
+			    		return true;
+			    	} 
+			    	break;
+			case E: //// LEAF= > /////
+			    	if (dir == E){    
+			    		return true;
+			    	}
+			    	break;
+			case W: //// LEAF= < /////
+			    	if ( dir == W){    
+			    		return true;
+			    	}
+			    	break;        
+			default: return false;
+		} 
+	}	
+	///////////////_test_CORNER_///////////////////
+	if(piece==CORNER){ 
+		switch(orientation){
+			case N: //// CORNER= └ /////
+			    	if(dir == N || dir == E){
+			    		return true;
+			    	}
+			    	break;
+			case S: //// CORNER= ┐ /////
+			    	if(dir == S|| dir == W ){
+			    		return true;
+			    	} 
+			    	break;
+			case E: //// CORNER= ┌ /////
+			    	if ( dir == S || dir == E ){    
+			    		return true;
+			    	}
+			    	break;
+			case W: //// CORNER= ┘ ///// 
+			    	if ( dir == W || dir == N){    
+			    		return true;
+			    	}
+			    	break;        
+			default: return false;
+		} 
+	}	
+	///////////////_test_TEE_///////////////////
+	if(piece==TEE){ 
+		switch(orientation){	
+			case N:  //// TEE= ┴ /////
+			    	if ( dir == N || dir == E || dir == W ){
+			    		return true;
+			    	}
+			    	break;
+			case S: //// TEE= ┬ /////            
+			    	if ( dir == S || dir == E || dir == W ){
+			    		return true;
+			    	}
+			    	break;
+			case W://// TEE= ┤ /////   
+			    	if ( dir == N || dir == S || dir == W ){
+			    		return true;
+			    	}
+			    	break;    
+			case E: //// TEE= ├ /////
+			    	if ( dir == N || dir == E || dir == S ){
+			    		return true;
+			    	}
+			    	break;  
+			default: return false;
+		} 
+	}	
+	///////////////////////////////////////////////
+	return false;
 }
   
 direction opposite_dir(direction dir){
