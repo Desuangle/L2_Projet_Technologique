@@ -57,6 +57,10 @@ add_test(test_set_piece test_kleguen set_piece)
 add_test(test_new_game test_kleguen game_new_game)
 add_test(test_shuffle_dir test_kleguen shuffle_dir)
 add_test(test_game_height test_kleguen game_height)
+add_test(test_is_wrapping test_kleguen is_wrapping)
+add_test(test_new_game_ext test_kleguen new_game_ext)
+add_test(test_new_game_empty_ext test_kleguen new_game_empty_ext)
+
 
 add_test(test_delete test_mgendron delete)
 add_test(test_get_piece test_mgendron get_piece)
@@ -68,16 +72,22 @@ set_tests_properties (test_is_edge_coordinates PROPERTIES PASS_REGULAR_EXPRESSIO
 set_tests_properties (test_is_edge PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_opposite_dir PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_copy_game PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
+
 set_tests_properties (test_is_game_over PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_empty PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_game_width PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_rotate_piece_one PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_rotate_piece PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_set_piece_current_dir PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
+
 set_tests_properties (test_set_piece PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_new_game PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_shuffle_dir PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_game_height PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
+set_tests_properties (test_is_wrapping PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
+set_tests_properties (test_new_game_ext PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
+set_tests_properties (test_new_game_empty_ext PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
+
 set_tests_properties (test_delete PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_get_piece PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (test_current_dir PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
