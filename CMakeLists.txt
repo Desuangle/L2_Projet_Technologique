@@ -38,8 +38,10 @@ add_executable(test_mgendron test_mgendron.c)
 target_link_libraries(test_mgendron game )
 
 enable_testing()
+include (CTest)
 
-add_test(ts1 test_walouini is_edge_coordinates)
+
+add_test(ts1 test_walouini is_edge_coordinates) # test
 add_test(ts2 test_walouini is_edge)
 add_test(ts3 test_walouini opposite_dir)
 add_test(ts4 test_walouini copy_game)
@@ -60,6 +62,7 @@ add_test(ts15 test_mgendron delete)
 add_test(ts16 test_mgendron get_piece)
 add_test(ts17 test_mgendron current_dir)
 add_test(ts18 test_mgendron restart)
+
 
 set_tests_properties (ts1 PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")
 set_tests_properties (ts2 PROPERTIES PASS_REGULAR_EXPRESSION "SUCCESS")

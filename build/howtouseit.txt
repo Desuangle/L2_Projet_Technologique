@@ -1,3 +1,9 @@
-cmake ..
-make
-ctest
+install :
+    cmake ..
+    make
+faire les tests :
+    ctest
+faire les tests avec valgrind :
+    ctest -T memcheck
+voir où sont les memory leaks :
+    cat ./Testing/Temporary/MemoryChecker.*.log
