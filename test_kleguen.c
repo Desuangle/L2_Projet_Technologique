@@ -91,13 +91,13 @@ int test_set_piece(int argc, char *argv[])
      {
         direction d = get_current_dir(g, x, y);
         direction d_copy = get_current_dir(g_copy, x, y);
-        if(  (get_piece(g, x, y) != get_piece(g_copy, x, y) )  || ( d != d_copy )  )
+        if(  (get_piece(g, x, y) != get_piece(g_copy, x, y) )  || ( d != d_copy )  ) //si les pièces ne correspondent pas
         {
            delete_game(g);
            g = NULL;
            delete_game(g_copy);
            g_copy = NULL;
-           fprintf(stderr, "Error: set piece (%d,%d)!\n", x, y);
+           fprintf(stderr, "test_set_piece : Error set piece (%d,%d)!\n", x, y);
            return EXIT_FAILURE;
         }
       }
@@ -109,13 +109,13 @@ for (int y = 0; y < h; y++){
      {
         direction d = get_current_dir(g, x, y);
         direction d_copy = get_current_dir(g_copy, x, y);
-        if(  (get_piece(g, x, y) != get_piece(g_copy, x, y) )  || ( d != d_copy )  )
+        if(  (get_piece(g, x, y) != get_piece(g_copy, x, y) )  || ( d != d_copy )  ) //si les pièces ne correspondent pas
         {
            delete_game(g);
            g = NULL;
            delete_game(g_copy);
            g_copy = NULL;
-           fprintf(stderr, "Error: set piece (%d,%d)!\n", x, y);
+           fprintf(stderr, "test_set_piece : Error set piece (%d,%d) après restart!\n", x, y);
            return EXIT_FAILURE;
         }
       }
@@ -132,26 +132,37 @@ for (int y = 0; y < h; y++){
 /* ********** TEST shuffle_dir********** */
 
 int test_shuffle_dir(int argc, char *argv[])
-{ //le bug pas trouvé était que shuffle ne shuffle que une partie de la grill et il aurait fallut que shuffle un grand nombre de fois et compter les directions pour chaque pièces
-  piece p1[] ={
-  LEAF, TEE, LEAF, LEAF, LEAF,
-  LEAF, TEE, TEE, CORNER, SEGMENT,
-  LEAF, CROSS, TEE, LEAF, SEGMENT,
-  TEE, TEE, TEE, TEE, TEE,
-  CORNER, LEAF, LEAF, CORNER, LEAF
+{
+   piece p1[] = {
+  LEAF, TEE, LEAF, LEAF, LEAF, LEAF, TEE,
+  TEE, CORNER, SEGMENT,LEAF, LEAF, TEE, LEAF,
+  SEGMENT,TEE, TEE, TEE, TEE, TEE, CORNER, 
+  LEAF, LEAF, CORNER, LEAF, CROSS, CROSS, LEAF,
+  SEGMENT,TEE, TEE, TEE, TEE, TEE, CORNER, 
+  TEE, CORNER, SEGMENT,LEAF, LEAF, TEE, LEAF,
+  LEAF, LEAF, CORNER, LEAF, CROSS, CROSS, LEAF,
+  SEGMENT,TEE, TEE, TEE, TEE, TEE, CORNER, 
   };
 
-  direction p2[] = {E,N,W,N,N,
-                    E,S,N,S,S,
-                    N,N,E,W,N,
-                    E,S,S,N,W,
-                    E,W,E,S,S
-                    };
+  direction p2[] = 
+  {
+   E,N,W,N,N,E,S, //1er ligne du bas
+   E,S,N,S,S,N,W,
+   N,N,E,W,N,S,E,
+   E,S,S,N,W,W,N,
+   E,W,E,S,S,N,S,
+   E,S,S,N,W,W,N,
+   E,W,E,S,S,N,S,
+   E,S,S,N,W,W,N //dernier ligne du haut
+  };
+
+ game g = new_game_ext(7, 8, p1, p2, false);
+ game g1 = new_game_ext(7, 8, p1, p2, false);
+
   //   ┐
   //  └
   //taille de 5*5 obli
-  game(g) = new_game(p1, p2);
-  game(g1)= new_game(p1, p2);
+
   int compare = 0;
   shuffle_dir(g);
   shuffle_dir(g1);
@@ -168,7 +179,7 @@ int test_shuffle_dir(int argc, char *argv[])
         char dir2 = get_current_dir(g1, x, y);
         if (dir1 == dir2)
         {
-          compare +=1;
+          compare +=1; //si les directions sont identiques
         }
       }
   }
@@ -178,7 +189,7 @@ int test_shuffle_dir(int argc, char *argv[])
       g = NULL;
     delete_game(g1);
       g1 = NULL;
-    fprintf(stderr, "La fonction shuffle n'est pas aléatoire\n");
+    fprintf(stderr, "test_shuffle_dir: La fonction shuffle n'est pas aléatoire\n");
 
     return EXIT_FAILURE;
   }
@@ -206,27 +217,24 @@ int test_shuffle_dir(int argc, char *argv[])
         }
       }
   }
-  printf("No :%d \n",No);
-  printf("So :%d \n",So);
-  printf("Ea :%d \n",Ea);
-  printf("We :%d \n",We);
+
     int moit = (w * h)/2;
     if (No>moit || So>moit || Ea>moit|| We>moit || No==0||So==0||Ea==0||We==0 ||(No == 8 && So == 7 && Ea== 6 && We == 4) ) // si une direction à plus de 50% ou n'est pas présente ou que les dir n'ont pas changé
     {
       delete_game(g);
       g = NULL;
-      fprintf(stderr, "La fonction shuffle ne semble pas être aléatoire, une des directions est présente sur plus de la moitié des pièces ou une direction est absente\n");
+      fprintf(stderr, "test_shuffle_dir : La fonction shuffle ne semble pas être aléatoire, une des directions est présente sur plus de la moitié des pièces ou une direction est absente\n");
       return EXIT_FAILURE;
     }
     if (No == 0 || So==0 || We == 0 || Ea ==0 || (No+So+We+Ea != (w*h) )) //on verif que le shuffle place tous les directions et que la somme = 25
     {
       delete_game(g);
       g = NULL;
-      fprintf(stderr, "La fonction shuffle ne place pas toute les directions\n");
+      fprintf(stderr, "test_shuffle_dir : La fonction shuffle ne place pas toute les directions\n");
       return EXIT_FAILURE;
     }
 
- for(int y=0; y<game_height(g);y+=1) //Verifie que shuffle ne touche pas aux directions
+ for(int y=0; y<game_height(g);y+=1) 
  {
    for(int x=0; x<game_width(g);x+=1)
    {
@@ -242,14 +250,14 @@ int test_shuffle_dir(int argc, char *argv[])
  }
 
   bool *check = (bool*)calloc(game_width(g)*game_height(g), sizeof(bool));
-  for (int i = 0; i <= 10; i++)
+  for (int i = 0; i <= 10; i++) //on lance 10 shuffle 
   { 
     shuffle_dir(g);
-    for(int y=0; y<game_height(g);y+=1) //Verifie que shuffle ne touche pas aux directions
+    for(int y=0; y<game_height(g);y+=1) 
     {
       for(int x=0; x<game_width(g);x+=1)
       {    
-        if (get_current_dir(g,x,y) != p2[y*w+x])
+        if (get_current_dir(g,x,y) != p2[y*w+x]) //si la direction est differente après shuffle alors true
         {
         check[x + y*w]=true;
         }
@@ -259,9 +267,9 @@ int test_shuffle_dir(int argc, char *argv[])
 
 for (int a = 0; a< game_width(g)*game_height(g); a++)
 {
-  if (check[a] != true)
+  if (check[a] != true) //si une direction n'a pas été modifié après 10 shuffle 
   {
-    printf( "%d", a );
+    fprintf(stderr, "test_shuffle_dir : La fonction shuffle ne modifie pas toute les cases\n");
     delete_game(g);
     g = NULL;
     delete_game(g1);
@@ -334,11 +342,11 @@ int test_game_new_game (int argc, char *argv[])
   {
     for (int y = 0; x < w; x++)
     {
-      if (get_piece(g,x,y) != p1[x+5*y] || get_current_dir(g,x,y)!=p2[x+5*y])
+      if (get_piece(g,x,y) != p1[x+5*y] || get_current_dir(g,x,y)!=p2[x+5*y]) //si le jeux ne correspond pas à ces param
       {
 	      delete_game(g);
         g = NULL;
-      	fprintf(stderr, "Error: Le jeu créé ne correspond pas à ses paramètres %d %d \n", x ,y);
+      	fprintf(stderr, "test_game_new_game : Error Le jeu créé ne correspond pas à ses paramètres %d %d \n", x ,y);
         return EXIT_FAILURE;
       }
 
@@ -386,7 +394,7 @@ int test_game_new_game_ext(int argc, char *argv[])
 	  delete_game(g);
     g = NULL;
     printf("h = %d, w = %d",h,w);
-    fprintf(stderr, "Error: Le jeu créé ne correspond pas à ses paramètres (wrapping, height ou width \n");
+    fprintf(stderr, "test_game_new_game_ext : Error Le jeu créé ne correspond pas à ses paramètres (wrapping, height ou width \n");
     return EXIT_FAILURE;
   }
 
@@ -398,7 +406,7 @@ for (int x = 0; x < h; x++)
     {
 	    delete_game(g);
       g = NULL;
-      fprintf(stderr, "Error: Le jeu créé ne correspond pas à ses paramètres (piece ou diretion) \n");
+      fprintf(stderr, "test_game_new_game_ext : Error Le jeu créé ne correspond pas à ses paramètres (piece ou diretion) \n");
       return EXIT_FAILURE;
     }
   }
@@ -421,7 +429,7 @@ int test_game_new_game_empty_ext(int argc, char *argv[])
         {
             if (get_piece(g, x, y) != EMPTY)
             {
-                fprintf(stderr, "Error: piece (%d,%d) is not empty!\n", x, y);
+                fprintf(stderr, "test_game_new_game_empty_ext : Error piece (%d,%d) is not empty!\n", x, y);
                 delete_game(g);
                 return EXIT_FAILURE;
             }
@@ -430,7 +438,7 @@ int test_game_new_game_empty_ext(int argc, char *argv[])
     if (is_wrapping(g) != true)
     {
       g = NULL;
-      fprintf(stderr, "Error: Le jeux ne wrap pas");
+      fprintf(stderr, "test_game_new_game_empty_ext : Error Le jeux ne wrap pas");
       delete_game(g);
       return EXIT_FAILURE;
     }
@@ -446,6 +454,7 @@ int test_game_is_wrapping(int argc, char *argv[])
   game g = new_game_empty_ext(6, 7, true);
   if (is_wrapping(g)!=true)
   {
+    fprintf(stderr, "test_game_is_wrapping : Error wrapping != true");
     return EXIT_FAILURE;
     g = NULL;
     delete_game(g);
@@ -456,6 +465,7 @@ int test_game_is_wrapping(int argc, char *argv[])
  game g1 = new_game_empty_ext(6, 7, false);
   if (is_wrapping(g1)!= false)
   {
+    fprintf(stderr, "test_game_is_wrapping : Error wrapping != false");
    return EXIT_FAILURE;
    g1 = NULL;
     delete_game(g1);
@@ -478,7 +488,7 @@ int test_game_height (int argc, char *argv[])
     delete_game(g2);
     return EXIT_SUCCESS;
   }
-  fprintf(stderr, "Error : wrong size.\n");
+  fprintf(stderr, "test_game_height : Error wrong size.\n");
   return EXIT_FAILURE;
 }
 
