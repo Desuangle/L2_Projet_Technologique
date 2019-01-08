@@ -9,7 +9,6 @@ typedef unsigned int uint;
 
 
 struct game_s {
-
     int width;
     int height;
     piece *p;
@@ -21,58 +20,47 @@ struct game_s {
 
 
 game new_game_ext(int width, int height, piece *pieces, direction *initial_directions, bool wrapping){
-    
-    if (pieces == NULL || initial_directions == NULL)
-    {
-        fprintf(stderr,"Pas de pieces ou de direction");
-        exit(EXIT_FAILURE);
-    }
-    if (width<1 || height <1)
-    {
-        fprintf(stderr,"width or height is wrong");
-        exit(EXIT_FAILURE);    
-    }
-    game g = (game)malloc(sizeof(struct game_s));
-
-    g->p = (piece*)malloc((width*height)*sizeof(piece));
-    if  (g->p == NULL)
-    {
-        fprintf(stderr, "Error: malloc\n");
-        exit(EXIT_FAILURE); 
-    }
-    g->d =(direction*)malloc((width*height)*sizeof(direction));
-    if  (g->d == NULL)
-    {
-        fprintf(stderr, "Error: malloc\n");
-        exit(EXIT_FAILURE); 
-    }
-    g->d_init =(direction*)malloc((width*height)*sizeof(direction));
-    if  (g->d_init == NULL)
-    {
-        fprintf(stderr, "Error: malloc\n");
-        exit(EXIT_FAILURE); 
-    }
-    for(int i = 0; i < width*height; i++)
-    {
-  	    g->p[i] = pieces[i];
-        g->d[i] = initial_directions[i];
-        g->d_init[i] = initial_directions[i];
-    }
-
-    g->height = height;
-    g->width = width;
-    g->wrapping = wrapping;
+	if (pieces == NULL || initial_directions == NULL){
+		fprintf(stderr,"new_game_ext: NULL pointers");
+		exit(EXIT_FAILURE);
+	}
+	if (width<1 || height <1){
+		fprintf(stderr,"new_game_ext: invalid param");
+		exit(EXIT_FAILURE);    
+	}
+	game g = (game)malloc(sizeof(struct game_s));	
+	g->p = (piece*)malloc((width*height)*sizeof(piece));
+	if  (g->p == NULL){
+		fprintf(stderr, "new_game_ext: Error malloc g->p\n");
+		exit(EXIT_FAILURE); 
+	}
+	g->d =(direction*)malloc((width*height)*sizeof(direction));
+	if  (g->d == NULL){
+		fprintf(stderr, "new_game_ext: Error malloc g->d\n");
+		exit(EXIT_FAILURE); 
+	}
+	g->d_init =(direction*)malloc((width*height)*sizeof(direction));
+	if  (g->d_init == NULL){
+		fprintf(stderr, "new_game_ext: Error malloc g->d_init\n");
+		exit(EXIT_FAILURE); 
+	}
+	for(int i = 0; i < width*height; i++){
+		g->p[i] = pieces[i];
+		g->d[i] = initial_directions[i];
+		g->d_init[i] = initial_directions[i];
+	}	
+	g->height = height;
+	g->width = width;
+	g->wrapping = wrapping;
 	return g;
 } 
 
-bool is_wrapping(cgame g)
-{
-    if (g == NULL)
-    {
-        fprintf(stderr,"g = NULL");
-        exit(EXIT_FAILURE);
-    }
-    return g->wrapping;
+bool is_wrapping(cgame g){
+	if (g == NULL){
+		fprintf(stderr,"is_wrapping: pointeur NULL");
+		exit(EXIT_FAILURE);
+	}
+	return g->wrapping;
 }
 
 
@@ -117,7 +105,7 @@ game new_game_empty_ext(int width, int height, bool wrapping){
 
     if (width<1 || height <1)
     {
-        fprintf(stderr,"width or height is wrong");
+        fprintf(stderr, "New_game_empty_ext: Invalid param\n");
         exit(EXIT_FAILURE);    
     }
 
@@ -125,19 +113,19 @@ game new_game_empty_ext(int width, int height, bool wrapping){
     g->p = (piece*)malloc((width*height)*sizeof(piece));
     if  (g->p == NULL)
     {
-       fprintf(stderr, "Error: malloc\n");
+       fprintf(stderr, "new_game_empty_ext: Error malloc g->p\n");
        exit(EXIT_FAILURE); 
     }
     g->d = (direction*)calloc((width*height), sizeof(direction));
     if  (g->d == NULL)
     {
-       fprintf(stderr, "Error: malloc\n");
+       fprintf(stderr, "new_game_empty_ext: Error malloc g->d\n");
        exit(EXIT_FAILURE); 
     }
     g->d_init = (direction*)calloc((width*height), sizeof(direction));
     if  (g->d_init == NULL)
     {
-       fprintf(stderr, "Error: malloc\n");
+       fprintf(stderr, "new_game_empty_ext: Error malloc g->d_init\n");
        exit(EXIT_FAILURE); 
     }
 
@@ -155,19 +143,19 @@ game new_game_empty(){
     g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
     if  (g->p == NULL)
     {
-       fprintf(stderr, "Error: malloc\n");
-       exit(EXIT_FAILURE); 
+        fprintf(stderr, "new_game_empty: Error malloc g->p\n");
+        exit(EXIT_FAILURE); 
     }
     g->d = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
     if  (g->d == NULL)
     {
-       fprintf(stderr, "Error: malloc\n");
-       exit(EXIT_FAILURE); 
+        fprintf(stderr, "new_game_empty: Error malloc g->d\n");
+        exit(EXIT_FAILURE); 
     }
     g->d_init = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
         if  (g->d_init == NULL)
     {
-       fprintf(stderr, "Error: malloc\n");
+       fprintf(stderr, "new_game_empty: Error malloc g->d_init\n");
        exit(EXIT_FAILURE); 
     }
 
@@ -183,27 +171,27 @@ game new_game_empty(){
 game new_game(piece *pieces, direction *initial_directions){
     if (pieces == NULL || initial_directions == NULL)
     {
-        fprintf(stderr,"Pas de pieces ou de direction");
+        fprintf(stderr,"new_game: NULL pointers");
         exit(EXIT_FAILURE);
     }
     game g = (game)malloc(sizeof(struct game_s));
     g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
     if  (g->p == NULL)
     {
-       fprintf(stderr, "Error: malloc\n");
+       fprintf(stderr, "new_game: Error malloc g->p\n");
        exit(EXIT_FAILURE); 
     }
 
     g->d =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
     if  (g->d == NULL)
     {
-       fprintf(stderr, "Error: malloc\n");
+       fprintf(stderr, "new_game: Error malloc g->d\n");
        exit(EXIT_FAILURE); 
     }
     g->d_init =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
         if  (g->d_init == NULL)
     {
-       fprintf(stderr, "Error: malloc\n");
+       fprintf(stderr, "new_game: Error malloc g->d_init\n");
        exit(EXIT_FAILURE); 
     }
     for(int i = 0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
@@ -220,13 +208,13 @@ void set_piece(game g, int x, int y, piece piece, direction orientation){
     
     if (g == NULL)
     {
-        fprintf(stderr,"g = NULL");
+        fprintf(stderr,"set_piece: pointeur NULL");
         delete_game (g);
         exit(EXIT_FAILURE);
     }
     if (piece < -1 || piece > 4 || orientation <0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0)
     {
-        fprintf(stderr, "Error: Incorrect param!\n");
+        fprintf(stderr, "set_piece: Incorrect param!\n");
         delete_game(g);
         exit(EXIT_FAILURE); 
     }
@@ -267,7 +255,7 @@ int game_height(cgame game){
 	if(game){
          return game->height;
      }
-     fprintf(stderr,"Appel de game_width avec un pointeur NULL\n");
+     fprintf(stderr,"game_height : Appel de game_width avec un pointeur NULL\n");
      exit(EXIT_FAILURE);
 }
 
