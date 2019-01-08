@@ -1,12 +1,13 @@
 cmake_minimum_required (VERSION 3.0)
-project(V2)
+project(net text V2)
 
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(EXECUTABLE_OUTPUT_PATH .)
 set(CMAKE_C_FLAGS"-std=c99 -Wall -g")
-set(CMAKE_VERBOSE_MAKEFILE ON)
+
+#include_directories(source_v2)
 
 set(SRCS
     game.c
