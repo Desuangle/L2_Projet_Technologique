@@ -2,8 +2,9 @@ killian:
 
 
 alexandre:
-
-
+définir la fonction "bool is_game_over{..}"
+	refaire les tests v1 + v2
+	faire un dossier v1 et un dossier v2
 
 walid:
 ajout fichier Cmake et TODO.txt
