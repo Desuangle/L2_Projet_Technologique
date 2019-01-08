@@ -76,7 +76,7 @@ bool is_wrapping(cgame g)
 }
 
 
-/*
+/* Walid
 
 game new_game_empty_ext(int width, int height, bool wrapping){
     if(wrapping){
@@ -224,7 +224,7 @@ void set_piece(game g, int x, int y, piece piece, direction orientation){
         delete_game (g);
         exit(EXIT_FAILURE);
     }
-    if (piece < -1 || piece > 3 || orientation <0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0)
+    if (piece < -1 || piece > 4 || orientation <0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0)
     {
         fprintf(stderr, "Error: Incorrect param!\n");
         delete_game(g);
@@ -509,7 +509,7 @@ piece get_piece(cgame game, int x, int y){
     int wid = game->width;
     int hei = game->height;
     if(x<0 || x>=wid || y<0 || y>=hei){
-        fprintf(stderr, "Call of get_piece on unvalid coordinates");
+        fprintf(stderr, "Call of get_piece on unvalid coordinates %d %d\n",x,y);
         exit(EXIT_FAILURE);
     }
     return *(game->p+x+y*wid);
