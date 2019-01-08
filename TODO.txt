@@ -1,14 +1,25 @@
 killian:
-
+réécrire tests pour V2
+new_game_ext
+new_game_empty_ext
+is_wrapping
+commenter
 
 alexandre:
-
-
+réécrire tests pour V2
+définir la fonction "bool is_game_over{..}"
+refaire les tests v1 + v2
+faire un dossier v1 et un dossier v2
+commenter
 
 walid:
+réécrire tests pour V2
 ajout fichier Cmake et TODO.txt
 ajout des implémentations vides des fonctions dans game.c
 définir la fonction "game new_game_empty_ext{..}"
+commenter
 
 mathis:
-
+réécrire tests pour V2
+cohérence indentation
+commenter

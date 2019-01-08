@@ -16,11 +16,8 @@ struct game_s {
     direction *d;
     direction *d_init;
     bool wrapping;
-
 };
 #define DEFAULT_SIZE 5
-
-
 
 
 game new_game_ext(int width, int height, piece *pieces, direction *initial_directions, bool wrapping){
@@ -594,16 +591,28 @@ bool is_connected_coordinates(cgame g, int x, int y, direction d){
 	}
 	switch (d){
 		case N:
-			return (is_edge_coordinates(g, x, y+1, S));
+		  if(is_wrapping(g))
+		    return (is_edge_coordinates(g, x, (y+1)%(game_height(g)), S));
+		  else
+		    return (is_edge_coordinates(g, x, y+1, S));
 		break;
 		case E:
-			return (is_edge_coordinates(g, x+1, y, W));
+		  if(is_wrapping(g))
+		    return (is_edge_coordinates(g, (x+1)%(game_width(g)), y, W));
+		  else
+		    return (is_edge_coordinates(g, x+1, y, W));
 		break;
 		case S:
-			return (is_edge_coordinates(g, x, y-1, N));
+		  if(is_wrapping(g))
+		    return (is_edge_coordinates(g, x, (y-1)%(game_height(g)), N));
+		  else
+		    return (is_edge_coordinates(g, x, y-1, N));
 		break;
 		default: // W
-			return (is_edge_coordinates(g, x-1, y, E));
+		  if(is_wrapping(g))
+		    return (is_edge_coordinates(g, (x-1)%(game_width(g)), y, E));
+		  else
+		    return (is_edge_coordinates(g, x-1, y, E));
 	}
 }
 
@@ -634,19 +643,19 @@ void aux_all_pieces_connected(cgame g, int x, int y, bool *v){ // v : virus ; fo
 	if(!v[index]){ // si la piece n'est pas encore infectée
 		v[index] = true; // on l'infecte
 		for(direction d = 0; d < 4; d++){
-			if(is_edge_coordinates(g, x, y, d)){
+		  if(is_edge_coordinates(g, x, y, d)){
 				switch (d){
 					case N:
-						aux_all_pieces_connected(g, x, y+1, v);
+					  aux_all_pieces_connected(g, x, (y+1)%(game_height(g)), v);
 					break;
 					case E:
-						aux_all_pieces_connected(g, x+1, y, v);
+					  aux_all_pieces_connected(g, (x+1)%(game_width(g)), y, v);
 					break;
 					case S:
-						aux_all_pieces_connected(g, x, y-1, v);
+					  aux_all_pieces_connected(g, x, (y-1)%(game_height(g)), v);
 					break;
 					default: // W
-						aux_all_pieces_connected(g, x-1, y, v);
+					  aux_all_pieces_connected(g, (x-1)%(game_width(g)), y, v);
 				}
 			}
 		}
