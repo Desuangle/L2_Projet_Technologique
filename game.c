@@ -102,334 +102,283 @@ game new_game_empty_ext(int width, int height, bool wrapping){
 */
 
 game new_game_empty_ext(int width, int height, bool wrapping){
-
-    if (width<1 || height <1)
-    {
-        fprintf(stderr, "New_game_empty_ext: Invalid param\n");
-        exit(EXIT_FAILURE);    
-    }
-
-    game g = malloc(sizeof(struct game_s));
-    g->p = (piece*)malloc((width*height)*sizeof(piece));
-    if  (g->p == NULL)
-    {
-       fprintf(stderr, "new_game_empty_ext: Error malloc g->p\n");
-       exit(EXIT_FAILURE); 
-    }
-    g->d = (direction*)calloc((width*height), sizeof(direction));
-    if  (g->d == NULL)
-    {
-       fprintf(stderr, "new_game_empty_ext: Error malloc g->d\n");
-       exit(EXIT_FAILURE); 
-    }
-    g->d_init = (direction*)calloc((width*height), sizeof(direction));
-    if  (g->d_init == NULL)
-    {
-       fprintf(stderr, "new_game_empty_ext: Error malloc g->d_init\n");
-       exit(EXIT_FAILURE); 
-    }
-
-    for(int i=0; i < (width*height); i++){
-      g->p[i] = EMPTY;
-    }
-    g->height = height;
-    g->width = width;
-    g->wrapping = wrapping;
+	if (width<1 || height <1){
+		fprintf(stderr, "New_game_empty_ext: Invalid param\n");
+		exit(EXIT_FAILURE);    
+	}
+	game g = malloc(sizeof(struct game_s));
+	g->p = (piece*)malloc((width*height)*sizeof(piece));
+	if  (g->p == NULL){
+		fprintf(stderr, "new_game_empty_ext: Error malloc g->p\n");
+		exit(EXIT_FAILURE); 
+	}
+	g->d = (direction*)calloc((width*height), sizeof(direction));
+	if  (g->d == NULL){
+		fprintf(stderr, "new_game_empty_ext: Error malloc g->d\n");
+		exit(EXIT_FAILURE); 
+	}
+	g->d_init = (direction*)calloc((width*height), sizeof(direction));
+	if  (g->d_init == NULL){
+		fprintf(stderr, "new_game_empty_ext: Error malloc g->d_init\n");
+		exit(EXIT_FAILURE); 
+	}	
+	for(int i=0; i < (width*height); i++){
+		g->p[i] = EMPTY;
+	}
+	g->height = height;
+	g->width = width;
+	g->wrapping = wrapping;
 	return g;
 }
+
 game new_game_empty(){
-
 	game g = malloc(sizeof(struct game_s));
-    g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
-    if  (g->p == NULL)
-    {
-        fprintf(stderr, "new_game_empty: Error malloc g->p\n");
-        exit(EXIT_FAILURE); 
-    }
-    g->d = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
-    if  (g->d == NULL)
-    {
-        fprintf(stderr, "new_game_empty: Error malloc g->d\n");
-        exit(EXIT_FAILURE); 
-    }
-    g->d_init = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
-        if  (g->d_init == NULL)
-    {
-       fprintf(stderr, "new_game_empty: Error malloc g->d_init\n");
-       exit(EXIT_FAILURE); 
-    }
-
-    for(int i=0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
-      g->p[i] = EMPTY;
-    }
-    g->height = DEFAULT_SIZE;
-    g->width = DEFAULT_SIZE;
-
+	g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
+	if  (g->p == NULL){
+		fprintf(stderr, "new_game_empty: Error malloc g->p\n");
+		exit(EXIT_FAILURE); 
+	}
+	g->d = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
+	if  (g->d == NULL){
+		fprintf(stderr, "new_game_empty: Error malloc g->d\n");
+		exit(EXIT_FAILURE); 
+	}
+	g->d_init = (direction*)calloc(DEFAULT_SIZE*DEFAULT_SIZE, sizeof(direction));
+	if  (g->d_init == NULL){
+		fprintf(stderr, "new_game_empty: Error malloc g->d_init\n");
+		exit(EXIT_FAILURE); 
+	}
+	for(int i=0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
+		g->p[i] = EMPTY;
+	}
+	g->height = DEFAULT_SIZE;
+	g->width = DEFAULT_SIZE;	
 	return g;
 }   
 
 game new_game(piece *pieces, direction *initial_directions){
-    if (pieces == NULL || initial_directions == NULL)
-    {
-        fprintf(stderr,"new_game: NULL pointers");
-        exit(EXIT_FAILURE);
-    }
-    game g = (game)malloc(sizeof(struct game_s));
-    g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
-    if  (g->p == NULL)
-    {
-       fprintf(stderr, "new_game: Error malloc g->p\n");
-       exit(EXIT_FAILURE); 
-    }
-
-    g->d =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
-    if  (g->d == NULL)
-    {
-       fprintf(stderr, "new_game: Error malloc g->d\n");
-       exit(EXIT_FAILURE); 
-    }
-    g->d_init =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
-        if  (g->d_init == NULL)
-    {
-       fprintf(stderr, "new_game: Error malloc g->d_init\n");
-       exit(EXIT_FAILURE); 
-    }
-    for(int i = 0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
-  	  g->p[i] = pieces[i];
-      g->d[i] = initial_directions[i];
-      g->d_init[i] = initial_directions[i];
-    }
-    g->height = DEFAULT_SIZE;
-    g->width = DEFAULT_SIZE;
+	if (pieces == NULL || initial_directions == NULL){
+		fprintf(stderr,"new_game: NULL pointers");
+		exit(EXIT_FAILURE);
+	}
+	game g = (game)malloc(sizeof(struct game_s));
+	g->p = (piece*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(piece));
+	if  (g->p == NULL){
+		fprintf(stderr, "new_game: Error malloc g->p\n");
+		exit(EXIT_FAILURE); 
+	}	
+	g->d =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
+	if  (g->d == NULL){
+		fprintf(stderr, "new_game: Error malloc g->d\n");
+		exit(EXIT_FAILURE); 
+	}
+	g->d_init =(direction*)malloc((DEFAULT_SIZE*DEFAULT_SIZE)*sizeof(direction));
+	if  (g->d_init == NULL){
+		fprintf(stderr, "new_game: Error malloc g->d_init\n");
+		exit(EXIT_FAILURE); 
+	}
+	for(int i = 0; i < DEFAULT_SIZE*DEFAULT_SIZE; i++){
+		g->p[i] = pieces[i];
+		g->d[i] = initial_directions[i];
+		g->d_init[i] = initial_directions[i];
+	}
+	g->height = DEFAULT_SIZE;
+	g->width = DEFAULT_SIZE;
 	return g;
 }  
 
 void set_piece(game g, int x, int y, piece piece, direction orientation){
-    
-    if (g == NULL)
-    {
-        fprintf(stderr,"set_piece: pointeur NULL");
-        delete_game (g);
-        exit(EXIT_FAILURE);
-    }
-    if (piece < -1 || piece > 4 || orientation <0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0)
-    {
-        fprintf(stderr, "set_piece: Incorrect param!\n");
-        delete_game(g);
-        exit(EXIT_FAILURE); 
-    }
- 
-    int w = g->width;
-    g->p[x+y*w]= piece;
-    g->d[x+y*w] = orientation;
-    g->d_init[x+y*w] = orientation;
-  
+	if (g == NULL){
+		fprintf(stderr,"set_piece: pointeur NULL");
+		delete_game (g);
+		exit(EXIT_FAILURE);
+	}
+	if (piece < -1 || piece > 4 || orientation <0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0){
+		fprintf(stderr, "set_piece: Incorrect param!\n");
+		delete_game(g);
+		exit(EXIT_FAILURE); 
+	}
+	int w = g->width;
+	g->p[x+y*w]= piece;
+	g->d[x+y*w] = orientation;
+	g->d_init[x+y*w] = orientation;
 }
 
 void shuffle_dir(game g){
-    int w = g->width; 
-    int h = g->height; 
-    for (int y = 0; y < h; y++)
-    {
-       for (int x = 0; x < w; x++)
-        {
-           
-        g->d[x+(w*y)]= rand()%4;
-
-        /*
-        int alea = rand()%4;
-        switch(alea)
-        {
-         case 0: g->d[x+(5*y)]= N; break;
-         case 1: g->d[x+(5*y)]= S; break;
-         case 2: g->d[x+(5*y)]= E; break;
-         case 3: g->d[x+(5*y)]= W; break;
-        }
-        */
-        }
-        
-    }
+	int w = g->width; 
+	int h = g->height; 
+	for (int y = 0; y < h; y++){
+	   for (int x = 0; x < w; x++){
+	    g->d[x+(w*y)]= rand()%4;	
+	    /*
+	    int alea = rand()%4;
+	    switch(alea)
+	    {
+	     case 0: g->d[x+(5*y)]= N; break;
+	     case 1: g->d[x+(5*y)]= S; break;
+	     case 2: g->d[x+(5*y)]= E; break;
+	     case 3: g->d[x+(5*y)]= W; break;
+	    }
+	    */
+		}
+	}
 }
 
 int game_height(cgame game){
 	if(game){
-         return game->height;
-     }
-     fprintf(stderr,"game_height : Appel de game_width avec un pointeur NULL\n");
-     exit(EXIT_FAILURE);
+	    return game->height;
+	}
+	fprintf(stderr,"game_height : Appel de game_width avec un pointeur NULL\n");
+	exit(EXIT_FAILURE);
 }
 
 int game_width(cgame game){
-     if(game){
-         return game->width;
-     }
-     fprintf(stderr,"Appel de game_width avec un pointeur NULL\n");
-     exit(EXIT_FAILURE);
+    if(game){
+		return game->width;
+	}
+	fprintf(stderr,"Appel de game_width avec un pointeur NULL\n");
+	exit(EXIT_FAILURE);
 }
 
 void rotate_piece_one(game game, int x, int y){
-  if(game){
-    if(x < game->width&& y < game->height){
-      game->d[y*game->width+x] = (game->d[y*game->width+x] + 1) % 4;
-    }
-  }
+	if(game){
+		if(x < game->width&& y < game->height){
+			game->d[y*game->width+x] = (game->d[y*game->width+x] + 1) % 4;
+    	}
+	}
 }
 
 void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
- if(game){
-   if(x < game->width&& y < game->height){
-     game->d[y*game->width+x] = (game->d[y*game->width+x] + nb_cw_quarter_turn) % 4;
-   }
- }
+	if(game){
+		if(x < game->width&& y < game->height){
+			game->d[y*game->width+x] = (game->d[y*game->width+x] + nb_cw_quarter_turn) % 4;
+		}
+	}
 }
 
 void set_piece_current_dir (game game, int x, int y, direction dir){
-  if(game){
-   if(x < game->width&& y < game->height){
-     game->d[y*game->width+x] = dir;
-   }
- }
+	if(game){
+		if(x < game->width&& y < game->height){
+			game->d[y*game->width+x] = dir;
+		}	
+	}
 }
 
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
-    //  assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
-    int width = g->width;
-    piece p = g->p[y*width+x];
-    direction d = g->d[y*width+x];
-    return is_edge(p, d, dir);
+	//  assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
+	int width = g->width;
+	piece p = g->p[y*width+x];
+	direction d = g->d[y*width+x];
+	return is_edge(p, d, dir);
 }
 
 bool is_edge(piece piece, direction orientation, direction dir){
 	///////////////_SEGMENT_/////////////////
-    if(piece==SEGMENT){ 
-        switch(orientation){
-            
-            case N: //// SEGMENT= | /////
-                    if(dir == N || dir == S)
-                    {
-                        return true;
-                    }
-                    break;
-            case S: //// SEGMENT= | /////
-                    if(dir == N || dir == S)
-                    {
-                        return true;
-                    } 
-                    break;
-            case E: //// SEGMENT= - /////
-                    if ( dir == W || dir == E )
-                    {    
-                        return true;
-                    }
-                    break;        
-            case W: //// SEGMENT= - /////
-                    if ( dir == W || dir == E )
-                    {    
-                        return true;
-                    }        
-                    break;
-            default: return false;
-        } 
-    }
-
-    ///////////////_test_LEAF_////////////////////        
+	if(piece==SEGMENT){ 
+		switch(orientation){
+			case N: //// SEGMENT= | /////
+					if(dir == N || dir == S){
+						return true;
+					}
+					break;
+			case S: //// SEGMENT= | /////
+					if(dir == N || dir == S){
+						return true;
+					} 
+					break;
+			case E: //// SEGMENT= - /////
+					if ( dir == W || dir == E ){    
+						return true;
+					}
+					break;        
+			case W: //// SEGMENT= - /////
+					if ( dir == W || dir == E ){    
+						return true;
+					}        
+					break;
+			default: return false;
+		} 
+	}	
+	///////////////_test_LEAF_////////////////////        
 	if(piece==LEAF){ 
-        switch(orientation){
-            
-            case N: //// LEAF= ^ /////
-                    if(dir == N)
-                    {
-                        return true;
-                    }
-                    break;
-            case S: //// LEAF= v /////
-                    if(dir == S)
-                    {
-                        return true;
-                    } 
-                    break;
-            case E: //// LEAF= > /////
-                    if (dir == E)
-                    {    
-                        return true;
-                    }
-                    break;
-            case W: //// LEAF= < /////
-                    if ( dir == W)
-                    {    
-                        return true;
-                    }
-                    break;        
-            default: return false;
-        } 
-    }
-
-    ///////////////_test_CORNER_///////////////////
-    if(piece==CORNER){ 
-        switch(orientation){
-            
-            case N: //// CORNER= └ /////
-                    if(dir == N || dir == E)
-                    {
-                        return true;
-                    }
-                    break;
-            case S: //// CORNER= ┐ /////
-                    if(dir == S|| dir == W )
-                    {
-                        return true;
-                    } 
-                    break;
-            case E: //// CORNER= ┌ /////
-                    if ( dir == S || dir == E )
-                    {    
-                        return true;
-                    }
-                    break;
-            case W: //// CORNER= ┘ ///// 
-                    if ( dir == W || dir == N)
-                    {    
-                        return true;
-                    }
-                    break;        
-            default: return false;
-        } 
-    }
-
-    ///////////////_test_TEE_///////////////////
-    if(piece==TEE){ 
-        switch(orientation){
-
-            case N:  //// TEE= ┴ /////
-                    if ( dir == N || dir == E || dir == W )
-                    {
-                        return true;
-                    }
-                    break;
-            case S: //// TEE= ┬ /////            
-                    if ( dir == S || dir == E || dir == W )
-                        {
-                            return true;
-                        }
-                    break;
-            case W://// TEE= ┤ /////   
-                    if ( dir == N || dir == S || dir == W )
-                    {
-                        return true;
-                    }
-                    break;    
-            case E: //// TEE= ├ /////
-                    if ( dir == N || dir == E || dir == S )
-                    {
-                        return true;
-                    }
-                    break;  
-            default: return false;
-        } 
-    }
-
-    ///////////////////////////////////////////////
-    return false;
+		switch(orientation){
+			case N: //// LEAF= ^ /////
+			    	if(dir == N){
+			    		return true;
+			    	}
+			    	break;
+			case S: //// LEAF= v /////
+			    	if(dir == S){
+			    		return true;
+			    	} 
+			    	break;
+			case E: //// LEAF= > /////
+			    	if (dir == E){    
+			    		return true;
+			    	}
+			    	break;
+			case W: //// LEAF= < /////
+			    	if ( dir == W){    
+			    		return true;
+			    	}
+			    	break;        
+			default: return false;
+		} 
+	}	
+	///////////////_test_CORNER_///////////////////
+	if(piece==CORNER){ 
+		switch(orientation){
+			case N: //// CORNER= └ /////
+			    	if(dir == N || dir == E){
+			    		return true;
+			    	}
+			    	break;
+			case S: //// CORNER= ┐ /////
+			    	if(dir == S|| dir == W ){
+			    		return true;
+			    	} 
+			    	break;
+			case E: //// CORNER= ┌ /////
+			    	if ( dir == S || dir == E ){    
+			    		return true;
+			    	}
+			    	break;
+			case W: //// CORNER= ┘ ///// 
+			    	if ( dir == W || dir == N){    
+			    		return true;
+			    	}
+			    	break;        
+			default: return false;
+		} 
+	}	
+	///////////////_test_TEE_///////////////////
+	if(piece==TEE){ 
+		switch(orientation){	
+			case N:  //// TEE= ┴ /////
+			    	if ( dir == N || dir == E || dir == W ){
+			    		return true;
+			    	}
+			    	break;
+			case S: //// TEE= ┬ /////            
+			    	if ( dir == S || dir == E || dir == W ){
+			    		return true;
+			    	}
+			    	break;
+			case W://// TEE= ┤ /////   
+			    	if ( dir == N || dir == S || dir == W ){
+			    		return true;
+			    	}
+			    	break;    
+			case E: //// TEE= ├ /////
+			    	if ( dir == N || dir == E || dir == S ){
+			    		return true;
+			    	}
+			    	break;  
+			default: return false;
+		} 
+	}	
+	///////////////////////////////////////////////
+	return false;
 }
   
 direction opposite_dir(direction dir){
