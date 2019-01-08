@@ -15,11 +15,9 @@ struct game_s {
     piece *p;
     direction *d;
     direction *d_init;
-
+    bool wrapping;
 };
 #define DEFAULT_SIZE 5
-
-
 
 
 game new_game_ext(int width, int height, piece *pieces, direction *initial_directions, bool wrapping){
