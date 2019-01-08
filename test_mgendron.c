@@ -34,11 +34,11 @@ int test_delete_game(int argc, char *argv[]){
 
 int test_get_piece(int argc, char *argv[]){
 	piece p1[] = {
-	EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
-	LEAF, LEAF, LEAF, LEAF, LEAF,
-	SEGMENT, SEGMENT, SEGMENT, SEGMENT, SEGMENT,
-	CORNER, CORNER, CORNER, CORNER, CORNER,
-	TEE, TEE, TEE, TEE, TEE
+	EMPTY, EMPTY, EMPTY, EMPTY, CROSS,
+	LEAF, LEAF, LEAF, LEAF, CROSS,
+	SEGMENT, SEGMENT, SEGMENT, SEGMENT, CROSS,
+	CORNER, CORNER, CORNER, CORNER, CROSS,
+	TEE, TEE, TEE, TEE, CROSS
 	};
 	direction p2[] = {
 	N, E, S, W, N,
@@ -63,11 +63,11 @@ int test_get_piece(int argc, char *argv[]){
 
 int test_get_current_dir(int argc, char *argv[]){
 	piece p1[] = {
-	EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
-	LEAF, LEAF, LEAF, LEAF, LEAF,
-	SEGMENT, SEGMENT, SEGMENT, SEGMENT, SEGMENT,
-	CORNER, CORNER, CORNER, CORNER, CORNER,
-	TEE, TEE, TEE, TEE, TEE
+	EMPTY, EMPTY, EMPTY, EMPTY, CROSS,
+	LEAF, LEAF, LEAF, LEAF, CROSS,
+	SEGMENT, SEGMENT, SEGMENT, SEGMENT, CROSS,
+	CORNER, CORNER, CORNER, CORNER, CROSS,
+	TEE, TEE, TEE, TEE, CROSS
 	};
 	direction p2[] = {
 	N, E, S, W, N,
@@ -92,11 +92,11 @@ int test_get_current_dir(int argc, char *argv[]){
 
 int test_restart_game(int argc, char *argv[]){
 	piece p1[] = {
-	EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
-	LEAF, LEAF, LEAF, LEAF, LEAF,
-	SEGMENT, SEGMENT, SEGMENT, SEGMENT, SEGMENT,
-	CORNER, CORNER, CORNER, CORNER, CORNER,
-	TEE, TEE, TEE, TEE, TEE
+	EMPTY, EMPTY, EMPTY, EMPTY, CROSS,
+	LEAF, LEAF, LEAF, LEAF, CROSS,
+	SEGMENT, SEGMENT, SEGMENT, SEGMENT, CROSS,
+	CORNER, CORNER, CORNER, CORNER, CROSS,
+	TEE, TEE, TEE, TEE, CROSS
 	};
 	direction p2[] = {
 	N, E, S, W, N,
