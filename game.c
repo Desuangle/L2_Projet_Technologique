@@ -21,11 +21,11 @@ struct game_s {
 
 game new_game_ext(int width, int height, piece *pieces, direction *initial_directions, bool wrapping){
 	if (pieces == NULL || initial_directions == NULL){
-		fprintf(stderr,"new_game_ext: NULL pointers");
+		fprintf(stderr,"new_game_ext: NULL pointers\n");
 		exit(EXIT_FAILURE);
 	}
 	if (width<1 || height <1){
-		fprintf(stderr,"new_game_ext: invalid param");
+		fprintf(stderr,"new_game_ext: invalid param\n");
 		exit(EXIT_FAILURE);    
 	}
 	game g = (game)malloc(sizeof(struct game_s));	
@@ -57,7 +57,7 @@ game new_game_ext(int width, int height, piece *pieces, direction *initial_direc
 
 bool is_wrapping(cgame g){
 	if (g == NULL){
-		fprintf(stderr,"is_wrapping: pointeur NULL");
+		fprintf(stderr,"is_wrapping: pointeur NULL\n");
 		exit(EXIT_FAILURE);
 	}
 	return g->wrapping;
@@ -158,7 +158,7 @@ game new_game_empty(){
 
 game new_game(piece *pieces, direction *initial_directions){
 	if (pieces == NULL || initial_directions == NULL){
-		fprintf(stderr,"new_game: NULL pointers");
+		fprintf(stderr,"new_game: NULL pointers\n");
 		exit(EXIT_FAILURE);
 	}
 	game g = (game)malloc(sizeof(struct game_s));
@@ -189,7 +189,7 @@ game new_game(piece *pieces, direction *initial_directions){
 
 void set_piece(game g, int x, int y, piece piece, direction orientation){
 	if (g == NULL){
-		fprintf(stderr,"set_piece: pointeur NULL");
+		fprintf(stderr,"set_piece: pointeur NULL\n");
 		delete_game (g);
 		exit(EXIT_FAILURE);
 	}
@@ -228,7 +228,7 @@ int game_height(cgame game){
 	if(game){
 		return game->height;
 	}
-	fprintf(stderr,"game_height : Appel de game_width avec un pointeur NULL\n");
+	fprintf(stderr,"game_height : Appel avec un pointeur NULL\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -236,7 +236,7 @@ int game_width(cgame game){
 	if(game){
 		return game->width;
 	}
-	fprintf(stderr,"Appel de game_width avec un pointeur NULL\n");
+	fprintf(stderr,"game_width: appel avec un pointeur NULL\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -398,7 +398,7 @@ direction opposite_dir(direction dir){
 	if(dir==E){
 		return W;
 	}else{
-		fprintf(stderr, "incompatible direction!\n");
+		fprintf(stderr, "opposite_dir: incompatible direction!\n");
 		exit (EXIT_FAILURE); 
 	}   
 } 
@@ -430,13 +430,13 @@ void delete_game (game g){
 
 piece get_piece(cgame game, int x, int y){
 	if(game==NULL || game->p==NULL){
-		fprintf(stderr, "Call of get_piece on NULL pointer");
+		fprintf(stderr, "get_piece: call on NULL pointer\n");
 		exit(EXIT_FAILURE);
 	}
 	int wid = game->width;
 	int hei = game->height;
 	if(x<0 || x>=wid || y<0 || y>=hei){
-		fprintf(stderr, "Call of get_piece on unvalid coordinates %d %d\n",x,y);
+		fprintf(stderr, "get_piece: call on unvalid coordinates %d %d\n",x,y);
 		exit(EXIT_FAILURE);
 	}
 	return *(game->p+x+y*wid);
@@ -444,13 +444,13 @@ piece get_piece(cgame game, int x, int y){
 
 direction get_current_dir(cgame g, int x, int y){
 	if(g==NULL || g->d==NULL){
-		fprintf(stderr, "Call of get_current_dir on NULL pointer");
+		fprintf(stderr, "get_current_dir: call on NULL pointer\n");
 		exit(EXIT_FAILURE);
 	}
 	int wid = g->width;
 	int hei = g->height;
 	if(x<0 || x>=wid || y<0 || y>=hei){
-		fprintf(stderr, "Call of get_current_dir on unvalid coordinates");
+		fprintf(stderr, "get_current_dir: call on unvalid coordinates\n");
 		exit(EXIT_FAILURE);
 	}
 	return *(g->d+x+y*wid);
@@ -461,7 +461,7 @@ bool all_pieces_connected(cgame g);
 void aux_all_pieces_connected(cgame g, int x, int y, bool *v);
 bool is_game_over (cgame g){
 	if(!g && !g->p && !g->d && !g->d_init){
-		fprintf(stderr,"error is_game_over : NULL pointer\n");
+		fprintf(stderr,"is_game_over : NULL pointer\n");
 		exit(EXIT_FAILURE);
 	}
 	for (uint i = 0; i < g->width*g->height; i++){ // i = index
@@ -483,7 +483,7 @@ bool is_game_over (cgame g){
 
 void restart_game(game g){
 	if(g==NULL){
-		fprintf(stderr, "Call of restart_game on NULL pointer");
+		fprintf(stderr, "restart_game: call on NULL pointer\n");
 		delete_game (g);
 		exit(EXIT_FAILURE);
 	}
@@ -513,7 +513,7 @@ Renvoie si la pièce est connectée dans la direction donnée
 */
 bool is_connected_coordinates(cgame g, int x, int y, direction d){
 	if (!g){
-		fprintf(stderr, "NULL pointer error\n");
+		fprintf(stderr, "is_connected_coordinates: NULL pointer error\n");
 		exit(EXIT_FAILURE);
 	}
 	switch (d){
