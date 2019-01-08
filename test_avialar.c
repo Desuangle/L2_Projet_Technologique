@@ -149,7 +149,7 @@ int test_game_over(int argc, char *argv[])
 
 int test_empty(int argc, char *argv[])
 {
-	game g = new_game_empty();
+	game g = new_game_empty_ext(5, 5, false);
 	assert(g);
 	int w = game_width(g);
 	int h = game_height(g);
