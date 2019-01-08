@@ -596,11 +596,14 @@ bool is_connected_coordinates(cgame g, int x, int y, direction d){
 		  else
 		    return (is_edge_coordinates(g, x, y-1, N));
 		break;
-		default: // W
+		case W:
 		  if(is_wrapping(g))
 		    return (is_edge_coordinates(g, (x-1)%(game_width(g)), y, E));
 		  else
 		    return (is_edge_coordinates(g, x-1, y, E));
+		break;
+        default: //pb d'appel
+			return false;
 	}
 }
 
@@ -619,10 +622,11 @@ bool all_pieces_connected(cgame g){
 	aux_all_pieces_connected(g, 0, 0, virus);
 	for(uint i = 0; i < g->width*g->height; i++){
 		if (virus[i] == false){ // la pièce n'est pas contaminée
+			free(virus);
 			return false;
 		}
 	}	
-    //free(virus);
+    free(virus);
     //virus=NULL;
 	return true;
 }

@@ -16,7 +16,7 @@ void set_piece_current_dir (game game, int x, int y, direction dir);
 
 int test_game_width(int argc, char *argv[])
 {
-  game g1 = new_game_empty();
+  game g1 = new_game_empty_ext(5, 5, false);
   piece p1[] = {};
   direction p2[] = {};
   game g2 = new_game(p1, p2);
@@ -34,7 +34,7 @@ int test_game_width(int argc, char *argv[])
 
 int test_rotate_piece_one(int argc, char *argv[])
 {
-  game g = new_game_empty();
+  game g = new_game_empty_ext(5, 5, false);
   direction d = get_current_dir(g, 0, 0);
   rotate_piece_one(g, 0, 0);
   if((d+1)%4 == get_current_dir(g,0,0)){ // directions go N, E, S, W, N, E, ... in numbers it's 0, 1, 2, 3, 0, 1, ...
@@ -49,13 +49,14 @@ int test_rotate_piece_one(int argc, char *argv[])
 
 int test_rotate_piece(int argc, char *argv[])
 {
-  game g = new_game_empty();
+  game g = new_game_empty_ext(5, 5, false);
   direction d = get_current_dir(g,0,0);
   for(int i = 0; i < 8; i++){
     d = (d+i) % 4;
     rotate_piece(g, 0, 0, i);
     if (d != get_current_dir(g, 0, 0)){
       fprintf(stderr, "Error : rotate_piece by %d rotations gives a wrong direction.\nExpected : %d\nGot %d\n", i, d, get_current_dir(g, 0, 0));
+      delete_game(g);
       return EXIT_FAILURE;
     }
   }
@@ -63,20 +64,24 @@ int test_rotate_piece(int argc, char *argv[])
   rotate_piece(g, 0, 0, INT_MAX);
   if (d != get_current_dir(g, 0, 0)){
     fprintf(stderr, "Error : rotate_piece by %d rotations gives a wrong direction.\n", INT_MAX);
+    delete_game(g);
     return EXIT_FAILURE;
   }
   d = (d - 1) %4;
   rotate_piece(g, 0, 0, -1);
   if (d != get_current_dir(g, 0, 0)){
     fprintf(stderr, "Error : rotate_piece by -1 rotation gives a wrong direction.\n");
+    delete_game(g);
     return EXIT_FAILURE;
   }
   d = (d + INT_MIN) % 4;
   rotate_piece(g, 0, 0, INT_MIN);
   if (d != get_current_dir(g, 0, 0)){
     fprintf(stderr, "Error : rotate_piece by %d rotation gives a wrong direction.\n", INT_MIN);
+    delete_game(g);
     return EXIT_FAILURE;
   }
+  delete_game(g);
   return EXIT_SUCCESS;
 }
 
@@ -84,27 +89,32 @@ int test_rotate_piece(int argc, char *argv[])
 
 int test_set_piece_current_dir(int argc, char *argv[])
 {
-  game g = new_game_empty();
+  game g = new_game_empty_ext(5, 5, false);
   set_piece_current_dir (g, 0, 0, N);
   if(get_current_dir(g, 0, 0) != N){
+    delete_game(g);
     fprintf(stderr, "Error : set_piece_current_dir did not set the right direction.\n");
     return EXIT_FAILURE;
   }
   set_piece_current_dir (g, 0, 0, S);
   if(get_current_dir(g, 0, 0) != S){
+    delete_game(g);
     fprintf(stderr, "Error : set_piece_current_dir did not set the right direction.\n");
     return EXIT_FAILURE;
   }
   set_piece_current_dir (g, 0, 0, E);
   if(get_current_dir(g, 0, 0) != E){
+    delete_game(g);
     fprintf(stderr, "Error : set_piece_current_dir did not set the right direction.\n");
     return EXIT_FAILURE;
   }
   set_piece_current_dir (g, 0, 0, W);
   if(get_current_dir(g, 0, 0) != W){
+    delete_game(g);
     fprintf(stderr, "Error : set_piece_current_dir did not set the right direction.\n");
     return EXIT_FAILURE;
   }
+  delete_game(g);
   return EXIT_SUCCESS;
 }
 
@@ -127,7 +137,7 @@ int test_game_over(int argc, char *argv[])
     E, S, S, N, W,
     E, W, E, S, S
   };
-  game g = new_game(p1, p2);
+  game g = new_game_ext(5, 5, p1, p2, false);
   if(is_game_over(g)){
     delete_game(g);
     return EXIT_SUCCESS;
