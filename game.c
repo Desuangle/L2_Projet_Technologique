@@ -63,44 +63,6 @@ bool is_wrapping(cgame g){
 	return g->wrapping;
 }
 
-
-/* Walid
-
-game new_game_empty_ext(int width, int height, bool wrapping){
-	if(wrapping){
-		game g = malloc(sizeof(struct game_s));
-		g->p = (piece*)malloc((width*height)*sizeof(piece));
-		if  (g->p == NULL)
-		{
-		fprintf(stderr, "Error: malloc\n");
-		exit(EXIT_FAILURE); 
-		}
-		g->d = (direction*)calloc(width*height, sizeof(direction));
-		if  (g->d == NULL)
-		{
-		fprintf(stderr, "Error: malloc\n");
-		exit(EXIT_FAILURE); 
-		}
-		g->d_init = (direction*)calloc(width*height, sizeof(direction));
-			if  (g->d_init == NULL)
-		{
-		fprintf(stderr, "Error: malloc\n");
-		exit(EXIT_FAILURE); 
-		}
-
-		for(int i=0; i < width*height; i++){
-		g->p[i] = EMPTY;
-		}
-		g->height = height;
-		g->width = width;
-
-		return g;
-	}
-	fprintf(stderr, "game Not wrapping");
-	exit(EXIT_FAILURE); 
-}
-*/
-
 game new_game_empty_ext(int width, int height, bool wrapping){
 	if (width<1 || height <1){
 		fprintf(stderr, "New_game_empty_ext: Invalid param\n");
@@ -265,62 +227,35 @@ void set_piece_current_dir (game game, int x, int y, direction dir){
 }
 
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
-	//  assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
+	//assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
 	int width = g->width;
-	piece p = g->p[y*width+x];
-	direction d = g->d[y*width+x];
+	piece p = g->p[y*width+x];                  //récupérer les pieces du jeux
+	direction d = g->d[y*width+x];				//récupérer les directions du jeux
 	return is_edge(p, d, dir);
 }
 
 bool is_edge(piece piece, direction orientation, direction dir){
 	///////////////_SEGMENT_/////////////////
 	if(piece==SEGMENT){ 
-		switch(orientation){
-			case N: //// SEGMENT= | /////
-					if(dir == N || dir == S){
-						return true;
-					}
-					break;
-			case S: //// SEGMENT= | /////
-					if(dir == N || dir == S){
-						return true;
-					} 
-					break;
-			case E: //// SEGMENT= - /////
-					if ( dir == W || dir == E ){    
-						return true;
-					}
-					break;        
-			case W: //// SEGMENT= - /////
-					if ( dir == W || dir == E ){    
-						return true;
-					}        
-					break;
-			default: return false;
-		} 
+		if (orientation == N || orientation == S) //// SEGMENT= | /////
+			return dir == N || dir == S;
+		else                                     //// SEGMENT= - /////
+			return dir == W || dir == E;
 	}	
 	///////////////_test_LEAF_////////////////////        
 	if(piece==LEAF){ 
 		switch(orientation){
 			case N: //// LEAF= ^ /////
-					if(dir == N){
-						return true;
-					}
+					return dir == N;
 					break;
 			case S: //// LEAF= v /////
-					if(dir == S){
-						return true;
-					} 
+					return dir == S;
 					break;
 			case E: //// LEAF= > /////
-					if (dir == E){    
-						return true;
-					}
+					return dir == E;
 					break;
 			case W: //// LEAF= < /////
-					if ( dir == W){    
-						return true;
-					}
+					return dir == W;
 					break;        
 			default: return false;
 		} 
@@ -329,24 +264,16 @@ bool is_edge(piece piece, direction orientation, direction dir){
 	if(piece==CORNER){ 
 		switch(orientation){
 			case N: //// CORNER= └ /////
-					if(dir == N || dir == E){
-						return true;
-					}
+					return dir == N || dir == E;
 					break;
 			case S: //// CORNER= ┐ /////
-					if(dir == S|| dir == W ){
-						return true;
-					} 
+					return dir == S|| dir == W;
 					break;
 			case E: //// CORNER= ┌ /////
-					if ( dir == S || dir == E ){    
-						return true;
-					}
+					return dir == S || dir == E;
 					break;
 			case W: //// CORNER= ┘ ///// 
-					if ( dir == W || dir == N){    
-						return true;
-					}
+					return dir == W || dir == N;
 					break;        
 			default: return false;
 		} 
@@ -355,64 +282,53 @@ bool is_edge(piece piece, direction orientation, direction dir){
 	if(piece==TEE){ 
 		switch(orientation){	
 			case N:  //// TEE= ┴ /////
-					if ( dir == N || dir == E || dir == W ){
-						return true;
-					}
+					return dir == N || dir == E || dir == W;
 					break;
 			case S: //// TEE= ┬ /////            
-					if ( dir == S || dir == E || dir == W ){
-						return true;
-					}
+					return dir == S || dir == E || dir == W;
 					break;
-			case W://// TEE= ┤ /////   
-					if ( dir == N || dir == S || dir == W ){
-						return true;
-					}
+			case W: //// TEE= ┤ /////   
+					return dir == N || dir == S || dir == W;
 					break;    
 			case E: //// TEE= ├ /////
-					if ( dir == N || dir == E || dir == S ){
-						return true;
-					}
+					return  dir == N || dir == E || dir == S;
 					break;  
 			default: return false;
 		} 
 	}
-	///////////////_test_CROSS_///////////////////
-	if(piece==CROSS){
-		return true;
-	}	
-	///////////////////////////////////////////////
-	return false;
-}
+	///////////////_test_CROSS_/////////////////
+	return piece == CROSS;
 	
+}
+
+/* 
+N : 0
+=> S : 2
+0+2
+E : 1
+=> W : 3
+1+2
+S : 2
+=> N : 0
+(2+2)%4
+W : 3
+=> E : 1
+(3+2)%4
+*/	
 direction opposite_dir(direction dir){
-	if(dir==S){
-		return N;
-	}
-	if(dir==N){
-		return S;        
-	}	
-	if(dir==W){     
-		return E;       
-	}       	
-	if(dir==E){
-		return W;
-	}else{
-		fprintf(stderr, "opposite_dir: incompatible direction!\n");
-		exit (EXIT_FAILURE); 
-	}   
+	return (dir+2)%4;
 } 
 
 game copy_game (cgame g_src){
 	game g =new_game_empty();
-	(*g).width = (*g_src).width;
+	(*g).width = (*g_src).width;                     
 	(*g).height = (*g_src).height;
 	for(int i=0 ; i<(*g).width*(*g).height; i++){ 	
 		(*g).p[i]=(*g_src).p[i];
 		(*g).d[i]=(*g_src).d[i];  
 		(*g).d_init[i]= (*g_src).d_init[i];	
 	}
-	///////////////////////////
+	(*g).wrapping = (*g_src).wrapping;
 	return g;
 }
 	
@@ -421,9 +337,6 @@ void delete_game (game g){
 		free(g->p);
 		free(g->d);
 		free(g->d_init);
-		g->p=NULL;
-		g->d=NULL;
-		g->d_init=NULL;
 		free(g);
 	}
 }
@@ -439,7 +352,7 @@ piece get_piece(cgame game, int x, int y){
 		fprintf(stderr, "get_piece: call on unvalid coordinates %d %d\n",x,y);
 		exit(EXIT_FAILURE);
 	}
-	return *(game->p+x+y*wid);
+	return (*game).p[x+y*wid];
 }
 
 direction get_current_dir(cgame g, int x, int y){
