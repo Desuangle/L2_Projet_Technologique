@@ -20,6 +20,25 @@
 
 
 /* ********** TEST SET_PIECE********** */
+bool aux_set_piece(game g, game g_copy)
+{
+	int w = game_width(g); // ou int w = game_width(g_copy);
+	int h = game_height(g); // ou int h = game_height(g_copy);
+	for (int y = 0; y < h; y++){
+		for (int x = 0; x < w; x++){
+			direction d = get_current_dir(g, x, y);
+			direction d_copy = get_current_dir(g_copy, x, y);
+			if((get_piece(g, x, y) != get_piece(g_copy, x, y) )  || ( d != d_copy )  ){ //si les pièces ne correspondent pas
+				delete_game(g);
+				g = NULL;
+				delete_game(g_copy);
+				g_copy = NULL;
+				return false;
+			}
+		}
+	}
+	return true;	
+}
 
 int test_set_piece(int argc, char *argv[]){
 	 /*
@@ -45,7 +64,7 @@ int test_set_piece(int argc, char *argv[]){
 	
 	game g_copy = new_game_empty();
 	assert(g_copy);
-		
+	// je recrée le même jeux que g dans g_copy avec set_piece	
 	set_piece(g_copy,0,0,LEAF,E);
 	set_piece(g_copy,1,0,TEE,W);
 	set_piece(g_copy,2,0,LEAF,S);
@@ -73,37 +92,22 @@ int test_set_piece(int argc, char *argv[]){
 	set_piece(g_copy,4,4,LEAF,S);
 
 
-	int w = game_width(g); // ou int w = game_width(g_copy);
-	int h = game_height(g); // ou int h = game_height(g_copy);
-	for (int y = 0; y < h; y++){
-		for (int x = 0; x < w; x++){
-			direction d = get_current_dir(g, x, y);
-			direction d_copy = get_current_dir(g_copy, x, y);
-			if((get_piece(g, x, y) != get_piece(g_copy, x, y) )  || ( d != d_copy )) {//si les pièces ne correspondent pas
-				delete_game(g);
-				g = NULL;
-				delete_game(g_copy);
-				g_copy = NULL;
-				fprintf(stderr, "test_set_piece : Error set piece (%d,%d)!\n", x, y);
-				return EXIT_FAILURE;
-			}
-		}
+	if (!aux_set_piece(g,g_copy)){
+		fprintf(stderr, "test_set_piece : Error set piece (%d,%d)!\n");
+		delete_game(g);
+		g = NULL;
+		delete_game(g_copy);
+		g_copy = NULL;
+		return EXIT_FAILURE;
 	}
-
-	restart_game(g_copy);
-	for (int y = 0; y < h; y++){
-		for (int x = 0; x < w; x++){
-			direction d = get_current_dir(g, x, y);
-			direction d_copy = get_current_dir(g_copy, x, y);
-			if((get_piece(g, x, y) != get_piece(g_copy, x, y) )  || ( d != d_copy )  ){ //si les pièces ne correspondent pas
-				delete_game(g);
-				g = NULL;
-				delete_game(g_copy);
-				g_copy = NULL;
-				fprintf(stderr, "test_set_piece : Error set piece (%d,%d) après restart!\n", x, y);
-				return EXIT_FAILURE;
-			}
-		}
+	restart_game(g_copy); //Après un restart les modifs de set_piece ne sont pas censé disparaitre je refait donc un test
+	if (!aux_set_piece(g,g_copy)){
+		fprintf(stderr, "test_set_piece : Error set piece (%d,%d) après restart!\n");
+		delete_game(g);
+		g = NULL;
+		delete_game(g_copy);
+		g_copy = NULL;
+		return EXIT_FAILURE;
 	}
 
 	delete_game(g);
@@ -112,7 +116,9 @@ int test_set_piece(int argc, char *argv[]){
 	g_copy = NULL;
 	return EXIT_SUCCESS;
 
+
 }
+
 
 /* ********** TEST shuffle_dir********** */
 
@@ -139,7 +145,7 @@ int test_shuffle_dir(int argc, char *argv[])
 		E,W,E,S,S,N,S,
 		E,S,S,N,W,W,N //dernier ligne du haut
 	};
-
+	//création de 2 jeux identiques
 	game g = new_game_ext(7, 8, p1, p2, false);
 	game g1 = new_game_ext(7, 8, p1, p2, false);
 
@@ -160,11 +166,11 @@ int test_shuffle_dir(int argc, char *argv[])
 			char dir1 = get_current_dir(g, x, y);
 			char dir2 = get_current_dir(g1, x, y);
 			if (dir1 == dir2){
-				compare +=1; //si les directions sont identiques
+				compare +=1; //si les directions sont identiques après le shuffle alors +1
 			}
 		}
 	}
-	if(compare == game_width(g)*game_height(g)){ //si les shuffles donne le même jeux alors erreur{
+	if(compare == game_width(g)*game_height(g)){ //si compare = le nombre de pièce dans le jeux alors les 2 shuffles ont donnée excactement le même résulat
 		delete_game(g);
 		g = NULL;
 		delete_game(g1);
@@ -199,7 +205,7 @@ int test_shuffle_dir(int argc, char *argv[])
 		fprintf(stderr, "test_shuffle_dir : La fonction shuffle ne semble pas être aléatoire, une des directions est présente sur plus de la moitié des pièces ou une direction est absente\n");
 		return EXIT_FAILURE;
 	}
-	if (No == 0 || So==0 || We == 0 || Ea ==0 || (No+So+We+Ea != (w*h) )){ //on verif que le shuffle place tous les directions et que la somme = 25
+	if (No == 0 || So==0 || We == 0 || Ea ==0 || (No+So+We+Ea != (w*h) )){ //on verif que le shuffle place tous les directions et que la somme correspond au nombre de pièce dans le jeux
 		delete_game(g);
 		g = NULL;
 		fprintf(stderr, "test_shuffle_dir : La	fonction shuffle ne place pas toute les directions\n");
