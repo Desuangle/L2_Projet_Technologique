@@ -1,19 +1,14 @@
 #include "game.h"
 #include "game_io.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-
-
-game load_game(char* filename){
-	game g=NULL;
+game load_game(char* filename) {
+	game g = NULL;
 	return g;
 }
-    // TO DO
+// TO DO
 
-
-void save_game(cgame g, char* filename){
-	}
-    // TO DO
-
-    
+void save_game(cgame g, char* filename) {
+}
+// TO DO

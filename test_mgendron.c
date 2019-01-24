@@ -1,14 +1,14 @@
 #include <assert.h>
+#include <signal.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include <signal.h>
 
 #include "game.h"
 
 /* ********** TEST DELETE_GAME ********** */
 
-int test_delete_game(int argc, char *argv[]){
+int test_delete_game(int argc, char* argv[]) {
 	/*
 	Setting up the parameters of the game
 	*/
@@ -32,25 +32,25 @@ int test_delete_game(int argc, char *argv[]){
 	return EXIT_SUCCESS;
 }
 
-int test_get_piece(int argc, char *argv[]){
+int test_get_piece(int argc, char* argv[]) {
 	piece p1[] = {
-	EMPTY, EMPTY, EMPTY, EMPTY, CROSS,
-	LEAF, LEAF, LEAF, LEAF, CROSS,
-	SEGMENT, SEGMENT, SEGMENT, SEGMENT, CROSS,
-	CORNER, CORNER, CORNER, CORNER, CROSS,
-	TEE, TEE, TEE, TEE, CROSS
+		EMPTY, EMPTY, EMPTY, EMPTY, CROSS,
+		LEAF, LEAF, LEAF, LEAF, CROSS,
+		SEGMENT, SEGMENT, SEGMENT, SEGMENT, CROSS,
+		CORNER, CORNER, CORNER, CORNER, CROSS,
+		TEE, TEE, TEE, TEE, CROSS
 	};
 	direction p2[] = {
-	N, E, S, W, N,
-	N, E, S, W, E,
-	N, E, S, W, S,
-	N, E, S, W, W,
-	N, E, S, W, N,
+		N, E, S, W, N,
+		N, E, S, W, E,
+		N, E, S, W, S,
+		N, E, S, W, W,
+		N, E, S, W, N,
 	};
 	game g = new_game(p1, p2);
-	for(int y=0; y<game_height(g);y+=1){
-		for(int x=0; x<game_width(g);x+=1){
-			if(get_piece(g,x,y)!=p1[y*5+x]){
+	for(int y = 0; y < game_height(g); y += 1) {
+		for(int x = 0; x < game_width(g); x += 1) {
+			if(get_piece(g, x, y) != p1[y * 5 + x]) {
 				return EXIT_FAILURE;
 			}
 		}
@@ -61,25 +61,25 @@ int test_get_piece(int argc, char *argv[]){
 
 /* ********** TEST GET_CURRENT_DIR ********** */
 
-int test_get_current_dir(int argc, char *argv[]){
+int test_get_current_dir(int argc, char* argv[]) {
 	piece p1[] = {
-	EMPTY, EMPTY, EMPTY, EMPTY, CROSS,
-	LEAF, LEAF, LEAF, LEAF, CROSS,
-	SEGMENT, SEGMENT, SEGMENT, SEGMENT, CROSS,
-	CORNER, CORNER, CORNER, CORNER, CROSS,
-	TEE, TEE, TEE, TEE, CROSS
+		EMPTY, EMPTY, EMPTY, EMPTY, CROSS,
+		LEAF, LEAF, LEAF, LEAF, CROSS,
+		SEGMENT, SEGMENT, SEGMENT, SEGMENT, CROSS,
+		CORNER, CORNER, CORNER, CORNER, CROSS,
+		TEE, TEE, TEE, TEE, CROSS
 	};
 	direction p2[] = {
-	N, E, S, W, N,
-	N, E, S, W, E,
-	N, E, S, W, S,
-	N, E, S, W, W,
-	N, E, S, W, N,
+		N, E, S, W, N,
+		N, E, S, W, E,
+		N, E, S, W, S,
+		N, E, S, W, W,
+		N, E, S, W, N,
 	};
 	game g = new_game(p1, p2);
-	for(int y=0; y<game_height(g);y+=1){
-		for(int x=0; x<game_width(g);x+=1){
-			if(get_current_dir(g,x,y)!=p2[y*5+x]){
+	for(int y = 0; y < game_height(g); y += 1) {
+		for(int x = 0; x < game_width(g); x += 1) {
+			if(get_current_dir(g, x, y) != p2[y * 5 + x]) {
 				return EXIT_FAILURE;
 			}
 		}
@@ -90,34 +90,34 @@ int test_get_current_dir(int argc, char *argv[]){
 
 /* ********** TEST RESTART_GAME ********** */
 
-int test_restart_game(int argc, char *argv[]){
+int test_restart_game(int argc, char* argv[]) {
 	piece p1[] = {
-	EMPTY, EMPTY, EMPTY, EMPTY, CROSS,
-	LEAF, LEAF, LEAF, LEAF, CROSS,
-	SEGMENT, SEGMENT, SEGMENT, SEGMENT, CROSS,
-	CORNER, CORNER, CORNER, CORNER, CROSS,
-	TEE, TEE, TEE, TEE, CROSS
+		EMPTY, EMPTY, EMPTY, EMPTY, CROSS,
+		LEAF, LEAF, LEAF, LEAF, CROSS,
+		SEGMENT, SEGMENT, SEGMENT, SEGMENT, CROSS,
+		CORNER, CORNER, CORNER, CORNER, CROSS,
+		TEE, TEE, TEE, TEE, CROSS
 	};
 	direction p2[] = {
-	N, E, S, W, N,
-	N, E, S, W, E,
-	N, E, S, W, S,
-	N, E, S, W, W,
-	N, E, S, W, N,
+		N, E, S, W, N,
+		N, E, S, W, E,
+		N, E, S, W, S,
+		N, E, S, W, W,
+		N, E, S, W, N,
 	};
 	game ex = new_game(p1, p2);
-	for(int y=0; y<game_height(ex);y+=1){
-		for(int x=0; x<game_width(ex);x+=1){
-			rotate_piece(ex,x,y,x);
+	for(int y = 0; y < game_height(ex); y += 1) {
+		for(int x = 0; x < game_width(ex); x += 1) {
+			rotate_piece(ex, x, y, x);
 		}
 	}
 	restart_game(ex);
-	for(int y=0; y<game_height(ex);y+=1){
-		for(int x=0; x<game_width(ex);x+=1){
-			if(get_piece(ex,x,y)!=p1[y*5+x]){
+	for(int y = 0; y < game_height(ex); y += 1) {
+		for(int x = 0; x < game_width(ex); x += 1) {
+			if(get_piece(ex, x, y) != p1[y * 5 + x]) {
 				return EXIT_FAILURE;
 			}
-			if(get_current_dir(ex,x,y)!=p2[y*5+x]){
+			if(get_current_dir(ex, x, y) != p2[y * 5 + x]) {
 				return EXIT_FAILURE;
 			}
 		}
@@ -152,8 +152,7 @@ int test_empty(int argc, char *argv[])
 
 #ifndef TESTFW
 
-void usage(int argc, char *argv[])
-{
+void usage(int argc, char* argv[]) {
 	fprintf(stderr, "Usage: %s <testname>\n", argv[0]);
 	exit(EXIT_FAILURE);
 }
@@ -164,31 +163,29 @@ void usage(int argc, char *argv[])
 
 #ifndef TESTFW
 
-int main(int argc, char *argv[])
-{
-	if (argc == 1)
+int main(int argc, char* argv[]) {
+	if(argc == 1)
 		usage(argc, argv);
 
 	printf("=> RUN TEST \"%s\"\n", argv[1]);
 
 	int status;
-	if (strcmp("delete", argv[1]) == 0)
+	if(strcmp("delete", argv[1]) == 0)
 		status = test_delete_game(argc, argv);
-	else if (strcmp("get_piece", argv[1]) == 0)
+	else if(strcmp("get_piece", argv[1]) == 0)
 		status = test_get_piece(argc, argv);
-	else if (strcmp("current_dir", argv[1]) == 0)
+	else if(strcmp("current_dir", argv[1]) == 0)
 		status = test_get_current_dir(argc, argv);
-	else if (strcmp("restart", argv[1]) == 0)
+	else if(strcmp("restart", argv[1]) == 0)
 		status = test_restart_game(argc, argv);
 	/*else if (strcmp("empty", argv[1]) == 0)
 	  status = test_empty(argc, argv);*/
-	else
-	{
+	else {
 		fprintf(stderr, "Error: test %s not found!\n", argv[1]);
 		return EXIT_FAILURE;
 	}
 
-	if (status != EXIT_SUCCESS)
+	if(status != EXIT_SUCCESS)
 		printf("FAILURE (status %d)\n", status);
 	else
 		printf("SUCCESS (status %d)\n", status);
