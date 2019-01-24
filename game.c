@@ -188,12 +188,13 @@ game new_game(piece *pieces, direction *initial_directions){
 }  
 
 void set_piece(game g, int x, int y, piece piece, direction orientation){
-	if (g == NULL){
+	if (g == NULL){ 
 		fprintf(stderr,"set_piece: pointeur NULL\n");
 		delete_game (g);
 		exit(EXIT_FAILURE);
 	}
 	if (piece < -1 || piece > 4 || orientation <0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0){
+		//si la piece ou son orientation n'ont pas de correspondance avec leurs typedef enum (dans game.h) ou que les positions sont hors du tableau
 		fprintf(stderr, "set_piece: Incorrect param!\n");
 		delete_game(g);
 		exit(EXIT_FAILURE); 
@@ -208,18 +209,8 @@ void shuffle_dir(game g){
 	int w = g->width; 
 	int h = g->height; 
 	for (int y = 0; y < h; y++){
-		 for (int x = 0; x < w; x++){
-		g->d[x+(w*y)]= rand()%4;	
-		/*
-		int alea = rand()%4;
-		switch(alea)
-		{
-		 case 0: g->d[x+(5*y)]= N; break;
-		 case 1: g->d[x+(5*y)]= S; break;
-		 case 2: g->d[x+(5*y)]= E; break;
-		 case 3: g->d[x+(5*y)]= W; break;
-		}
-		*/
+		for (int x = 0; x < w; x++){
+			g->d[x+(w*y)]= rand()%4; //géneration d'un chiffre entre 0 et 3	qui correspond aux valeur dans type_enum
 		}
 	}
 }
