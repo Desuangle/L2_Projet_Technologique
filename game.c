@@ -22,8 +22,6 @@ struct game_s {
  * @brief Fichier source du jeu 'Net'. Voir game.h pour plus d'informations.
 **/
 
-
-
 game new_game_ext(int width, int height, piece* pieces, direction* initial_directions, bool wrapping) {
 	if(pieces == NULL || initial_directions == NULL) {
 		fprintf(stderr, "new_game_ext: NULL pointers\n");
@@ -336,20 +334,9 @@ bool is_edge(piece piece, direction orientation, direction dir) {
 	return piece == CROSS;
 }
 
-/*
-N : 0
-=> S : 2
-0+2
-E : 1
-=> W : 3
-1+2
-S : 2
-=> N : 0
-(2+2)%4
-W : 3
-=> E : 1
-(3+2)%4
-*/
+/**
+ * On utilise le fait que la direction est une énumération, avec N=0, E=1, S=2, W=3. On remarque que les directions opposées sont séparées par 2 (S=N+2, W=E+2). La formule est donc (dir + 2) modulo 4.
+ */
 direction opposite_dir(direction dir) { return (dir + 2) % 4; }
 
 game copy_game(cgame g_src) {
@@ -442,13 +429,11 @@ A partir d'ici : fonctions auxiliaires
 */
 
 /**
- * @brief Renvoie si la pièce est connectée dans la direction donnée.
- * On part du principe que la pièce donnée est connectable dans la direction donnée.
- * Entrées :
- * g : jeu
- * x : abscisse
- * y : ordonnée
- * d : direction où tester
+ * @brief Renvoie si la pièce est connectée dans la direction donnée. On part du principe que la pièce donnée est connectable dans la direction donnée.
+ * @param g : jeu
+ * @param x : abscisse
+ * @param y : ordonnée
+ * @param d : direction où tester
  * @return un booléen.
 */
 bool is_connected_coordinates(cgame g, int x, int y, direction d) {
@@ -489,6 +474,7 @@ bool is_connected_coordinates(cgame g, int x, int y, direction d) {
 /**
  * @brief Renvoie si, en partant de (0,0), on touche toutes les pièces du tableau.
  * On part d'un jeu dont on sait que toutes les pieces sont bien connectees entre elles.
+ * @param g : game
 */
 bool all_pieces_connected(cgame g) {
 	if(!g) {
@@ -507,6 +493,15 @@ bool all_pieces_connected(cgame g) {
 	// virus=NULL;
 	return true;
 }
+
+/**
+ * @brief Utilisé par all_pieces_connected pour la récursion.
+ * @param g : game
+ * @param x : abscisse
+ * @param y : ordonnée
+ * @param v : virus (le principe étant qu'à la fin de l'exécution, si toutes les cases sont contaminées par le virus, le jeu est finit)
+ */
+
 void aux_all_pieces_connected(cgame g, int x, int y,
 	bool* v) { // v : virus ; fonction récursive
 	int index = x + y * g->width;
