@@ -17,6 +17,13 @@ struct game_s {
 };
 #define DEFAULT_SIZE 5
 
+/**
+ * @file game.c
+ * @brief Fichier source du jeu 'Net'. Voir game.h pour plus d'informations.
+**/
+
+
+
 game new_game_ext(int width, int height, piece* pieces, direction* initial_directions, bool wrapping) {
 	if(pieces == NULL || initial_directions == NULL) {
 		fprintf(stderr, "new_game_ext: NULL pointers\n");
@@ -434,16 +441,15 @@ void restart_game(game g) {
 A partir d'ici : fonctions auxiliaires
 */
 
-/*
-Présupposé :
-La pièce donnée est connectable dans la direction donnée
-Entrées :
-g : jeu
-x : abscisse
-y : ordonnée
-d : direction où tester
-Sortie :
-Renvoie si la pièce est connectée dans la direction donnée
+/**
+ * @brief Renvoie si la pièce est connectée dans la direction donnée.
+ * On part du principe que la pièce donnée est connectable dans la direction donnée.
+ * Entrées :
+ * g : jeu
+ * x : abscisse
+ * y : ordonnée
+ * d : direction où tester
+ * @return un booléen.
 */
 bool is_connected_coordinates(cgame g, int x, int y, direction d) {
 	if(!g) {
@@ -480,12 +486,9 @@ bool is_connected_coordinates(cgame g, int x, int y, direction d) {
 	}
 }
 
-/*
-Entrée :
-g : jeu
-Sortie :
-Renvoie si en partant de (soit du milieu, soit de (0,0) ; à débattre, là on
-teste avec (0,0)), on touche toutes les pièces du tableau
+/**
+ * @brief Renvoie si, en partant de (0,0), on touche toutes les pièces du tableau.
+ * On part d'un jeu dont on sait que toutes les pieces sont bien connectees entre elles.
 */
 bool all_pieces_connected(cgame g) {
 	if(!g) {
