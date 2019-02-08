@@ -340,15 +340,15 @@ bool is_edge(piece piece, direction orientation, direction dir) {
 direction opposite_dir(direction dir) { return (dir + 2) % 4; }
 
 game copy_game(cgame g_src) {
-	game g = new_game_empty();
-	(*g).width = (*g_src).width;
-	(*g).height = (*g_src).height;
+	int width = (*g_src).width;
+	int  height = (*g_src).height;
+	bool wrapping = (*g_src).wrapping;
+	game g = new_game_empty_ext(width,height,wrapping);
 	for(int i = 0; i < (*g).width * (*g).height; i++) {
 		(*g).p[i] = (*g_src).p[i];
 		(*g).d[i] = (*g_src).d[i];
 		(*g).d_init[i] = (*g_src).d_init[i];
 	}
-	(*g).wrapping = (*g_src).wrapping;
 	return g;
 }
 
