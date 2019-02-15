@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include "game_io.h"
+#include "game_io.h"
 
 /*
 shows the grid of the game
@@ -113,26 +113,36 @@ void show_grid(game g) {
 	printf("\n");
 }
 
-int main(void) {
+int main(int argc, char** argv) {
 	/*
     Setting up the parameters of the game
    */
-	piece p1[] = {
-		LEAF, TEE, LEAF, LEAF, LEAF,
-		LEAF, TEE, TEE, CORNER, SEGMENT,
-		LEAF, LEAF, TEE, LEAF, SEGMENT,
-		TEE, TEE, TEE, TEE, TEE,
-		CORNER, LEAF, LEAF, CORNER, LEAF
-	};
-	direction p2[] = {
-		E, W, S, E, S,
-		S, S, N, W, N,
-		E, N, W, W, E,
-		S, W, N, E, E,
-		W, N, W, N, S,
-	};
-	game ex = new_game_ext(5, 5, p1, p2, false);
-
+	game ex;
+	if(argc>2){
+		fprintf(stderr, "Error, too many arguments. What we expected was\n%s [savefile]\n", argv[0]);
+		return(EXIT_FAILURE);
+	}
+	if(argc==1){
+		piece p1[] = {
+			LEAF, TEE, LEAF, LEAF, LEAF,
+			LEAF, TEE, TEE, CORNER, SEGMENT,
+			LEAF, LEAF, TEE, LEAF, SEGMENT,
+			TEE, TEE, TEE, TEE, TEE,
+			CORNER, LEAF, LEAF, CORNER, LEAF
+		};
+		direction p2[] = {
+			E, W, S, E, S,
+			S, S, N, W, N,
+			E, N, W, W, E,
+			S, W, N, E, E,
+			W, N, W, N, S,
+		};
+		ex = new_game_ext(5, 5, p1, p2, false);
+		save_game(ex, "test.sav");
+	}
+	else {
+		ex = load_game(argv[1]);
+		}
 	/*
 	    Starting the game
 	   */
