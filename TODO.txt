@@ -11,6 +11,7 @@ définir la fonction "bool is_game_over{..}"
 refaire les tests v1 + v2
 faire un dossier v1 et un dossier v2
 commenter
+Game IO -> Save
 
 walid:
 réécrire tests pour V2
@@ -23,3 +24,10 @@ mathis:
 réécrire tests pour V2
 cohérence indentation
 commenter
+
+
+Après eval V2 :
+note = 14/20
+-2 pour duplication de code
+-2 pour bugs (quand on met des lettres a la place des coordonnées)
+-2 pour les tests avec notre libgame
