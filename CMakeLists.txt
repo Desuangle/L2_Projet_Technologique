@@ -37,6 +37,9 @@ target_link_libraries(test_walouini game )
 add_executable(test_mgendron test_mgendron.c)
 target_link_libraries(test_mgendron game )
 
+add_executable(net_solve net_solve.c)
+target_link_libraries(net_solve game )
+
 enable_testing()
 include (CTest)
 

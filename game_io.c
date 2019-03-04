@@ -59,7 +59,7 @@ game load_game(char* filename) {
     }
 	int width, height;
 	char tmp;
-	int err = fscanf(f,"%d %d %c", width, height, tmp);
+	int err = fscanf(f,"%d %d %c", &width, &height, &tmp);
 	if(err != 3)
 		error("Can't convert first line\n");
 	bool wrapping;

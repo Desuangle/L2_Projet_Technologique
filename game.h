@@ -1,7 +1,7 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 #include <stdbool.h>
-
+typedef unsigned int uint;
 /**
  * @file game.h
  * @brief This file describes the programming interface of a puzzle
