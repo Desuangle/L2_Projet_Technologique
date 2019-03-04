@@ -66,7 +66,7 @@ void solver_print(game g,int *c,option opt,char filename)
 			save_game(c, g, prefixe);
 			return EXIT_SUCCESS;
 	}
-	else 
+	else if (opt == FIND_ALL)
 	{
 		char *chaine;
 		sprintf(&chaine, "%s.sol%d", filename, *c);
