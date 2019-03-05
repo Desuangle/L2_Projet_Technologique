@@ -43,5 +43,5 @@ void main(int argc, char** argv){
     if(!argv || argc!=4){
         usage();
     }
-
+    resolve(check_option(argv[1]),load_game(argv[2]),argv[3]);
 }
