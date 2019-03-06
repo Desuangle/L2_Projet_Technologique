@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
     Setting up the parameters of the game
    */
 	game ex;
-	if(argc!=2){
+	if(argc > 2){
 		fprintf(stderr, "Usage : %s <file>", argv[0]);
 		return(EXIT_FAILURE);
 	}
@@ -140,7 +140,6 @@ int main(int argc, char** argv) {
 			W, N, W, N, S,
 		};
 		ex = new_game_ext(5, 5, p1, p2, false);
-		save_game(ex, "test.sav");
 	}
 	else {
 		ex = load_game(argv[1]);
@@ -151,15 +150,15 @@ int main(int argc, char** argv) {
 
 	int coords[2]; //coords[0] = x, coords[1] = y
 
-	//		while(!is_game_over(ex)) {
+			while(!is_game_over(ex)) {
 		show_grid(ex);
 		printf("Entrer des coordonnées (de la forme <x> <y>) :\n$");
-		//		num_input(coords, 2);
+				num_input(coords, 2);
 
 		if(coords[0] >= 0 && coords[0] < game_width(ex) && coords[1] >= 0 && coords[1] < game_height(ex)) {
 			rotate_piece_one(ex, coords[0], coords[1]);
 		}
-		//			}
+					}
 
 	show_grid(ex);
 
