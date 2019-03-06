@@ -6,6 +6,103 @@
 #include <stdbool.h>
 #include <string.h>
 
+void show_grid(game g) {
+	printf("\n");
+	for(int i = 0; i < game_width(g); i++) {
+		printf("##");
+	}
+	printf("###\n");
+	/*
+    	beginning of the loop
+   	*/
+	for(int y = game_height(g) - 1; y >= 0; y--) { // vertical
+		printf("# ");
+		for(int x = 0; x < game_width(g); x++) { // horizontal
+			switch(get_piece(g, x, y)) {
+			case EMPTY:
+				printf(" ");
+				break;
+			case LEAF:
+				switch(get_current_dir(g, x, y)) {
+				case N:
+					printf("^");
+					break;
+				case S:
+					printf("v");
+					break;
+				case E:
+					printf(">");
+					break;
+				case W:
+					printf("<");
+					break;
+				}
+				break;
+			case SEGMENT:
+				if(get_current_dir(g, x, y) == N || get_current_dir(g, x, y) == S) {
+					printf("|");
+				} else {
+					printf("-");
+				}
+				break;
+			case CORNER:
+				switch(get_current_dir(g, x, y)) {
+				case N:
+					printf("└");
+					break;
+				case S:
+					printf("┐");
+					break;
+				case E:
+					printf("┌");
+					break;
+				case W:
+					printf("┘");
+					break;
+				}
+				break;
+			case TEE:
+				switch(get_current_dir(g, x, y)) {
+				case N:
+					printf("┴");
+					break;
+				case S:
+					printf("┬");
+					break;
+				case E:
+					printf("├");
+					break;
+				case W:
+					printf("┤");
+					break;
+				}
+				break;
+			case CROSS:
+				switch(get_current_dir(g, x, y)) {
+				case N:
+					printf("+");
+					break;
+				case S:
+					printf("+");
+					break;
+				case E:
+					printf("+");
+					break;
+				case W:
+					printf("+");
+					break;
+				}
+				break;
+			}
+			printf(" ");
+		} // end of x loop
+		printf("#\n");
+	}
+	printf("\n");
+}
+
+
+
 int main(int argc, char* argv[]) {
 	if(argc != 4)
 		usage();
@@ -59,11 +156,7 @@ void solver_rec(game g, option o, int i, int* n, char* filename) {
 	int w = game_width(g), h = game_height(g);
 	if(i == w * h) {
 		if(is_game_over(g))
-			printf("Trouvé\n");
-		else
-			printf("PAS Trouvé\n");
-		
-		solver_print(g, n, o, filename);
+			solver_print(g, n, o, filename);
 		return;
 	}
 	int x = i%w, y = i/w;
@@ -74,11 +167,11 @@ void solver_rec(game g, option o, int i, int* n, char* filename) {
 		end_dir = W;
 	else if (p == SEGMENT)
 		end_dir = E;
-	else
+	else // if (p == CROSS)
 		end_dir = N;
 	for(direction d = N; d <= end_dir; d++) {
 		set_piece_current_dir(g, x, y, d);
-		bonne_dir = true;// Bonne direction
+		bonne_dir = true; // Bonne direction
 		if(is_edge_coordinates(g, x, y, S)){ // vise le haut
 			if(y == 0 && !is_wrapping(g))
 				bonne_dir = false;
@@ -112,7 +205,7 @@ void solver_rec(game g, option o, int i, int* n, char* filename) {
 			}
 		}
 		else{ // ne vise pas le bas
-			if(is_wrapping(g)){
+			if(y == h-1 && is_wrapping(g)){
 				if(is_edge_coordinates(g, x, 0, S))
 					bonne_dir = false;
 			}
@@ -129,11 +222,12 @@ void solver_rec(game g, option o, int i, int* n, char* filename) {
 			}
 		}
 		else{ // ne vise pas la droite
-			if(is_wrapping(g)){
+			if(x == w - 1 && is_wrapping(g)){
 				if(is_edge_coordinates(g, 0, y, W))
 					bonne_dir = false;
 			}
 		}
+		
 		if(bonne_dir)
 			solver_rec(g, o, i+1, n, filename);
 	}

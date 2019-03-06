@@ -44,9 +44,15 @@ fonction solveur_aux (jeu2, option, i, n, nom_fichier) :
 fin fonction
 ```
 ## Bonne direction :
+### Si ce n'est pas wrapping :
 1. Pièce vise une/des case(s) existante(s) (donc pas le bord)
-2. Pièces voisines Ouest et Nord (si elles existent) doivent :
+2. Pièces voisines Ouest et Sud (si elles existent) doivent :
 	* soit viser la pièce courante et à ce moment là la pièce courante doit aussi viser la voisine
 	* soit ne pas viser la pièce courante et à ce moment là la pièce courante ne doit pas viser la voisine
 
+### Si c'est wrapping :
+1. Pièces voisines Ouest et Sud (si elles existent) doivent faire la même chose que sans wrapping
+2. Si on touche un bord Est ou Nord, alors il faut aussi que les pièces voisines correspondantes :
+	* soit visent la pièce courante et alors il faut que celle-ci vise la voisine
+	* soit ne visent pas la pièce courante et alors celle-ci ne doit pas viser la voisine
 
