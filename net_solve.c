@@ -139,26 +139,23 @@ void solver_rec(game g, option o, int i, int* n, char* filename) {
 	}
 }
 
-void solver_print(game g,int *c,option opt,char* filename)
+void solver_print(game g,int *c,option opt,char* prefix)
 {
 	*c=*c+1;
-	char *chaine = (char*) malloc(SIZE_PREFIX * sizeof(char));
+	char *filename= (char*) malloc(SIZE_PREFIX * sizeof(char));
 	if (opt == FIND_ONE)
 	{
-		sprintf(chaine, "%s.sol", filename, *c);
-		save_game(g, chaine);
-<<<<<<< HEAD
-		free(chaine);	
-=======
->>>>>>> Killian
+		sprintf(filename, "%s.sol", prefix, *c);
+		save_game(g, filename);
+		free(filename);	
 		exit(EXIT_SUCCESS);
 	}
 	else if (opt == FIND_ALL)
 	{		
-		sprintf(chaine, "%s%d.sol", filename, *c);
-		save_game(g,chaine);	
+		sprintf(filename, "%s%d.sol", prefix, *c);
+		save_game(g,filename);	
 	}
-	free(chaine);
+	free(filename);
 }
 
 void solver_print_nbsolv_or_no_sol(option opt,int*c,char* prefix)
