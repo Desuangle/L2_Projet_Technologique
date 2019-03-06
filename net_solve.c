@@ -64,7 +64,7 @@ void solver_rec(game g, option o, int i, int* n, char* filename) {
 		}
 		return;
 	}
-	int x = i - (i/w), y = i/w, x2 = x, y2 = y;
+	int x = i%w, y = i/w, x2 = x, y2 = y;
 	piece p = get_piece(g, x, y);
 	bool bonne_dir;
 	direction end_dir;

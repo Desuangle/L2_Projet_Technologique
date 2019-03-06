@@ -27,6 +27,8 @@ piece convert_piece(char tmp){
 	case 'F':
 		return CROSS;
 		break;
+	default:
+		return EMPTY;
 	}
 }
 
@@ -44,6 +46,8 @@ direction convert_direction(char tmp){
 	case 'W':
 		return W;
 		break;
+	default:
+		return N;
 	}
 }
 
@@ -66,7 +70,7 @@ game load_game(char* filename) {
     if(tmp=='N')
 	    wrapping = false;
     else
-        wrapping = true;
+			wrapping = true;
 	
 	piece p[width*height];
 	direction d[width*height];
