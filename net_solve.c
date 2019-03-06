@@ -149,17 +149,20 @@ bool is_current_good(cgame g, int f){
 void solver_print(game g,int *c,option opt,char* filename)
 {
 	*c=*c+1;
+	char *chaine = (char*) malloc(SIZE_PREFIX * sizeof(char));
 	if (opt == FIND_ONE)
 	{
-			save_game(g, filename);
-			exit(EXIT_SUCCESS);
+		sprintf(chaine, "%s.sol", filename, *c);
+		save_game(g, chaine);
+		free(chaine;)	
+		exit(EXIT_SUCCESS);
 	}
 	else if (opt == FIND_ALL)
-	{
-		char *chaine = (char*) malloc(SIZE_PREFIX * sizeof(char));
-		sprintf(chaine, "%s.sol%d", filename, *c);
-		save_game(g,chaine);
+	{		
+		sprintf(chaine, "%s%d.sol", filename, *c);
+		save_game(g,chaine);	
 	}
+	free(chaine);
 }
 
 void solver_print_nbsolv_or_no_sol(option opt,int*c,char* filename)
@@ -173,6 +176,7 @@ void solver_print_nbsolv_or_no_sol(option opt,int*c,char* filename)
 		char *chaine = (char*) malloc(SIZE_CHAINE * sizeof(char));
 		sprintf(chaine, "NB_SOL = %d", *c);
 		create_file(filename,chaine);
+		free(chaine);
 	}
 }
 void create_file(char* filename, char* msg) {
