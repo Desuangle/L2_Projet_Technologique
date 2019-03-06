@@ -268,7 +268,7 @@ bool is_edge_coordinates(cgame g, int x, int y, direction dir) {
 bool is_edge(piece piece, direction orientation, direction dir) {
 	///////////////_SEGMENT_/////////////////
 	if(piece == SEGMENT) {
-		return dir==orientation || dir==opposite_dir(dir);
+		return dir==orientation || dir==opposite_dir(orientation);
 	}
 	///////////////_test_LEAF_////////////////////
 	if(piece == LEAF) {
@@ -280,7 +280,7 @@ bool is_edge(piece piece, direction orientation, direction dir) {
 	}
 	///////////////_test_TEE_///////////////////
 	if(piece == TEE) {
-		return dir!=opposite_dir(dir);
+		return dir!=opposite_dir(orientation);
 	}
 	///////////////_test_CROSS_/////////////////
 	return piece == CROSS;
