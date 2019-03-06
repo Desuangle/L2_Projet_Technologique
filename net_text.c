@@ -142,7 +142,15 @@ int main(int argc, char** argv) {
 	}
 	else {
 		ex = load_game(argv[1]);
+		/*		piece p;
+		direction d;
+		for(uint i = 0; i < 25; i++){
+			p = get_piece(ex, i % 5, i / 5);
+			d = get_current_dir(ex, i % 5, i / 5);
+			printf("%d%d ; ", p, d);
 		}
+		printf("\n");*/
+	}
 	/*
 	    Starting the game
 	   */

@@ -76,12 +76,15 @@ game load_game(char* filename) {
 	direction d[width*height];
 	int i = (height-1) * width;
 	tmp = fgetc(f); // on garde cette ligne si c'est une nouvelle ligne
-	while(tmp != EOF) {
+	while(tmp != EOF && i >= 0) {
 		tmp = fgetc(f);
 		p[i] = convert_piece(tmp);
+		//printf("P : %c ; ", tmp);
 		tmp = fgetc(f);
 		d[i] = convert_direction(tmp);
+		//printf("D : %c ; ", tmp);
 		tmp = fgetc(f);
+		//printf("%c\n", tmp);
 		i++;
 		if(i % width == 0)
 			i -= (2*width);

@@ -6,7 +6,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-
 int main(int argc, char* argv[]) {
 	if(argc != 4)
 		usage();
@@ -56,16 +55,26 @@ void solver(cgame g, option o, char* filename) {
 
 }
 
+bool is_current_good(cgame g, int f);
+
 void solver_rec(game g, option o, int i, int* n, char* filename) {
 	int w = game_width(g), h = game_height(g);
 	if(i == w * h) {
-		if(is_game_over(g)) {	
-		solver_print(g, n, o, filename);
+		//show_grid(g);
+		if(is_game_over(g)) {
+			printf("Trouvé\n");
+			solver_print(g, n, o, filename);
 		}
+		else
+			printf("PAS Trouvé\n");
 		return;
 	}
-	int x = i%w, y = i/w, x2 = x, y2 = y;
+	int x = i%w, y = i/w;
 	piece p = get_piece(g, x, y);
+	//		if(!(is_current_good(g, i))){
+	//			return;
+	//		}
+	//		printf("good\n");
 	bool bonne_dir;
 	direction end_dir;
 	if (p == LEAF || p == CORNER || p == TEE)
@@ -77,27 +86,46 @@ void solver_rec(game g, option o, int i, int* n, char* filename) {
 	for(direction d = N; d <= end_dir; d++) {
 		switch (d) {
 		case E:
-			bonne_dir = true;
+			bonne_dir = (p == CROSS || p==LEAF || p==CORNER || (p == SEGMENT && x > 0 && is_edge_coordinates(g, x-1, y, E)) || (p == TEE && (y > 0 && is_edge_coordinates(g, x, y-1, S)))) && x < w-1;
 			break;
 		case S:
-			bonne_dir = true;
+			bonne_dir = (p == CROSS || p==LEAF || ((p==CORNER || p == TEE) && (x > 0 && is_edge_coordinates(g, x-1, y, E))) || (p==SEGMENT && y > 0 && is_edge_coordinates(g, x, y-1, S))) && y < h-1;
 			break;
 		case N:
-			y2--;
-			bonne_dir = is_edge_coordinates(g, x2, y2, S);
+			bonne_dir = (is_edge_coordinates(g, x, y-1, S)) && (p == CROSS || p == LEAF || p == CORNER || p == SEGMENT || (p == TEE && x > 0 && is_edge_coordinates(g, x-1, y, E)));
+			//bonne_dir = true;
 			break;
 		case W:
-			x2--;
-			bonne_dir = is_edge_coordinates(g, x2, y2, E);
+			bonne_dir = (is_edge_coordinates(g, x-1, y, E)) && (p == CROSS || p == LEAF || p == SEGMENT || ((p == CORNER || p == TEE) && y > 0 && is_edge_coordinates(g, x, y-1, S)));
+			//bonne_dir = true;
 			break;
 		default:
 			bonne_dir = false;
 		}
-		if(bonne_dir && is_edge_coordinates(g, x, y, d)) { 
+		if( (x > 0 && (is_edge_coordinates(g, x-1, y, E) && !is_edge_coordinates(g, x, y, W))) || (y > 0 && (is_edge_coordinates(g, x, y-1, S) && !is_edge_coordinates(g, x, y, N))) )
+			bonne_dir = false;
+		if(bonne_dir) { 
 			set_piece_current_dir(g, x, y, d);
 			solver_rec(g, o, i+1, n, filename);
 		}
 	}
+}
+
+bool is_connected_coordinates(cgame g, int x, int y, direction d);
+	
+bool is_current_good(cgame g, int f){
+	int w = game_width(g);
+	int fy= f/w;
+	for(int i = 0; i < (f - w); i++){
+		int x = i%w, y = i/w;
+		for(direction d = 0; d < 4; d++) {			 // d = direction
+			// 1-
+			if(is_edge_coordinates(g, i % w /*x*/, i % w /*y*/, d) && !is_connected_coordinates(g, i % w /*x*/, i % w /*y*/, d)) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 void solver_print(game g,int *c,option opt,char* filename)
