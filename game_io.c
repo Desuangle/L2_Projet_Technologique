@@ -28,6 +28,7 @@ piece convert_piece(char tmp){
 		return CROSS;
 		break;
 	default:
+		printf("Erreur caractere (piece) : \"%c\"\n",tmp);
 		return EMPTY;
 	}
 }
@@ -47,6 +48,7 @@ direction convert_direction(char tmp){
 		return W;
 		break;
 	default:
+		printf("Erreur caractere (dir) : \"%c\"\n",tmp);
 		return N;
 	}
 }
@@ -76,6 +78,8 @@ game load_game(char* filename) {
 	direction d[width*height];
 	int i = (height-1) * width;
 	tmp = fgetc(f); // on garde cette ligne si c'est une nouvelle ligne
+	if(tmp != '\n')
+		printf("Error : tmp = \"%c\"\n", tmp);
 	while(tmp != EOF && i >= 0) {
 		tmp = fgetc(f);
 		p[i] = convert_piece(tmp);
@@ -115,6 +119,8 @@ void save_game(cgame g, char* filename) {
 	for(int y = h-1; y >= 0 ; y--){
 		for(int x = 0; x < w; x++){
 			print_piece(savefile, get_piece(g, x, y), get_current_dir(g, x, y));
+			if(x < w-1)
+				fprintf(savefile, " ");
 		}
 		fprintf(savefile, "\n");
 	}
@@ -156,7 +162,6 @@ void print_piece(FILE* savefile, piece p, direction d) {
 		fprintf(savefile, "W");
 		break;
 	}
-	fprintf(savefile, " ");
 }
 
 	
