@@ -147,7 +147,10 @@ void solver_print(game g,int *c,option opt,char* filename)
 	{
 		sprintf(chaine, "%s.sol", filename, *c);
 		save_game(g, chaine);
+<<<<<<< HEAD
 		free(chaine);	
+=======
+>>>>>>> Killian
 		exit(EXIT_SUCCESS);
 	}
 	else if (opt == FIND_ALL)
@@ -158,19 +161,22 @@ void solver_print(game g,int *c,option opt,char* filename)
 	free(chaine);
 }
 
-void solver_print_nbsolv_or_no_sol(option opt,int*c,char* filename)
+void solver_print_nbsolv_or_no_sol(option opt,int*c,char* prefix)
 {
+	char *filename = (char*) malloc(SIZE_CHAINE * sizeof(char));
+	sprintf(filename, "%s.sol", prefix, *c);
 	if ((opt == FIND_ONE || opt == FIND_ALL) && *c ==0)
 	{
 		create_file(filename,"NO SOLUTION");
 	}
 	else if (opt == NB_SOL)
 	{
-		char *chaine = (char*) malloc(SIZE_CHAINE * sizeof(char));
-		sprintf(chaine, "NB_SOL = %d", *c);
-		create_file(filename,chaine);
-		free(chaine);
+		char *contenu = (char*) malloc(SIZE_CHAINE * sizeof(char));
+		sprintf(contenu, "NB_SOL = %d", *c);
+		create_file(filename,contenu);
+		free(contenu);
 	}
+	free(filename);
 }
 void create_file(char* filename, char* msg) {
 	FILE* savefile;
