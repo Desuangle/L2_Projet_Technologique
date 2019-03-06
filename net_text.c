@@ -32,7 +32,7 @@ void show_grid(game g) {
 		for(int x = 0; x < game_width(g); x++) { // horizontal
 			switch(get_piece(g, x, y)) {
 			case EMPTY:
-				printf(" ");
+				printf("E");
 				break;
 			case LEAF:
 				switch(get_current_dir(g, x, y)) {
@@ -105,6 +105,8 @@ void show_grid(game g) {
 					break;
 				}
 				break;
+			default:
+				printf("?");
 			}
 			printf(" ");
 		} // end of x loop
@@ -118,8 +120,8 @@ int main(int argc, char** argv) {
     Setting up the parameters of the game
    */
 	game ex;
-	if(argc>2){
-		fprintf(stderr, "Error, too many arguments. What we expected was\n%s [savefile]\n", argv[0]);
+	if(argc!=2){
+		fprintf(stderr, "Usage : %s <file>", argv[0]);
 		return(EXIT_FAILURE);
 	}
 	if(argc==1){
@@ -142,14 +144,6 @@ int main(int argc, char** argv) {
 	}
 	else {
 		ex = load_game(argv[1]);
-		/*		piece p;
-		direction d;
-		for(uint i = 0; i < 25; i++){
-			p = get_piece(ex, i % 5, i / 5);
-			d = get_current_dir(ex, i % 5, i / 5);
-			printf("%d%d ; ", p, d);
-		}
-		printf("\n");*/
 	}
 	/*
 	    Starting the game
@@ -157,27 +151,15 @@ int main(int argc, char** argv) {
 
 	int coords[2]; //coords[0] = x, coords[1] = y
 
-	while(!is_game_over(ex)) {
+	//		while(!is_game_over(ex)) {
 		show_grid(ex);
 		printf("Entrer des coordonnées (de la forme <x> <y>) :\n$");
-		num_input(coords, 2);
+		//		num_input(coords, 2);
 
 		if(coords[0] >= 0 && coords[0] < game_width(ex) && coords[1] >= 0 && coords[1] < game_height(ex)) {
 			rotate_piece_one(ex, coords[0], coords[1]);
 		}
-	}
-
-	/*
-	  fgets(input, 30, stdin);
-	  int i;
-	  for(i = 0; input[i] != ' '; ++i){} // cherche le deuxième nombre
-	
-	  x = strtol(input, &(buffer), 0);
-	  if(*(buffer)!=' '){
-	    printf("Veuillez entrer 2 nombres!\n");
-	  }
-	  printf("x : %ld\nstring : %s\nbuffer : <%c>\n", x, input, *(buffer));
-	  */
+		//			}
 
 	show_grid(ex);
 
