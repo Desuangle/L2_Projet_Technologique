@@ -6,6 +6,7 @@ typedef enum option_e {FIND_ONE, NB_SOL, FIND_ALL} option;
 #define NB_OPTIONS 3
 
 void usage();
+option check_option(char* opt);
 void solver(cgame g, option o, char* filename);
 void solver_rec(game g, option o, int i, int* n, char* filename);
 void solver_print(game g,int *c,option opt,char* filename);

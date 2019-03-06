@@ -11,20 +11,40 @@ int main(int argc, char* argv[]) {
 	if(argc != 4)
 		usage();
 	game g = load_game(argv[2]);
-	option o;
-	if (argv[1][0] == 'F' && argv[1][5] == 'O') // c'est find one
-		o = FIND_ONE;
-	else if (argv[1][0] == 'F') // c'est find all
-		o = FIND_ALL;
-	else // c'est nb_sol
-		o = NB_SOL;
-
+	option o = check_option(argv[1]);
 	solver(g, o, argv[3]);
 }
 
 void usage(){
-	printf("net_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>\n");
-	exit(EXIT_FAILURE);
+    printf("Usage: net_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>.\n");
+    exit(EXIT_FAILURE);
+}
+
+option check_option(char* opt){
+    if(!opt){
+        usage();
+    }
+    if(strlen(opt)<6){ //test to be sure not to go out of range
+        usage();
+    }
+    if(opt[0]=='N'){
+        if(!strcmp(opt,"NB_SOL")){
+            return NB_SOL;
+        }
+    }
+    if(opt[0]=='F'){
+        if(opt[5]=='O'){
+            if(!strcmp(opt,"FIND_ONE")){
+                return FIND_ONE;
+            }
+        }
+        if(opt[5]=='A'){
+            if(!strcmp(opt,"FIND_ALL")){
+                return FIND_ALL;
+            }
+        }
+    }
+    usage();
 }
 
 void solver(cgame g, option o, char* filename) {
@@ -121,3 +141,4 @@ void create_file(char* filename, char* msg) {
 	
 	
 }
+
