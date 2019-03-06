@@ -111,7 +111,7 @@ void solver_print(game g,int *c,option opt,char* filename)
 	else if (opt == FIND_ALL)
 	{
 		char *chaine = (char*) malloc(SIZE_PREFIX * sizeof(char));
-		sprintf(chaine, "%s.sol%d", filename, *c);
+		sprintf(chaine, "%s%d.sol", filename, *c);
 		save_game(g,chaine);
 	}
 }
@@ -138,7 +138,4 @@ void create_file(char* filename, char* msg) {
 	}
 	fprintf(savefile, "%s\n", msg);
 	fclose(savefile);
-	
-	
 }
-
