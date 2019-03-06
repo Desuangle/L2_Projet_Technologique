@@ -70,7 +70,7 @@ game load_game(char* filename) {
 	
 	piece p[width*height];
 	direction d[width*height];
-	int i = 0;
+	int i = (height-1) * width;
 	tmp = fgetc(f); // on garde cette ligne si c'est une nouvelle ligne
 	while(tmp != EOF) {
 		tmp = fgetc(f);
@@ -79,6 +79,8 @@ game load_game(char* filename) {
 		d[i] = convert_direction(tmp);
 		tmp = fgetc(f);
 		i++;
+		if(i % width == 0)
+			i -= (2*width);
 	}
 
 	game g = new_game_ext(width, height, p, d, wrapping) ;
@@ -103,7 +105,7 @@ void save_game(cgame g, char* filename) {
 		fprintf(savefile, "S\n");
 	else
 		fprintf(savefile, "N\n");
-	for(int y = 0; y < h; y++){
+	for(int y = h-1; y >= 0 ; y--){
 		for(int x = 0; x < w; x++){
 			print_piece(savefile, get_piece(g, x, y), get_current_dir(g, x, y));
 		}
