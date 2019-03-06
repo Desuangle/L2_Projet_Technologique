@@ -13,6 +13,8 @@ int main(int argc, char* argv[]) {
 	game g = load_game(argv[2]);
 	option o = check_option(argv[1]);
 	solver(g, o, argv[3]);
+	delete_game(g);
+	g=NULL;
 }
 
 void usage(){
@@ -53,7 +55,8 @@ void solver(cgame g, option o, char* filename) {
 	solver_rec(g2, o, 0, &n, filename);
 	//return n;
 	solver_print_nbsolv_or_no_sol(o,&n,filename);
-
+	delete_game(g2);
+	g2=NULL;
 }
 
 void solver_rec(game g, option o, int i, int* n, char* filename) {
@@ -100,18 +103,20 @@ void solver_rec(game g, option o, int i, int* n, char* filename) {
 	}
 }
 
-void solver_print(game g,int *c,option opt,char* filename)
+void solver_print(game g,int *c,option opt,char* prefix)
 {
 	*c=*c+1;
 	if (opt == FIND_ONE)
 	{
-			save_game(g, filename);
-			exit(EXIT_SUCCESS);
+		char *chaine = (char*) malloc(SIZE_PREFIX * sizeof(char));
+		sprintf(chaine, "%s.sol", prefix);
+		save_game(g, prefix);
+		exit(EXIT_SUCCESS);
 	}
 	else if (opt == FIND_ALL)
 	{
 		char *chaine = (char*) malloc(SIZE_PREFIX * sizeof(char));
-		sprintf(chaine, "%s%d.sol", filename, *c);
+		sprintf(chaine, "%s%d.sol", prefix, *c);
 		save_game(g,chaine);
 	}
 }
