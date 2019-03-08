@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 3.7)
 #project(net text V2)
 project(net_text_V2)
 set(CMAKE_BUILD_TYPE DEBUG)
