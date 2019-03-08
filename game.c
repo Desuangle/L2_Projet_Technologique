@@ -268,70 +268,26 @@ bool is_edge_coordinates(cgame g, int x, int y, direction dir) {
 bool is_edge(piece piece, direction orientation, direction dir) {
 	///////////////_SEGMENT_/////////////////
 	if(piece == SEGMENT) {
-		if(orientation == N || orientation == S) //// SEGMENT= | /////
-			return dir == N || dir == S;
-		else //// SEGMENT= - /////
-			return dir == W || dir == E;
+		return dir==orientation || dir==opposite_dir(orientation);
 	}
 	///////////////_test_LEAF_////////////////////
 	if(piece == LEAF) {
-		switch(orientation) {
-		case N: //// LEAF= ^ /////
-			return dir == N;
-			break;
-		case S: //// LEAF= v /////
-			return dir == S;
-			break;
-		case E: //// LEAF= > /////
-			return dir == E;
-			break;
-		case W: //// LEAF= < /////
-			return dir == W;
-			break;
-		default:
-			return false;
-		}
+		return orientation==dir;
 	}
 	///////////////_test_CORNER_///////////////////
 	if(piece == CORNER) {
-		switch(orientation) {
-		case N: //// CORNER= └ /////
-			return dir == N || dir == E;
-			break;
-		case S: //// CORNER= ┐ /////
-			return dir == S || dir == W;
-			break;
-		case E: //// CORNER= ┌ /////
-			return dir == S || dir == E;
-			break;
-		case W: //// CORNER= ┘ /////
-			return dir == W || dir == N;
-			break;
-		default:
-			return false;
-		}
+		return dir==orientation || dir==(orientation+1)%4;
 	}
 	///////////////_test_TEE_///////////////////
 	if(piece == TEE) {
-		switch(orientation) {
-		case N: //// TEE= ┴ /////
-			return dir == N || dir == E || dir == W;
-			break;
-		case S: //// TEE= ┬ /////
-			return dir == S || dir == E || dir == W;
-			break;
-		case W: //// TEE= ┤ /////
-			return dir == N || dir == S || dir == W;
-			break;
-		case E: //// TEE= ├ /////
-			return dir == N || dir == E || dir == S;
-			break;
-		default:
-			return false;
-		}
+		return dir!=opposite_dir(orientation);
 	}
 	///////////////_test_CROSS_/////////////////
-	return piece == CROSS;
+	if(piece == CROSS){
+		return true;
+	}
+	fprintf(stderr,"is_edge: unvalid piece");
+	exit(EXIT_FAILURE);
 }
 
 /**

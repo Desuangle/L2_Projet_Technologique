@@ -109,6 +109,8 @@ int main(int argc, char* argv[]) {
 	game g = load_game(argv[2]);
 	option o = check_option(argv[1]);
 	solver(g, o, argv[3]);
+	delete_game(g);
+	g=NULL;
 }
 
 void usage(){
@@ -148,7 +150,8 @@ void solver(cgame g, option o, char* filename) {
 	int n = 0;
 	solver_rec(g2, o, 0, &n, filename);
 	solver_print_nbsolv_or_no_sol(o,&n,filename);
-
+	delete_game(g2);
+	g2=NULL;
 }
 
 
@@ -282,7 +285,4 @@ void create_file(char* filename, char* msg) {
 	}
 	fprintf(savefile, "%s\n", msg);
 	fclose(savefile);
-	
-	
 }
-
