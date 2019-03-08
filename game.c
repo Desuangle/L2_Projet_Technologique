@@ -1,484 +1,380 @@
-#include <assert.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <assert.h>
+#include <time.h>
 #include "game.h"
+#include <unistd.h>
 
+#define GAME_WIDTH 5
+#define GAME_HEIGHT 5
+#define NB_DIR 4  // la quantité de direction (N S W E), 4 en total
 typedef unsigned int uint;
 
-struct game_s {
-	int width;
-	int height;
-	piece* p;
-	direction* d;
-	direction* d_init;
+// game_s est la définition de type game. il contient 1- la largeur , 2- l'hauteur, 3-les types des pièces, 4-les directions des pièces ,
+//5-les directions de départ(direction* start) et l'état de wrapping de jeu.
+
+
+struct game_s{
+	uint width;
+	uint height;
+	piece* piece;
+	direction* direction;
+	direction* start;      // les directions de départ
 	bool wrapping;
 };
-#define DEFAULT_SIZE 5
 
-/**
- * @file game.c
- * @brief Fichier source du jeu 'Net'. Voir game.h pour plus d'informations.
-**/
+typedef enum c_code_e {NOT_EXPLORED = 0, CONNEXE = 1, ERROR_CASE = 2} c_code;
+//***********************************************//
 
-game new_game_ext(int width, int height, piece* pieces, direction* initial_directions, bool wrapping) {
-	if(pieces == NULL || initial_directions == NULL) {
-		fprintf(stderr, "new_game_ext: NULL pointers\n");
-		exit(EXIT_FAILURE);
-	}
-	if(width < 1 || height < 1) {
-		fprintf(stderr, "new_game_ext: invalid param\n");
-		exit(EXIT_FAILURE);
-	}
-	game g = (game)malloc(sizeof(struct game_s));
-	if(g == NULL) {
-		fprintf(stderr, "new_game_ext: Error malloc g\n");
-		exit(EXIT_FAILURE);
-	}
-	g->p = (piece*)malloc((width * height) * sizeof(piece));
-	if(g->p == NULL) {
-		fprintf(stderr, "new_game_ext: Error malloc g->p\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	g->d = (direction*)malloc((width * height) * sizeof(direction));
-	if(g->d == NULL) {
-		fprintf(stderr, "new_game_ext: Error malloc g->d\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	g->d_init = (direction*)malloc((width * height) * sizeof(direction));
-	if(g->d_init == NULL) {
-		fprintf(stderr, "new_game_ext: Error malloc g->d_init\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	for(int i = 0; i < width * height; i++) {
-		g->p[i] = pieces[i];
-		g->d[i] = initial_directions[i];
-		g->d_init[i] = initial_directions[i];
-	}
-	g->height = height;
-	g->width = width;
-	g->wrapping = wrapping;
-	return g;
+
+static direction next_dir(direction dir){ //prend la prochaine direction dans le sens des aiguilles d'une montre
+	direction tab[NB_DIR]= {E,S,W,N};  //voir opposite_dir pour plus de précision
+	return tab[dir];
 }
 
-bool is_wrapping(cgame g) {
-	if(g == NULL) {
-		fprintf(stderr, "is_wrapping: pointeur NULL\n");
-		exit(EXIT_FAILURE);
-	}
+static direction prev_dir(direction dir){ // pareil dans l'autre sens
+	direction tab[NB_DIR]={W,N,E,S};
+	return tab[dir];
+}
+
+
+//****************************************************//
+//Les definitions de chacune des fonctions utilisées se trouvent dans game.h
+//le calcul x+(g->width*y) est utilisé plusieur fois, voir le commentaire de set_piece pour l'explication
+
+bool is_wrapping(cgame g){
+	assert(g);
 	return g->wrapping;
 }
+static int index (cgame game, int x, int y){ // fonction auxiliaire, trouver l'index de la pièce actuelle
+	if(x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game)){
+		fprintf(stderr, "Invalid coordinates 0");
+		exit(EXIT_FAILURE);
+	}
+	return (game->width * y) + x;
+}
 
-game new_game_empty_ext(int width, int height, bool wrapping) {
-	if(width < 1 || height < 1) {
-		fprintf(stderr, "New_game_empty_ext: Invalid param\n");
+
+game new_game_empty(){
+	game g = new_game_empty_ext(GAME_WIDTH,GAME_HEIGHT, false);
+	return g;
+}
+
+game new_game_empty_ext(int width, int height, bool wrapping){
+	if(width <= 0 || height <= 0){
+		fprintf(stderr, "Invalid width and/or height");
 		exit(EXIT_FAILURE);
 	}
-	game g = malloc(sizeof(struct game_s));
-	if(g == NULL) {
-		fprintf(stderr, "new_game_empty_ext: Error malloc g\n");
+	game g;
+	g = (game) malloc(sizeof(struct game_s));
+	if(g == NULL){
+		fprintf(stderr, "Not enough memory");
 		exit(EXIT_FAILURE);
 	}
-	g->p = (piece*)malloc((width * height) * sizeof(piece));
-	if(g->p == NULL) {
-		fprintf(stderr, "new_game_empty_ext: Error malloc g->p\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	g->d = (direction*)calloc((width * height), sizeof(direction));
-	if(g->d == NULL) {
-		fprintf(stderr, "new_game_empty_ext: Error malloc g->d\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	g->d_init = (direction*)calloc((width * height), sizeof(direction));
-	if(g->d_init == NULL) {
-		fprintf(stderr, "new_game_empty_ext: Error malloc g->d_init\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	for(int i = 0; i < (width * height); i++) {
-		g->p[i] = EMPTY;
-	}
+	g->width =  width;
 	g->height = height;
-	g->width = width;
 	g->wrapping = wrapping;
+	g->piece = (piece *) malloc((g->width * g->height) * sizeof(piece));
+	if(g->piece == NULL){
+		fprintf(stderr, "Not enough memory");
+		exit(EXIT_FAILURE);
+	}
+	g->direction = (direction *) malloc((g->width * g->height) * sizeof(direction));
+	if(g->direction == NULL){
+		fprintf(stderr, "Not enough memory");
+		exit(EXIT_FAILURE);
+	}
+	g->start = (direction *) malloc((g->width * g->height) * sizeof(direction));
+	if(g->start == NULL){
+		fprintf(stderr, "Not enough memory");
+		exit(EXIT_FAILURE);
+	}
+	piece piece_game[] = {EMPTY};
+	direction dir_game[] = {N};
+	for(int y = 0; y < height; y++){
+		for(int x = 0; x < width; x++){
+			set_piece(g, x, y, piece_game[0], dir_game[0]);
+		}
+	}
 	return g;
 }
 
-game new_game_empty() {
-	game g = malloc(sizeof(struct game_s));
-	if(g == NULL) {
-		fprintf(stderr, "new_game_empty: Error malloc g\n");
+game new_game(piece *pieces, direction *initial_directions){
+	if(pieces == NULL || initial_directions == NULL){
+		fprintf(stderr, "Invalid pieces or initial_directions tab");
 		exit(EXIT_FAILURE);
 	}
-	g->p = (piece*)malloc((DEFAULT_SIZE * DEFAULT_SIZE) * sizeof(piece));
-	if(g->p == NULL) {
-		fprintf(stderr, "new_game_empty: Error malloc g->p\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	g->d = (direction*)calloc(DEFAULT_SIZE * DEFAULT_SIZE, sizeof(direction));
-	if(g->d == NULL) {
-		fprintf(stderr, "new_game_empty: Error malloc g->d\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	g->d_init = (direction*)calloc(DEFAULT_SIZE * DEFAULT_SIZE, sizeof(direction));
-	if(g->d_init == NULL) {
-		fprintf(stderr, "new_game_empty: Error malloc g->d_init\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	for(int i = 0; i < DEFAULT_SIZE * DEFAULT_SIZE; i++) {
-		g->p[i] = EMPTY;
-	}
-	g->height = DEFAULT_SIZE;
-	g->width = DEFAULT_SIZE;
+	game g = new_game_ext(GAME_WIDTH,GAME_HEIGHT,pieces,initial_directions,false);
 	return g;
 }
 
-game new_game(piece* pieces, direction* initial_directions) {
-	if(pieces == NULL || initial_directions == NULL) {
-		fprintf(stderr, "new_game: NULL pointers\n");
+game new_game_ext(int width, int height, piece *pieces, direction *initial_directions, bool wrapping){
+	if(pieces == NULL || initial_directions == NULL){
+		fprintf(stderr, "Invalid pieces or initial_directions tab");
 		exit(EXIT_FAILURE);
 	}
-	game g = (game)malloc(sizeof(struct game_s));
-	if(g == NULL) {
-		fprintf(stderr, "new_game: Error malloc g\n");
+	if(width <= 0 || height <= 0){
+		fprintf(stderr, "Invalid width and/or height");
 		exit(EXIT_FAILURE);
 	}
-	g->p = (piece*)malloc((DEFAULT_SIZE * DEFAULT_SIZE) * sizeof(piece));
-	if(g->p == NULL) {
-		fprintf(stderr, "new_game: Error malloc g->p\n");
-		delete_game(g);
+	game g;
+	g = (game) malloc(sizeof(struct game_s));
+	if(g == NULL){
+		fprintf(stderr, "Not enough memory");
 		exit(EXIT_FAILURE);
 	}
-	g->d = (direction*)malloc((DEFAULT_SIZE * DEFAULT_SIZE) * sizeof(direction));
-	if(g->d == NULL) {
-		fprintf(stderr, "new_game: Error malloc g->d\n");
-		delete_game(g);
+	g->width = width;
+	g->height = height;
+	g->wrapping = wrapping;
+	g->piece = (piece *) malloc((g->width * g->height) * sizeof(piece));
+	if(g->piece == NULL){
+		fprintf(stderr, "Not enough memory");
 		exit(EXIT_FAILURE);
 	}
-	g->d_init = (direction*)malloc((DEFAULT_SIZE * DEFAULT_SIZE) * sizeof(direction));
-	if(g->d_init == NULL) {
-		fprintf(stderr, "new_game: Error malloc g->d_init\n");
-		delete_game(g);
+	g->direction = (direction *) malloc((g->width * g->height) * sizeof(direction));
+	if(g->direction == NULL){
+		fprintf(stderr, "Not enough memory");
 		exit(EXIT_FAILURE);
 	}
-	for(int i = 0; i < DEFAULT_SIZE * DEFAULT_SIZE; i++) {
-		g->p[i] = pieces[i];
-		g->d[i] = initial_directions[i];
-		g->d_init[i] = initial_directions[i];
+	g->start = (direction *) malloc((g->width * g->height) * sizeof(direction));
+	if(g->start == NULL){
+		fprintf(stderr, "Not enough memory");
+		exit(EXIT_FAILURE);
 	}
-	g->height = DEFAULT_SIZE;
-	g->width = DEFAULT_SIZE;
+	for(uint i = 0; i < g->width * g->height; i++){
+			g->piece[i] = pieces[i];
+			g->direction[i] = initial_directions[i];
+			g->start[i] = initial_directions[i];
+	}
 	return g;
 }
 
-void set_piece(game g, int x, int y, piece piece, direction orientation) {
-	if(g == NULL) {
-		fprintf(stderr, "set_piece: pointeur NULL\n");
+void set_piece(game g, int x, int y, piece piece, direction orientation){ // x+(g->width*y) qui est utilisé ici et dans d'autre code permet de convertir les valeurs x et y en un indice pour
+	assert(g);                                                        // le tableau de piece ou de direction
+	g->piece[x+(g->width*y)] = piece;
+	g->direction[x+(g->width*y)] = orientation;
+	g->start[x+(g->width*y)] = orientation;
+}
+
+void shuffle_dir(game g){
+	assert(g);
+	direction all_dir[] = {N,E,S,W};
+	uint x = ((uint)RAND_MAX+1)/NB_DIR;  //on met à l'echelle rand_max pour qu'il soit proportionel à 4, car en le divisant (divison entiere) puis en le multipliant on elimine le reste de la division par 4
+	uint limite = x * NB_DIR;
+	for(uint i = 0; i < g->width * g->height; i++){
+		uint j = rand();
+		while(j >= limite) //on relance tous les rand() qui donnent sur un nombre entre rand_max et rand_max - (rand_max%4) on garde comme cela qu'un nombre de possibilités divisibles par 4
+			j = rand();
+		g->direction[i] = all_dir[(j/x)];
+	}
+}
+
+int game_height(cgame game){
+	assert(game);
+	return game->height;
+}
+
+int game_width(cgame game){
+	assert(game);
+	return game->width;
+}
+
+void rotate_piece_one(game game, int x, int y){
+	if( x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game) ){
+		fprintf(stderr,"Les cordonnees entrees ne sont pas correctes, veuillez-reessayer");
 		exit(EXIT_FAILURE);
 	}
-	if(piece < -1 || piece > 4 || orientation < 0 || orientation > 3 || x >= g->width || y >= g->height || x < 0 || y < 0) {
-		// si la piece ou son orientation n'ont pas de correspondance avec leurs
-		// typedef enum (dans game.h) ou que les positions sont hors du tableau
-		fprintf(stderr, "set_piece: Incorrect param!\n");
-		delete_game(g);
+	rotate_piece(game,x,y,1); //il s'agis juste d'utilisé rotate_piece une pour avancé d'un cran
+}
+
+
+
+void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
+	if( x < 0 || x >= game_width(game)|| y <0 || y >= game_height(game)){
+		fprintf(stderr,"Les cordonnees entrees ne sont pas correctes, veuillez-reessayer");
 		exit(EXIT_FAILURE);
 	}
-	int w = g->width;
-	// x = position sur la largeur, y = position sur la hauteur donc position dans
-	// le tableau = x + (y * largeur du jeux)
-	g->p[x + y * w] = piece;
-	g->d[x + y * w] = orientation;
-	g->d_init[x + y * w] = orientation;
+	if(nb_cw_quarter_turn >= 0){
+		direction current = get_current_dir(game,x,y);
+		int next = (current + nb_cw_quarter_turn)%NB_DIR; //on additione l'indice de la direction actuelel + le nombre de tour, le reste de la division par 4 donne l'indice de la nouvelle direction
+		current = (direction) next;
+		set_piece_current_dir(game,x,y,current);
+	}else{                                                           //cas ou nb_cw_quarter_turn est negatif (dans ce cas la on tourne le nombre de fois necessaire dans l'autre sens)
+		for(int i = 0; i > nb_cw_quarter_turn; i--)
+			set_piece_current_dir(game,x,y,prev_dir(get_current_dir(game,x,y)));
+	}
+
 }
 
-void shuffle_dir(game g) {
-	if(g == NULL) {
-		fprintf(stderr, "set_piece: pointeur NULL\n");
-		exit(EXIT_FAILURE);
-	}
-
-	int w = g->width;
-	int h = g->height;
-	for(int y = 0; y < h; y++) {
-		for(int x = 0; x < w; x++) {
-			g->d[x + (w * y)] = rand() % 4; // géneration d'un chiffre entre 0 et 3
-											// qui correspond aux valeur dans
-											// type_enum
-		}
-	}
+void set_piece_current_dir (game game, int x, int y, direction dir){
+	assert(game);
+	game->direction[index(game,x,y)] = dir;
 }
 
-int game_height(cgame game) {
-	if(game) {
-		return game->height;
-	}
-	fprintf(stderr, "game_height : Appel avec un pointeur NULL\n");
-	exit(EXIT_FAILURE);
+bool is_edge_coordinates(cgame g, int x, int y, direction dir){
+	return is_edge(get_piece(g,x,y),get_current_dir(g,x,y),dir); //il s'agis juste de faire is_edge à une position donné
 }
 
-int game_width(cgame game) {
-	if(game) {
-		return game->width;
-	}
-	fprintf(stderr, "game_width: appel avec un pointeur NULL\n");
-	exit(EXIT_FAILURE);
-}
 
-void rotate_piece_one(game game, int x, int y) {
-	if(game) {
-		if(x < game->width && y < game->height) {
-			game->d[y * game->width + x] = (game->d[y * game->width + x] + 1) % 4;
-		}
-	}
-}
 
-void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn) {
-	if(game) {
-		if(x < game->width && y < game->height) {
-			game->d[y * game->width + x] = (game->d[y * game->width + x] + nb_cw_quarter_turn) % 4;
-		}
-	}
-}
-
-void set_piece_current_dir(game game, int x, int y, direction dir) {
-	if(game) {
-		if(x < game->width && y < game->height) {
-			game->d[y * game->width + x] = dir;
-		}
-	}
-}
-
-bool is_edge_coordinates(cgame g, int x, int y, direction dir) {
-	// assert( (x >= 0) && (x < (*g).width) && (y>= 0) && (y<(*g).height) );
-	int width = g->width;
-	piece p = g->p[y * width + x];	 // récupérer les pieces du jeux
-	direction d = g->d[y * width + x]; // récupérer les directions du jeux
-	return is_edge(p, d, dir);
-}
-
-bool is_edge(piece piece, direction orientation, direction dir) {
-	///////////////_SEGMENT_/////////////////
-	if(piece == SEGMENT) {
-		return dir==orientation || dir==opposite_dir(orientation);
-	}
-	///////////////_test_LEAF_////////////////////
-	if(piece == LEAF) {
-		return orientation==dir;
-	}
-	///////////////_test_CORNER_///////////////////
-	if(piece == CORNER) {
-		return dir==orientation || dir==(orientation+1)%4;
-	}
-	///////////////_test_TEE_///////////////////
-	if(piece == TEE) {
-		return dir!=opposite_dir(orientation);
-	}
-	///////////////_test_CROSS_/////////////////
-	if(piece == CROSS){
+bool is_edge(piece piece, direction orientation, direction dir){
+	if(piece == EMPTY){            //case vide ne connecte jamais
+		return false;
+	}else if(piece == CROSS){   //Cross connecte dans les 4 sens c'est-à-dire toujours
 		return true;
-	}
-	fprintf(stderr,"is_edge: unvalid piece");
-	exit(EXIT_FAILURE);
-}
-
-/**
- * On utilise le fait que la direction est une énumération, avec N=0, E=1, S=2, W=3. On remarque que les directions opposées sont séparées par 2 (S=N+2, W=E+2). La formule est donc (dir + 2) modulo 4.
- */
-direction opposite_dir(direction dir) { return (dir + 2) % 4; }
-
-game copy_game(cgame g_src) {
-	int width = (*g_src).width;
-	int  height = (*g_src).height;
-	bool wrapping = (*g_src).wrapping;
-	game g = new_game_empty_ext(width,height,wrapping);
-	for(int i = 0; i < (*g).width * (*g).height; i++) {
-		(*g).p[i] = (*g_src).p[i];
-		(*g).d[i] = (*g_src).d[i];
-		(*g).d_init[i] = (*g_src).d_init[i];
-	}
-	return g;
-}
-
-void delete_game(game g) {
-	if(g != NULL) {
-		free(g->p);
-		free(g->d);
-		free(g->d_init);
-		free(g);
+	}else if(piece == LEAF){       //Leaf connecte seulement dans le sens vers lequel il oriente
+		return orientation == dir;
+	}else if(piece == SEGMENT){       //Segment connecte vers son orientation + l'inverse
+		return orientation == dir || orientation == opposite_dir(dir);
+	}else if(piece == CORNER){       //Corner connecte vers son orientation + la prochaine clockwise
+		return orientation == dir || next_dir(orientation) == dir;
+	}else{                      //il ne reste plus que Tee qui connecte partout sauf derriere lui
+		return !(orientation == opposite_dir(dir));
 	}
 }
 
-piece get_piece(cgame game, int x, int y) {
-	if(game == NULL || game->p == NULL) {
-		fprintf(stderr, "get_piece: call on NULL pointer\n");
-		exit(EXIT_FAILURE);
-	}
-	int wid = game->width;
-	int hei = game->height;
-	if(x < 0 || x >= wid || y < 0 || y >= hei) {
-		fprintf(stderr, "get_piece: call on unvalid coordinates %d %d\n", x, y);
-		exit(EXIT_FAILURE);
-	}
-	return (*game).p[x + y * wid];
+direction opposite_dir(direction dir){
+	direction tab[NB_DIR] = {S,W,N,E}; //Avec la propriété des enum N vaut 0 puis E vaut 1 ect donc on peut s'en servir comme indice
+	return tab[dir];
 }
 
-direction get_current_dir(cgame g, int x, int y) {
-	if(g == NULL || g->d == NULL) {
-		fprintf(stderr, "get_current_dir: call on NULL pointer\n");
+game copy_game (cgame g_src){
+	game copy = (game)malloc(sizeof(struct game_s));
+	if(!copy){
+		fprintf(stderr,"not enough memory !\n");
 		exit(EXIT_FAILURE);
 	}
-	int wid = g->width;
-	int hei = g->height;
-	if(x < 0 || x >= wid || y < 0 || y >= hei) {
-		fprintf(stderr, "get_current_dir: call on unvalid coordinates\n");
+	copy->direction = (direction*)malloc((g_src->width)*(g_src->height)*sizeof(direction));
+	copy->start = (direction*)malloc((g_src->width)*(g_src->height)*sizeof(direction));
+	copy->piece = (piece*)malloc((g_src->width)*(g_src->height)*sizeof(piece));
+	if(!copy->direction || !copy->start || !copy->piece){
+		fprintf(stderr,"not enough memory !\n");
 		exit(EXIT_FAILURE);
 	}
-	return *(g->d + x + y * wid);
+	copy->height = g_src->height;
+	copy->width = g_src->width;
+	copy->wrapping = g_src->wrapping;
+	for(uint i = 0; i < g_src->width * g_src->height; i++){            //on ne copie pas les tableaux directement car ce sont des pointeurs, on copie leur elements
+		copy->piece[i] = g_src->piece[i];
+		copy->direction[i] = g_src->direction[i];
+		copy->start[i] = g_src->start[i];
+	}
+	return copy;
 }
 
-bool is_connected_coordinates(cgame g, int x, int y, direction d);
-bool all_pieces_connected(cgame g);
-void aux_all_pieces_connected(cgame g, int x, int y, bool* v);
-bool is_game_over(cgame g) {
-	if(!g && !g->p && !g->d && !g->d_init) {
-		fprintf(stderr, "is_game_over : NULL pointer\n");
+void delete_game (game g){ //on free d'abord les pointeurs pointés par g pour ne pas les perdre
+   	free(g->start);
+   	free(g->direction);
+  	free(g->piece);
+   	free(g);
+}
+
+
+
+piece get_piece(cgame game, int x, int y){
+	assert(game);
+	if(x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game)){
+		fprintf(stderr, "Invalid coordinates 1");
+		exit(EXIT_FAILURE);	}
+
+	return game->piece[index(game,x,y)];
+}
+
+direction get_current_dir(cgame game, int x, int y){
+	assert(game);
+	if(x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game)){
+		fprintf(stderr, "Invalid coordinates 2");
 		exit(EXIT_FAILURE);
 	}
-	for(uint i = 0; i < g->width * g->height; i++) { // i = index
-		for(direction d = 0; d < 4; d++) {			 // d = direction
-			// 1-
-			if(is_edge_coordinates(g, i % g->width /*x*/, i % g->width /*y*/, d) && !is_connected_coordinates(g, i % g->width /*x*/, i % g->width /*y*/, d)) {
+
+	return game->direction[index(game,x,y)];
+}
+
+//fonction qui test si le game est connexe sans aucun loop et renvoie un tableau de 0,1 ou 2 qui est ensuite decodé pour voir si le game est valide (tableau remplie de 1)
+
+int** connexe_without_loop(cgame g,int** tab,int x,int y,int previous,int* error){
+	if(get_piece(g,x,y)==EMPTY){  //cas où la case est juste empty on met la case en erreur
+		tab[x][y] = ERROR_CASE;        // ici 2 est utilisé pour coder une erreur et sera detecté dans game_over, 1 code les cases ou on est déja passé et 0 les cases qu'on n'a jamais emprunté
+		*error = 1;
+		return tab;
+	}
+	if(tab[x][y]==CONNEXE){             //cas où on est deja passé par cette case, (detection de boucle) on met la case en erreur
+		tab[x][y] = ERROR_CASE;
+		*error = 1;
+		return tab;
+	}
+	direction set_dir[] = {N,E,S,W};
+	tab[x][y] = CONNEXE;
+	for(int i = 0; i < NB_DIR;i++){
+		if(is_edge_coordinates(g,x,y,set_dir[i]) && previous != set_dir[i] && (tab[x][y] == CONNEXE) && *error == 0){ //on ne teste pas la direction d'ou on vient pour na pas faire une boucle
+			int fy[] = {y+1,y,y-1,y};
+			int fx[] = {x,x+1,x,x-1};
+			int next_x = fx[i];
+			int next_y = fy[i];
+			if(fy[i] >= g->height || fx[i]>= g->width || fx[i] < 0 || fy[i] <0){   //on traite les cas ou on sort des bords du game
+				if(!is_wrapping(g)){      // cas sans wrapping
+					tab[x][y] = ERROR_CASE;
+					*error = 1;
+					return tab;
+				}else{
+					next_x = i == E ? 0 : i == W ? game_width(g)-1 : next_x;
+					next_y = i == N ? 0 : i == S ? game_height(g)-1 : next_y;
+				}
+			}                                 //cas où on ne déborde pas
+			if(is_edge_coordinates(g,next_x,next_y,opposite_dir(set_dir[i])))
+					tab = connexe_without_loop(g,tab,next_x,next_y,opposite_dir(i),error);
+			else{
+				tab[x][y] = ERROR_CASE;
+				*error = 1;
+				return tab;
+			}
+		}
+	}
+	return tab;
+}
+
+void free_connexe(cgame g,int** c){
+	if(!(c == NULL)){
+		int i;
+		for(i=0;i<game_width(g);i++){
+			free(c[i]);
+		}
+		free(c);
+	}
+}
+
+
+bool is_game_over (cgame g){
+	assert(g);
+	int** connexe = (int**) malloc(game_width(g)*sizeof(int*));
+	int error = 0;
+	if(connexe==NULL){
+		fprintf(stderr,"Not enough Memory !!");
+		exit(EXIT_FAILURE);
+	}
+	for(int i = 0 ; i < g->width;i++){
+		connexe[i] = (int*)calloc(game_height(g),sizeof(int));
+		if(connexe[i]==NULL){
+			fprintf(stderr,"Not enough Memory !!");
+			exit(EXIT_FAILURE);
+		}
+	}
+	connexe = connexe_without_loop(g,connexe,0,0,NB_DIR,&error); //ici 4 sert a représenter qu'il n'y a pas de direction précédente (l'argument previous detecte à l'aide d'un int entre 0 et 3 la direction precedente)
+	for(int x = 0; x < g->width;x++){
+		for(int y = 0 ; y < g->height;y++){
+			if(!(connexe[x][y]==1)){ //verifcation que toute les cases on été traversées (code 1) et sans erreurs (les erreur sont code 2), code 0 sont des cases en dehors de la composante connexe
+				free_connexe(g,connexe);
 				return false;
 			}
 		}
 	}
-	bool r = all_pieces_connected(g);
-	return r;
-}
-
-void restart_game(game g) {
-	if(g == NULL) {
-		fprintf(stderr, "restart_game: call on NULL pointer\n");
-		delete_game(g);
-		exit(EXIT_FAILURE);
-	}
-	int wid = g->width;
-	int hei = g->height;
-	for(int y = 0; y < hei; y++) {
-		for(int x = 0; x < wid; x++) {
-			set_piece_current_dir(g, x, y, g->d_init[x + y * wid]);
-		}
-	}
-}
-
-/*
-A partir d'ici : fonctions auxiliaires
-*/
-
-/**
- * @brief Renvoie si la pièce est connectée dans la direction donnée. On part du principe que la pièce donnée est connectable dans la direction donnée.
- * @param g : jeu
- * @param x : abscisse
- * @param y : ordonnée
- * @param d : direction où tester
- * @return un booléen.
-*/
-bool is_connected_coordinates(cgame g, int x, int y, direction d) {
-	if(!g) {
-		fprintf(stderr, "is_connected_coordinates: NULL pointer error\n");
-		exit(EXIT_FAILURE);
-	}
-	switch(d) {
-	case N:
-		if(is_wrapping(g))
-			return (is_edge_coordinates(g, x, (y + 1) % (game_height(g)), S));
-		else
-			return (is_edge_coordinates(g, x, y + 1, S));
-		break;
-	case E:
-		if(is_wrapping(g))
-			return (is_edge_coordinates(g, (x + 1) % (game_width(g)), y, W));
-		else
-			return (is_edge_coordinates(g, x + 1, y, W));
-		break;
-	case S:
-		if(is_wrapping(g))
-			return (is_edge_coordinates(g, x, (y - 1) % (game_height(g)), N));
-		else
-			return (is_edge_coordinates(g, x, y - 1, N));
-		break;
-	case W:
-		if(is_wrapping(g))
-			return (is_edge_coordinates(g, (x - 1) % (game_width(g)), y, E));
-		else
-			return (is_edge_coordinates(g, x - 1, y, E));
-		break;
-	default: // pb d'appel
-		return false;
-	}
-}
-
-/**
- * @brief Renvoie si, en partant de (0,0), on touche toutes les pièces du tableau.
- * On part d'un jeu dont on sait que toutes les pieces sont bien connectees entre elles.
- * @param g : game
-*/
-bool all_pieces_connected(cgame g) {
-	if(!g) {
-		// error
-	}
-	// bool virus[g->width*g->height];
-	bool* virus = (bool*)calloc(g->width * g->height, sizeof(bool));
-	aux_all_pieces_connected(g, 0, 0, virus);
-	for(uint i = 0; i < g->width * g->height; i++) {
-		if(virus[i] == false) { // la pièce n'est pas contaminée
-			free(virus);
-			return false;
-		}
-	}
-	free(virus);
-	// virus=NULL;
+	free_connexe(g,connexe);
 	return true;
 }
 
-/**
- * @brief Utilisé par all_pieces_connected pour la récursion.
- * @param g : game
- * @param x : abscisse
- * @param y : ordonnée
- * @param v : virus (le principe étant qu'à la fin de l'exécution, si toutes les cases sont contaminées par le virus, le jeu est finit)
- */
 
-void aux_all_pieces_connected(cgame g, int x, int y,
-	bool* v) { // v : virus ; fonction récursive
-	int index = x + y * g->width;
-	if(!v[index]) {		 // si la piece n'est pas encore infectée
-		v[index] = true; // on l'infecte
-		for(direction d = 0; d < 4; d++) {
-			if(is_edge_coordinates(g, x, y, d)) {
-				switch(d) {
-				case N:
-					aux_all_pieces_connected(g, x, (y + 1) % (game_height(g)), v);
-					break;
-				case E:
-					aux_all_pieces_connected(g, (x + 1) % (game_width(g)), y, v);
-					break;
-				case S:
-					aux_all_pieces_connected(g, x, (y - 1) % (game_height(g)), v);
-					break;
-				default: // W
-					aux_all_pieces_connected(g, (x - 1) % (game_width(g)), y, v);
-				}
-			}
-		}
+void restart_game(game g){
+	for(int i = 0; i < (g->width)*(g->height);i++ ){
+		g->direction[i] = g->start[i];             //on remet les direction initiales sauvegardées dans le tableau start
 	}
 }
