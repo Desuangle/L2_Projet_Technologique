@@ -283,7 +283,11 @@ bool is_edge(piece piece, direction orientation, direction dir) {
 		return dir!=opposite_dir(orientation);
 	}
 	///////////////_test_CROSS_/////////////////
-	return piece == CROSS;
+	if(piece == CROSS){
+		return true;
+	}
+	fprintf(stderr,"is_edge: unvalid piece");
+	exit(EXIT_FAILURE);
 }
 
 /**
