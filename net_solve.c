@@ -242,7 +242,7 @@ void solver_print(game g,int *c,option opt,char* prefix)
 	char *filename= (char*) malloc(SIZE_PREFIX * sizeof(char));
 	if (opt == FIND_ONE)
 	{
-		sprintf(filename, "%s.sol", prefix, *c);
+		sprintf(filename, "%s.sol", prefix);
 		save_game(g, filename);
 		free(filename);	
 		exit(EXIT_SUCCESS);
@@ -261,14 +261,14 @@ void solver_print_nbsolv_or_no_sol(option opt,int*c,char* prefix)
 	if ((opt == FIND_ONE || opt == FIND_ALL) && *c ==0)
 	{
 		if(opt == FIND_ONE)
-			sprintf(filename, "%s.sol", prefix, *c);
+			sprintf(filename, "%s.sol", prefix);
 		else
 			sprintf(filename, "%s.sol1", prefix, *c);
 		create_file(filename,"NO SOLUTION");
 	}
 	else if (opt == NB_SOL)
 	{
-		sprintf(filename, "%s.nbsol", prefix, *c);
+		sprintf(filename, "%s.nbsol", prefix);
 		char *contenu = (char*) malloc(SIZE_CHAINE * sizeof(char));
 		sprintf(contenu, "NB_SOL = %d", *c);
 		create_file(filename,contenu);
