@@ -263,7 +263,7 @@ void solver_print_nbsolv_or_no_sol(option opt,int*c,char* prefix)
 		if(opt == FIND_ONE)
 			sprintf(filename, "%s.sol", prefix);
 		else
-			sprintf(filename, "%s.sol1", prefix, *c);
+			sprintf(filename, "%s.sol%d", prefix, *c);
 		create_file(filename,"NO SOLUTION");
 	}
 	else if (opt == NB_SOL)
