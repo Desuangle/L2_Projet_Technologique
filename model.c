@@ -8,13 +8,27 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "model.h"
+#include "game.h"
+
+#define BACKGROUND "background.png"
+#define LEAF "leaf.png"
+#define SEGMENT "segment.png"
+#define CORNER "corner.png"
+#define TEE "tee.png"
+#define CROSS "cross.png"
 
 /* **************************************************************** */
      
 struct Env_t {  
-
-  /* PUT YOUR VARIABLES HERE */
-
+  SDL_Texture *background;
+  SDL_Texture *leaf;
+  SDL_Texture *segment;
+  SDL_Texture *corner;
+  SDL_Texture *tee;
+  SDL_Texture *cross;
+  int** piece_x, piece_y
+  piece** pieces
+  direction** dir
 }; 
      
 /* **************************************************************** */
@@ -22,8 +36,29 @@ struct Env_t {
 Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[])
 {  
   Env * env = malloc(sizeof(struct Env_t));
+  /* get current window size */
+  int w, h;
+  SDL_GetWindowSize(win, &w, &h);
 
-  /* PUT YOUR CODE HERE TO INIT TEXTURES, ... */
+  /* init background texture from PNG image */
+  env->background = IMG_LoadTexture(ren, BACKGROUND);
+  if(!env->background) ERROR("IMG_LoadTexture: %s\n", BACKGROUND);
+
+  /*init pieces texture from PNG image*/
+  env->leaf = IMG_LoadTexture(ren, LEAF);
+  if(!env->leaf) ERROR("IMG_LoadTexture: %s\n", LEAF);
+
+  env->segment = IMG_LoadTexture(ren, SEGMENT);
+  if(!env->segment) ERROR("IMG_LoadTexture: %s\n", SEGMENT);
+
+  env->corner = IMG_LoadTexture(ren, CORNER);
+  if(!env->corner) ERROR("IMG_LoadTexture: %s\n", CORNER);
+
+  env->tee = IMG_LoadTexture(ren, TEE);
+  if(!env->tee) ERROR("IMG_LoadTexture: %s\n", TEE);
+
+  env->cross = IMG_LoadTexture(ren, CROSS);
+  if(!env->cross) ERROR("IMG_LoadTexture: %s\n", CROSS);
 
   return env;
 }
@@ -54,7 +89,12 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
 
 void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
 {
-  /* PUT YOUR CODE HERE TO CLEAN MEMORY */
+  SDL_DestroyTexture(env->background);
+  SDL_DestroyTexture(env->leaf);
+  SDL_DestroyTexture(env->segment);
+  SDL_DestroyTexture(env->corner);
+  SDL_DestroyTexture(env->tee);
+  SDL_DestroyTexture(env->cross);
 
   free(env);
 }
