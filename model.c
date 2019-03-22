@@ -10,12 +10,12 @@
 #include "model.h"
 #include "game.h"
 
-#define BACKGROUND "background.png"
-#define LEAF "leaf.png"
-#define SEGMENT "segment.png"
-#define CORNER "corner.png"
-#define TEE "tee.png"
-#define CROSS "cross.png"
+#define FOND "sdl/fond.png"
+#define LEAF "sdl/leaf.png"
+#define SEGMENT "sdl/segment.png"
+#define CORNER "sdl/corner.png"
+#define TEE "sdl/tee.png"
+#define CROSS "sdl/cross.png"
 
 /* **************************************************************** */
      
@@ -41,8 +41,8 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[])
   SDL_GetWindowSize(win, &w, &h);
 
   /* init background texture from PNG image */
-  env->background = IMG_LoadTexture(ren, BACKGROUND);
-  if(!env->background) ERROR("IMG_LoadTexture: %s\n", BACKGROUND);
+  env->background = IMG_LoadTexture(ren, FOND);
+  if(!env->background) ERROR("IMG_LoadTexture: %s\n", FOND);
 
   /*init pieces texture from PNG image*/
   env->leaf = IMG_LoadTexture(ren, LEAF);
