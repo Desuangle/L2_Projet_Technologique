@@ -26,9 +26,9 @@ struct Env_t {
   SDL_Texture *corner;
   SDL_Texture *tee;
   SDL_Texture *cross;
-  int** piece_x, piece_y
-  piece** pieces
-  direction** dir
+  int** piece_x, piece_y;
+  piece** pieces;
+  direction** dir;
 }; 
      
 /* **************************************************************** */
