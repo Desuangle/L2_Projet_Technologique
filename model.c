@@ -10,12 +10,14 @@
 #include "model.h"
 #include "game.h"
 #include "game_io.h"
-#define IMG_FOND "sdl/fond.png"
-#define IMG_LEAF "sdl/leaf.png"
-#define IMG_SEGMENT "sdl/segment.png"
-#define IMG_CORNER "sdl/corner.png"
-#define IMG_TEE "sdl/tee.png"
-#define IMG_CROSS "sdl/cross.png"
+#define IMG_FOND "../sdl/fond.png"
+#define IMG_LEAF "../sdl/leaf.png"
+#define IMG_SEGMENT "../sdl/segment.png"
+#define IMG_CORNER "../sdl/corner.png"
+#define IMG_TEE "../sdl/tee.png"
+#define IMG_CROSS "../sdl/cross.png"
+
+void TournePiece(game g,int mouse_x, int mouse_y, int click, int hfenetre, int wfenetre, int hgame, int wgame);
 
 /* **************************************************************** */
      
@@ -115,8 +117,8 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
         current_piece = env->cross;
       SDL_QueryTexture(current_piece, NULL, NULL, &rect.w, &rect.h);
       rect.x = x * (w / w_jeu)/* - rect.w/2*/; rect.y = (h_jeu - y) * (h / h_jeu); rect.w = w / w_jeu; rect.h = h/h_jeu;
-      SDL_RenderCopy(ren, current_piece, NULL, &rect);
-      //SDL_RenderCopyEx(ren, env->pieces[p], NULL, &rect, 90*d, NULL, SDL_FLIP_NONE);  
+      //SDL_RenderCopy(ren, current_piece, NULL, &rect);
+      SDL_RenderCopyEx(ren, current_piece, NULL, &rect, 90*d, NULL, SDL_FLIP_NONE);  
     }
   }
 
@@ -158,7 +160,23 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
     case SDLK_ESCAPE:  return true; break;      
     }
   }  
-#endif  
+#endif
+
+  if(e->type == SDL_MOUSEBUTTONDOWN){
+  SDL_Point mouse; 
+  SDL_GetMouseState(&mouse.x, &mouse.y);
+  fprintf(stderr, "mouse x : %d mouse y : %d\n", mouse.x, mouse.y);
+  
+  if(e->button.button == SDL_BUTTON_LEFT)
+  {
+    TournePiece(env->jeu,mouse.x,mouse.y,1,w,h,game_height(env->jeu),game_width(env->jeu));
+    fprintf(stderr, "Dir_piece : %d\n", get_current_dir(env->jeu,0,0));
+    }
+  else
+  {
+    TournePiece(env->jeu,mouse.x,mouse.y,2,w,h,game_height(env->jeu),game_width(env->jeu));
+    }
+  }
 
   return false; /* don't quit */
 }
@@ -177,30 +195,18 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
   free(env);
 }
 
-if (e->type == SDL_MOUSEBUTTONDOWN){
-  SDL_Point mouse; 
-  SDL_GetMouseState(&mouse.x, &mouse.y);
-  if  e->button.button == SDL_BUTTON_LEFT)
-  {
-    TournePiece(g,mouse.x,mouse.y,"LEFT",*w,*h,game_height(g),game_width(g));
-  }
-  else
-  {
-    TournePiece(g,mouse.x,mouse.y,"RIGHT",*w,*h,game_height(g),game_width(g));
-  }
-}
-
-void TournePiece(game g,int mouse_x, int mouse_y, *char Click, int hfenetre, int wfenetre, int hgame, int wgame)
+void TournePiece(game g,int mouse_x, int mouse_y, int click, int hfenetre, int wfenetre, int hgame, int wgame)
 {
-  int piece_x= mouse_x /(wfenetre/wgame)
-  int piece_y= mouse_y /(hfenetre/hgame)
-  if (Click == LEFT)
+  int piece_x= mouse_x /(wfenetre/wgame);
+  int piece_y= mouse_y /(hfenetre/hgame);
+  fprintf(stderr, "Func x : %d Func y : %d\n", piece_x, piece_y);
+  if (click==1)
   {
-    rotate_piece(g,piece_x,piece_y,3)
+    rotate_piece(g,piece_x,piece_y,3);
   }
   else
   {
-    rotate_piece_one(g,piece_x,piece_y)
+    rotate_piece_one(g,piece_x,piece_y);
   }
 }
 /* **************************************************************** */
