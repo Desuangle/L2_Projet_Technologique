@@ -176,5 +176,31 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env)
 
   free(env);
 }
-     
+
+if (e->type == SDL_MOUSEBUTTONDOWN){
+  SDL_Point mouse; 
+  SDL_GetMouseState(&mouse.x, &mouse.y);
+  if  e->button.button == SDL_BUTTON_LEFT)
+  {
+    TournePiece(g,mouse.x,mouse.y,"LEFT",*w,*h,game_height(g),game_width(g));
+  }
+  else
+  {
+    TournePiece(g,mouse.x,mouse.y,"RIGHT",*w,*h,game_height(g),game_width(g));
+  }
+}
+
+void TournePiece(game g,int mouse_x, int mouse_y, *char Click, int hfenetre, int wfenetre, int hgame, int wgame)
+{
+  int piece_x= mouse_x /(wfenetre/wgame)
+  int piece_y= mouse_y /(hfenetre/hgame)
+  if (Click == LEFT)
+  {
+    rotate_piece(g,piece_x,piece_y,3)
+  }
+  else
+  {
+    rotate_piece_one(g,piece_x,piece_y)
+  }
+}
 /* **************************************************************** */
