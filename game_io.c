@@ -55,7 +55,7 @@ direction convert_direction(char tmp){
 
 game load_game(char* filename) {
 	if (filename==NULL){
-    	fprintf(stderr,"Problem opening file");
+    	fprintf(stderr,"Problem opening file\n");
         exit(EXIT_FAILURE);
     }
 	FILE* f=fopen(filename,"r");

@@ -31,7 +31,7 @@ set(SDL2_ALL_INC ${SDL2_INCLUDE_DIRS} ${SDL2_IMG_INCLUDE_DIRS} ${SDL2_TTF_INCLUD
 
 include_directories(${SDL2_ALL_INC})
 add_executable(net_sdl model.c main.c)
-target_link_libraries(net_sdl ${SDL2_ALL_LIBS} m)
+target_link_libraries(net_sdl ${SDL2_ALL_LIBS} m game)
 
 add_executable(net_text net_text.c)
 target_link_libraries(net_text game )
