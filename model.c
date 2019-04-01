@@ -10,12 +10,12 @@
 #include "model.h"
 #include "game.h"
 #include "game_io.h"
-#define FOND "sdl/fond.png"
-#define LEAF "sdl/leaf.png"
-#define SEGMENT "sdl/segment.png"
-#define CORNER "sdl/corner.png"
-#define TEE "sdl/tee.png"
-#define CROSS "sdl/cross.png"
+#define IMG_FOND "sdl/fond.png"
+#define IMG_LEAF "sdl/leaf.png"
+#define IMG_SEGMENT "sdl/segment.png"
+#define IMG_CORNER "sdl/corner.png"
+#define IMG_TEE "sdl/tee.png"
+#define IMG_CROSS "sdl/cross.png"
 
 /* **************************************************************** */
      
@@ -28,7 +28,7 @@ struct Env_t {
   SDL_Texture *cross;
   game jeu;
   int piece_x, piece_y;
-  SDL_Texture **pieces;
+  //SDL_Texture **pieces;
   //direction** dir;
 }; 
      
@@ -42,27 +42,32 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[])
   SDL_GetWindowSize(win, &w, &h);
 
   /* init background texture from PNG image */
-  env->background = IMG_LoadTexture(ren, FOND);
-  if(!env->background) ERROR("IMG_LoadTexture: %s\n", FOND);
+  env->background = IMG_LoadTexture(ren, IMG_FOND);
+  if(!env->background) ERROR("IMG_LoadTexture: %s\n", IMG_FOND);
 
   /*init pieces texture from PNG image*/
-  env->leaf = IMG_LoadTexture(ren, LEAF);
-  if(!env->leaf) ERROR("IMG_LoadTexture: %s\n", LEAF);
+  env->leaf = IMG_LoadTexture(ren, IMG_LEAF);
+  if(!env->leaf) ERROR("IMG_LoadTexture: %s\n", IMG_LEAF);
 
-  env->segment = IMG_LoadTexture(ren, SEGMENT);
-  if(!env->segment) ERROR("IMG_LoadTexture: %s\n", SEGMENT);
+  env->segment = IMG_LoadTexture(ren, IMG_SEGMENT);
+  if(!env->segment) ERROR("IMG_LoadTexture: %s\n", IMG_SEGMENT);
 
-  env->corner = IMG_LoadTexture(ren, CORNER);
-  if(!env->corner) ERROR("IMG_LoadTexture: %s\n", CORNER);
+  env->corner = IMG_LoadTexture(ren, IMG_CORNER);
+  if(!env->corner) ERROR("IMG_LoadTexture: %s\n", IMG_CORNER);
 
-  env->tee = IMG_LoadTexture(ren, TEE);
-  if(!env->tee) ERROR("IMG_LoadTexture: %s\n", TEE);
+  env->tee = IMG_LoadTexture(ren, IMG_TEE);
+  if(!env->tee) ERROR("IMG_LoadTexture: %s\n", IMG_TEE);
 
-  env->cross = IMG_LoadTexture(ren, CROSS);
-  if(!env->cross) ERROR("IMG_LoadTexture: %s\n", CROSS);
+  env->cross = IMG_LoadTexture(ren, IMG_CROSS);
+  if(!env->cross) ERROR("IMG_LoadTexture: %s\n", IMG_CROSS);
 
   /* load_game */
-  env->jeu = load_game(argv[1]);
+  if (argc==2) {
+    env->jeu = load_game(argv[1]);
+  }
+  else {
+    env->jeu = load_game("game34.txt");
+  }
   return env;
 }
      
@@ -79,28 +84,38 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   /* render background texture */
   SDL_RenderCopy(ren, env->background, NULL, NULL); /* stretch it */
 
-  piece p ;
+  piece p;
   direction d;
 
-  int w_jeu = w/game_width(env->jeu);
-  int h_jeu = h/game_height(env->jeu);
+  int w_jeu = game_width(env->jeu);
+  int h_jeu = game_height(env->jeu);
 
   /* init positions */
-  env->piece_x = w_jeu/2;
-  env->piece_y = h_jeu/2;
-
+  // env->piece_x = w_jeu/2;
+  // env->piece_y = h_jeu/2;
+  SDL_Texture* current_piece;
   for(int y=game_height(env->jeu)-1; y>=0 ;y--){
     for(int x=0; x<w_jeu; x++){
       p=get_piece(env->jeu,x,y);
       d=get_current_dir(env->jeu,x,y);
 
-      if (d==N || d== S){
-        rect.x = env->piece_x - w_jeu/2; rect.y = env->piece_y - h_jeu/2; rect.w=w_jeu; rect.h=h_jeu;
-      }else{
-        rect.x = env->piece_x - h_jeu/2; rect.y = env->piece_y - w_jeu/2; rect.w=h_jeu; rect.h=w_jeu;
-      }
-      SDL_QueryTexture(env->pieces[p], NULL, NULL, &rect.w, &rect.h);
-      SDL_RenderCopy(ren, env->pieces[p], NULL, &rect);
+      
+
+      if(p == LEAF)
+        current_piece = env->leaf;
+      else if (p == SEGMENT)
+        current_piece = env->segment;
+      else if (p == CORNER)
+        current_piece = env->corner;
+      else if (p == TEE)
+        current_piece = env->tee;
+      else if (p == CROSS)
+        current_piece = env->cross;
+      else
+        current_piece = env->cross;
+      SDL_QueryTexture(current_piece, NULL, NULL, &rect.w, &rect.h);
+      rect.x = x * (w / w_jeu)/* - rect.w/2*/; rect.y = (h_jeu - y) * (h / h_jeu); rect.w = w / w_jeu; rect.h = h/h_jeu;
+      SDL_RenderCopy(ren, current_piece, NULL, &rect);
       //SDL_RenderCopyEx(ren, env->pieces[p], NULL, &rect, 90*d, NULL, SDL_FLIP_NONE);  
     }
   }
