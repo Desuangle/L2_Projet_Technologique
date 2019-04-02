@@ -12,11 +12,13 @@ set(CMAKE_C_FLAGS"-std=c99 -Wall -g")
 set(SRCS
     game.c
     game_io.c
+    net_solve.c
     )
     
 set(HEADERS
     game.h
     game_io.h
+    net_solve.h
     )
 
 add_library(game ${SRCS} ${HEADERS})
