@@ -103,7 +103,7 @@ void show_grid(game g) {
 
 
 
-int main(int argc, char* argv[]) {
+/*int main(int argc, char* argv[]) {
 	if(argc != 4)
 		usage();
 	game g = load_game(argv[2]);
@@ -111,7 +111,7 @@ int main(int argc, char* argv[]) {
 	solver(g, o, argv[3]);
 	delete_game(g);
 	g=NULL;
-}
+}*/
 
 void usage(){
     printf("Usage: net_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>.\n");

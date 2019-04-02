@@ -224,10 +224,11 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
     case SDLK_DOWN:  env->piece_y += 10; break;
 	    */
     case SDLK_s: 
-      solver(env->jeu, FIND_ONE, "SDL_jeu.sol");
+      solver(env->jeu, FIND_ONE, "SDL_jeu");
       delete_game(env->jeu);
-      env->jeu=NULL;
-      env->jeu=load_game("SDL_jeu.sol");
+      //env->jeu=NULL;
+      env->jeu=load_game("SDL_jeu.sol"); 
+      break;
     case SDLK_ESCAPE:  return true; break;      
     }
   }  
