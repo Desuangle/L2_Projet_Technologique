@@ -9,7 +9,7 @@
 
           
 /* **************************************************************** */
-     
+#ifndef main    
 int main(int argc, char * argv[])
 { 
   /* initialize SDL2 and some extensions */
@@ -60,3 +60,4 @@ int main(int argc, char * argv[])
      
   return EXIT_SUCCESS;
 }
+#endif

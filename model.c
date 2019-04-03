@@ -10,19 +10,19 @@
 #include "model.h"
 #include "game.h"
 #include "game_io.h"
-#define IMG_FOND "./sdl/fond.png"
-#define IMG_EMPTY "./sdl/empty.png"
-#define IMG_LEAF "./sdl/leaf.png"
-#define IMG_SEGMENT "./sdl/segment.png"
-#define IMG_CORNER "./sdl/corner.png"
-#define IMG_TEE "./sdl/tee.png"
-#define IMG_CROSS "./sdl/cross.png"
-#define IMGRED_LEAF "./sdl/leaf_red.png"
-#define IMGRED_SEGMENT "./sdl/segment_red.png"
-#define IMGRED_CORNER "./sdl/corner_red.png"
-#define IMGRED_TEE "./sdl/tee_red.png"
-#define IMGRED_CROSS "./sdl/cross_red.png"
-#define FONT "./sdl/Arial.ttf"
+#define IMG_FOND "../sdl/fond.png"
+#define IMG_EMPTY "../sdl/empty.png"
+#define IMG_LEAF "../sdl/leaf.png"
+#define IMG_SEGMENT "../sdl/segment.png"
+#define IMG_CORNER "../sdl/corner.png"
+#define IMG_TEE "../sdl/tee.png"
+#define IMG_CROSS "../sdl/cross.png"
+#define IMGRED_LEAF "../sdl/leaf_red.png"
+#define IMGRED_SEGMENT "../sdl/segment_red.png"
+#define IMGRED_CORNER "../sdl/corner_red.png"
+#define IMGRED_TEE "../sdl/tee_red.png"
+#define IMGRED_CROSS "../sdl/cross_red.png"
+#define FONT "../sdl/Arial.ttf"
 #define FONTSIZE 56
 
 
@@ -52,6 +52,9 @@ struct Env_t {
 Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[])
 {  
   Env * env = malloc(sizeof(struct Env_t));
+
+  PRINT("Press S to solve the game.\n");
+
   /* get current window size */
   int w, h;
   SDL_GetWindowSize(win, &w, &h);
@@ -233,6 +236,12 @@ bool process(SDL_Window* win, SDL_Renderer* ren, Env * env, SDL_Event * e)
     case SDLK_UP:    env->piece_y -= 10; break;
     case SDLK_DOWN:  env->piece_y += 10; break;
 	    */
+    case SDLK_s: 
+      solver(env->jeu, FIND_ONE, "SDL_jeu");
+      delete_game(env->jeu);
+      //env->jeu=NULL;
+      env->jeu=load_game("SDL_jeu.sol"); 
+      break;
     case SDLK_ESCAPE:  return true; break;      
     }
   }  
