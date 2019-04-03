@@ -12,16 +12,15 @@ set(CMAKE_C_FLAGS"-std=c99 -Wall -g")
 set(SRCS
     game.c
     game_io.c
-    net_solve.c
     )
     
 set(HEADERS
     game.h
     game_io.h
-    net_solve.h
     )
 
 add_library(game ${SRCS} ${HEADERS})
+add_library(solve solve.c solve.h)
     
 # pkg-config --list-all  | grep -i sdl2
 include(FindPkgConfig)
@@ -33,7 +32,7 @@ set(SDL2_ALL_INC ${SDL2_INCLUDE_DIRS} ${SDL2_IMG_INCLUDE_DIRS} ${SDL2_TTF_INCLUD
 
 include_directories(${SDL2_ALL_INC})
 add_executable(net_sdl model.c main.c)
-target_link_libraries(net_sdl ${SDL2_ALL_LIBS} m game)
+target_link_libraries(net_sdl ${SDL2_ALL_LIBS} m game solve)
 
 add_executable(net_text net_text.c)
 target_link_libraries(net_text game )
@@ -50,8 +49,8 @@ target_link_libraries(test_walouini game )
 add_executable(test_mgendron test_mgendron.c)
 target_link_libraries(test_mgendron game )
 
-add_executable(net_solve net_solve.c)
-target_link_libraries(net_solve game )
+add_executable(net_solve solve_main.c)
+target_link_libraries(net_solve solve game)
 
 enable_testing()
 include (CTest)

@@ -1,117 +1,10 @@
 #include "game.h"
 #include "game_io.h"
-#include "net_solve.h"
+#include "solve.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-
-void show_grid(game g) {
-	printf("\n");
-	for(int i = 0; i < game_width(g); i++) {
-		printf("##");
-	}
-	printf("###\n");
-	/*
-    	beginning of the loop
-   	*/
-	for(int y = game_height(g) - 1; y >= 0; y--) { // vertical
-		printf("# ");
-		for(int x = 0; x < game_width(g); x++) { // horizontal
-			switch(get_piece(g, x, y)) {
-			case EMPTY:
-				printf(" ");
-				break;
-			case LEAF:
-				switch(get_current_dir(g, x, y)) {
-				case N:
-					printf("^");
-					break;
-				case S:
-					printf("v");
-					break;
-				case E:
-					printf(">");
-					break;
-				case W:
-					printf("<");
-					break;
-				}
-				break;
-			case SEGMENT:
-				if(get_current_dir(g, x, y) == N || get_current_dir(g, x, y) == S) {
-					printf("|");
-				} else {
-					printf("-");
-				}
-				break;
-			case CORNER:
-				switch(get_current_dir(g, x, y)) {
-				case N:
-					printf("└");
-					break;
-				case S:
-					printf("┐");
-					break;
-				case E:
-					printf("┌");
-					break;
-				case W:
-					printf("┘");
-					break;
-				}
-				break;
-			case TEE:
-				switch(get_current_dir(g, x, y)) {
-				case N:
-					printf("┴");
-					break;
-				case S:
-					printf("┬");
-					break;
-				case E:
-					printf("├");
-					break;
-				case W:
-					printf("┤");
-					break;
-				}
-				break;
-			case CROSS:
-				switch(get_current_dir(g, x, y)) {
-				case N:
-					printf("+");
-					break;
-				case S:
-					printf("+");
-					break;
-				case E:
-					printf("+");
-					break;
-				case W:
-					printf("+");
-					break;
-				}
-				break;
-			}
-			printf(" ");
-		} // end of x loop
-		printf("#\n");
-	}
-	printf("\n");
-}
-
-
-
-/*int main(int argc, char* argv[]) {
-	if(argc != 4)
-		usage();
-	game g = load_game(argv[2]);
-	option o = check_option(argv[1]);
-	solver(g, o, argv[3]);
-	delete_game(g);
-	g=NULL;
-}*/
 
 void usage(){
     printf("Usage: net_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>.\n");
@@ -148,18 +41,23 @@ option check_option(char* opt){
 void solver(cgame g, option o, char* filename) {
 	game g2 = copy_game(g);
 	int n = 0;
-	solver_rec(g2, o, 0, &n, filename);
-	solver_print_nbsolv_or_no_sol(o,&n,filename);
+    bool fini = false;
+	solver_rec(g2, o, 0, &n, filename, &fini);
+    if(!fini)
+	    solver_print_nbsolv_or_no_sol(o,&n,filename);
 	delete_game(g2);
 	g2=NULL;
 }
 
 
-void solver_rec(game g, option o, int i, int* n, char* filename) {
+void solver_rec(game g, option o, int i, int* n, char* filename, bool* fini) {
+    if(*fini)
+        return;
+
 	int w = game_width(g), h = game_height(g);
 	if(i == w * h) {
 		if(is_game_over(g))
-			solver_print(g, n, o, filename);
+			solver_print(g, n, o, filename, fini);
 		return;
 	}
 	int x = i%w, y = i/w;
@@ -232,11 +130,11 @@ void solver_rec(game g, option o, int i, int* n, char* filename) {
 		}
 		
 		if(bonne_dir)
-			solver_rec(g, o, i+1, n, filename);
+			solver_rec(g, o, i+1, n, filename, fini);
 	}
 }
 
-void solver_print(game g,int *c,option opt,char* prefix)
+void solver_print(game g,int *c,option opt,char* prefix, bool* fini)
 {
 	*c=*c+1;
 	char *filename= (char*) malloc(SIZE_PREFIX * sizeof(char));
@@ -244,8 +142,7 @@ void solver_print(game g,int *c,option opt,char* prefix)
 	{
 		sprintf(filename, "%s.sol", prefix);
 		save_game(g, filename);
-		free(filename);	
-		exit(EXIT_SUCCESS);
+		*fini = true;
 	}
 	else if (opt == FIND_ALL)
 	{		
