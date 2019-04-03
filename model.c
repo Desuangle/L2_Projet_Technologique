@@ -10,18 +10,20 @@
 #include "model.h"
 #include "game.h"
 #include "game_io.h"
-#define IMG_FOND "../sdl/fond.png"
-#define IMG_EMPTY "../sdl/empty.png"
-#define IMG_LEAF "../sdl/leaf.png"
-#define IMG_SEGMENT "../sdl/segment.png"
-#define IMG_CORNER "../sdl/corner.png"
-#define IMG_TEE "../sdl/tee.png"
-#define IMG_CROSS "../sdl/cross.png"
-#define IMGRED_LEAF "../sdl/leaf_red.png"
-#define IMGRED_SEGMENT "../sdl/segment_red.png"
-#define IMGRED_CORNER "../sdl/corner_red.png"
-#define IMGRED_TEE "../sdl/tee_red.png"
-#define IMGRED_CROSS "../sdl/cross_red.png"
+#define IMG_FOND "./sdl/fond.png"
+#define IMG_EMPTY "./sdl/empty.png"
+#define IMG_LEAF "./sdl/leaf.png"
+#define IMG_SEGMENT "./sdl/segment.png"
+#define IMG_CORNER "./sdl/corner.png"
+#define IMG_TEE "./sdl/tee.png"
+#define IMG_CROSS "./sdl/cross.png"
+#define IMGRED_LEAF "./sdl/leaf_red.png"
+#define IMGRED_SEGMENT "./sdl/segment_red.png"
+#define IMGRED_CORNER "./sdl/corner_red.png"
+#define IMGRED_TEE "./sdl/tee_red.png"
+#define IMGRED_CROSS "./sdl/cross_red.png"
+#define FONT "./sdl/Arial.ttf"
+#define FONTSIZE 56
 
 
 /* **************************************************************** */
@@ -41,7 +43,7 @@ struct Env_t {
   SDL_Texture *empty;
   game jeu;
   int piece_x, piece_y;
-  //SDL_Texture **pieces;
+  SDL_Texture *text;
   //direction** dir;
 }; 
      
@@ -93,6 +95,16 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[])
   env->endcross = IMG_LoadTexture(ren, IMGRED_CROSS);
   if(!env->endcross) ERROR("IMG_LoadTexture: %s\n", IMGRED_CROSS);
 
+  /* init text texture using Arial font */
+  SDL_Color color = { 0, 158, 253, 56 }; 
+  TTF_Font * font = TTF_OpenFont(FONT, FONTSIZE);
+  if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
+  TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
+  SDL_Surface * surf = TTF_RenderText_Blended(font, "You Win!", color); 
+  env->text = SDL_CreateTextureFromSurface(ren, surf);
+  SDL_FreeSurface(surf);
+  TTF_CloseFont(font);
+
   /* load_game */
   if (argc==2) {
     env->jeu = load_game(argv[1]);
@@ -129,14 +141,16 @@ void render(SDL_Window* win, SDL_Renderer* ren, Env * env)
   int h_jeu = game_height(env->jeu);
 
   /* init positions */
-  // env->piece_x = w_jeu/2;
-  // env->piece_y = h_jeu/2;
   SDL_Texture* current_piece;
   for(int y=game_height(env->jeu)-1; y>=0 ;y--){
     for(int x=0; x<w_jeu; x++){
       p=get_piece(env->jeu,x,y);
       d=get_current_dir(env->jeu,x,y);
       if (gameover){
+	/* render text texture */
+  	SDL_QueryTexture(env->text, NULL, NULL, &rect.w, &rect.h);
+  	rect.x = w/2 - rect.w/2; rect.y = h/2 - rect.h/2; 
+  	SDL_RenderCopy(ren, env->text, NULL, &rect);
 	if(p == LEAF)
           current_piece = env->endleaf;
         else if (p == SEGMENT)
