@@ -10,6 +10,7 @@
 #include "model.h"
 #include "game.h"
 #include "game_io.h"
+#include "solve.h"
 #define IMG_FOND "../sdl/fond.png"
 #define IMG_EMPTY "../sdl/empty.png"
 #define IMG_LEAF "../sdl/leaf.png"
