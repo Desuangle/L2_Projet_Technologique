@@ -2,11 +2,12 @@
 #include "game_io.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define MAX 409
 
 
 void error(char* message) {
-	fprintf(stderr, message);
+	fprintf(stderr, "%s", message);
 	exit(EXIT_FAILURE);
 }
 
