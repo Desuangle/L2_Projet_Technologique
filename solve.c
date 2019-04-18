@@ -18,6 +18,11 @@ option check_option(char* opt){
     if(strlen(opt)<6){ //test to be sure not to go out of range
         usage();
     }
+	if(opt[0]=='G'){
+		if(!strcmp(opt,"GEN_SEQ")){
+			return GEN_SEQ;
+		}
+	}
     if(opt[0]=='N'){
         if(!strcmp(opt,"NB_SOL")){
             return NB_SOL;
@@ -42,7 +47,8 @@ void solver(cgame g, option o, char* filename) {
 	game g2 = copy_game(g);
 	int n = 0;
     bool fini = false;
-	solver_rec(g2, o, 0, &n, filename, &fini);
+	seq_c fst={-1,-1,NULL};
+	solver_rec(g2, o, 0, &n, &fst, filename, &fini);
     if(!fini)
 	    solver_print_nbsolv_or_no_sol(o,&n,filename);
 	delete_game(g2);
@@ -50,18 +56,26 @@ void solver(cgame g, option o, char* filename) {
 }
 
 
-void solver_rec(game g, option o, int i, int* n, char* filename, bool* fini) {
+void solver_rec(game g, option o, int i, int* n,seq_c* seq, char* filename, bool* fini) {
     if(*fini)
         return;
 
 	int w = game_width(g), h = game_height(g);
 	if(i == w * h) {
 		if(is_game_over(g))
-			solver_print(g, n, o, filename, fini);
+			solver_print(g, n, o, seq, filename, fini);
 		return;
 	}
 	int x = i%w, y = i/w;
 	piece p = get_piece(g, x, y);
+	if(seq->x==-1 || seq->y==-1){
+		seq->x=x;
+		seq->y=y;
+	}else{
+		seq->nxt->x=x;
+		seq->nxt->y=y;
+		seq->nxt->nxt=NULL;
+	}
 	bool bonne_dir;
 	direction end_dir;
 	if (p == LEAF || p == CORNER || p == TEE)
@@ -130,14 +144,24 @@ void solver_rec(game g, option o, int i, int* n, char* filename, bool* fini) {
 		}
 		
 		if(bonne_dir)
-			solver_rec(g, o, i+1, n, filename, fini);
+			solver_rec(g, o, i+1, n, seq, filename, fini);
 	}
 }
 
-void solver_print(game g,int *c,option opt,char* prefix, bool* fini)
+void solver_print(game g,int *c,option opt,seq_c* seq, char* prefix, bool* fini)
 {
 	*c=*c+1;
 	char *filename= (char*) malloc(SIZE_PREFIX * sizeof(char));
+	if (opt==GEN_SEQ){
+		sprintf(filename,"%s.seq", prefix);
+		FILE* savefile;
+		savefile=fopen(filename, "w");
+		while(seq!=NULL){
+			fprintf(savefile, "x: %d y: %d\n",seq->x,seq->y);
+			seq=seq->nxt;
+		}
+		*fini=true;
+	}
 	if (opt == FIND_ONE)
 	{
 		sprintf(filename, "%s.sol", prefix);
