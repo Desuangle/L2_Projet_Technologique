@@ -194,8 +194,8 @@ void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
 		fprintf(stderr,"Les cordonnees entrees ne sont pas correctes, veuillez-reessayer");
 		exit(EXIT_FAILURE);
 	}
-	for(int i = 0; i > nb_cw_quarter_turn; i--)
-		set_piece_current_dir(game,x,y,prev_dir(get_current_dir(game,x,y)));
+	for(int i = 0; i < nb_cw_quarter_turn; i++)
+		set_piece_current_dir(game,x,y,next_dir(get_current_dir(game,x,y)));
 
 }
 
