@@ -52,6 +52,9 @@ target_link_libraries(test_mgendron game )
 add_executable(net_solve solve_main.c)
 target_link_libraries(net_solve solve game)
 
+add_executable(net_ncurses net_ncurses.c game.c game_io.c)
+target_link_libraries(net_ncurses ncurses)
+
 enable_testing()
 include (CTest)
 
