@@ -68,13 +68,16 @@ void solver_rec(game g, option o, int i, int* n,seq_c* seq, char* filename, bool
 	}
 	int x = i%w, y = i/w;
 	piece p = get_piece(g, x, y);
+	seq_c* new_seq;
 	if(seq->x==-1 || seq->y==-1){
 		seq->x=x;
 		seq->y=y;
 	}else{
-		seq->nxt->x=x;
-		seq->nxt->y=y;
-		seq->nxt->nxt=NULL;
+		new_seq=malloc(sizeof(seq_c));
+		new_seq->x=x;
+		new_seq->y=y;
+		new_seq->nxt=NULL;
+		seq->nxt=new_seq;
 	}
 	bool bonne_dir;
 	direction end_dir;
@@ -144,7 +147,7 @@ void solver_rec(game g, option o, int i, int* n,seq_c* seq, char* filename, bool
 		}
 		
 		if(bonne_dir)
-			solver_rec(g, o, i+1, n, seq, filename, fini);
+			solver_rec(g, o, i+1, n, new_seq, filename, fini);
 	}
 }
 
