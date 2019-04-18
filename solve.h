@@ -2,7 +2,7 @@
 
  */
 
-typedef enum option_e {FIND_ONE, NB_SOL, FIND_ALL} option;
+typedef enum option_e {FIND_ONE, NB_SOL, FIND_ALL, GEN_SEQ} option;
 #define NB_OPTIONS 3
 
 option check_option(char* opt);

@@ -7,7 +7,7 @@
 #include <string.h>
 
 void usage(){
-    printf("Usage: net_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>.\n");
+    printf("Usage: net_solve FIND_ONE|NB_SOL|FIND_ALL|GEN_SEQ <nom_fichier_pb> <prefix_fichier_sol>.\n");
     exit(EXIT_FAILURE);
 }
 
@@ -23,6 +23,7 @@ option check_option(char* opt){
             return NB_SOL;
         }
     }
+	
     if(opt[0]=='F'){
         if(opt[5]=='O'){
             if(!strcmp(opt,"FIND_ONE")){
@@ -34,6 +35,11 @@ option check_option(char* opt){
                 return FIND_ALL;
             }
         }
+		if(opt[5]=='G'){
+        if(!strcmp(opt,"GEN_SEQ")){
+            return FIND_ONE;
+        }
+    }
     }
     usage();
 }
@@ -155,14 +161,17 @@ void solver_print(game g,int *c,option opt,char* prefix, bool* fini)
 void solver_print_nbsolv_or_no_sol(option opt,int*c,char* prefix)
 {
 	char *filename = (char*) malloc(SIZE_CHAINE * sizeof(char));
-	if ((opt == FIND_ONE || opt == FIND_ALL) && *c ==0)
+	if ((opt == FIND_ONE || opt == FIND_ALL || opt == GEN_SEQ) && *c ==0)
 	{
 		if(opt == FIND_ONE)
 			sprintf(filename, "%s.sol", prefix);
+		if(opt == GEN_SEQ)
+			sprintf(filename, "%s.seq", prefix);
 		else
 			sprintf(filename, "%s.sol%d", prefix, *c);
 		create_file(filename,"NO SOLUTION");
 	}
+
 	else if (opt == NB_SOL)
 	{
 		sprintf(filename, "%s.nbsol", prefix);
