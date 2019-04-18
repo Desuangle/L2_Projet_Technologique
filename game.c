@@ -7,11 +7,11 @@
 
 #define GAME_WIDTH 5
 #define GAME_HEIGHT 5
-#define NB_DIR 4  // la quantité de direction (N S W E), 4 en total
+#define NB_DIR 4  // la quantitÃ© de direction (N S W E), 4 en total
 typedef unsigned int uint;
 
-// game_s est la définition de type game. il contient 1- la largeur , 2- l'hauteur, 3-les types des pièces, 4-les directions des pièces ,
-//5-les directions de départ(direction* start) et l'état de wrapping de jeu.
+// game_s est la dÃ©finition de type game. il contient 1- la largeur , 2- l'hauteur, 3-les types des piÃ¨ces, 4-les directions des piÃ¨ces ,
+//5-les directions de dÃ©part(direction* start) et l'Ã©tat de wrapping de jeu.
 
 
 struct game_s{
@@ -19,7 +19,7 @@ struct game_s{
 	uint height;
 	piece* piece;
 	direction* direction;
-	direction* start;      // les directions de départ
+	direction* start;      // les directions de dÃ©part
 	bool wrapping;
 };
 
@@ -28,7 +28,7 @@ typedef enum c_code_e {NOT_EXPLORED = 0, CONNEXE = 1, ERROR_CASE = 2} c_code;
 
 
 static direction next_dir(direction dir){ //prend la prochaine direction dans le sens des aiguilles d'une montre
-	direction tab[NB_DIR]= {E,S,W,N};  //voir opposite_dir pour plus de précision
+	direction tab[NB_DIR]= {E,S,W,N};  //voir opposite_dir pour plus de prÃ©cision
 	return tab[dir];
 }
 
@@ -39,14 +39,14 @@ static direction prev_dir(direction dir){ // pareil dans l'autre sens
 
 
 //****************************************************//
-//Les definitions de chacune des fonctions utilisées se trouvent dans game.h
-//le calcul x+(g->width*y) est utilisé plusieur fois, voir le commentaire de set_piece pour l'explication
+//Les definitions de chacune des fonctions utilisÃ©es se trouvent dans game.h
+//le calcul x+(g->width*y) est utilisÃ© plusieur fois, voir le commentaire de set_piece pour l'explication
 
 bool is_wrapping(cgame g){
 	assert(g);
 	return g->wrapping;
 }
-static int indexs (cgame game, int x, int y){ // renvoie l'indexs de la piece actuelle
+static int index (cgame game, int x, int y){ // fonction auxiliaire, trouver l'index de la piÃ¨ce actuelle
 	if(x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game)){
 		fprintf(stderr, "Invalid coordinates 0");
 		exit(EXIT_FAILURE);
@@ -149,7 +149,7 @@ game new_game_ext(int width, int height, piece *pieces, direction *initial_direc
 	return g;
 }
 
-void set_piece(game g, int x, int y, piece piece, direction orientation){ // x+(g->width*y) qui est utilisé ici et dans d'autre code permet de convertir les valeurs x et y en un indice pour
+void set_piece(game g, int x, int y, piece piece, direction orientation){ // x+(g->width*y) qui est utilisÃ© ici et dans d'autre code permet de convertir les valeurs x et y en un indice pour
 	assert(g);                                                        // le tableau de piece ou de direction
 	g->piece[x+(g->width*y)] = piece;
 	g->direction[x+(g->width*y)] = orientation;
@@ -159,11 +159,11 @@ void set_piece(game g, int x, int y, piece piece, direction orientation){ // x+(
 void shuffle_dir(game g){
 	assert(g);
 	direction all_dir[] = {N,E,S,W};
-	uint x = ((uint)RAND_MAX+1)/NB_DIR;  //on met à l'echelle rand_max pour qu'il soit proportionel à 4, car en le divisant (divison entiere) puis en le multipliant on elimine le reste de la division par 4
+	uint x = ((uint)RAND_MAX+1)/NB_DIR;  //on met Ã  l'echelle rand_max pour qu'il soit proportionel Ã  4, car en le divisant (divison entiere) puis en le multipliant on elimine le reste de la division par 4
 	uint limite = x * NB_DIR;
 	for(uint i = 0; i < g->width * g->height; i++){
 		uint j = rand();
-		while(j >= limite) //on relance tous les rand() qui donnent sur un nombre entre rand_max et rand_max - (rand_max%4) on garde comme cela qu'un nombre de possibilités divisibles par 4
+		while(j >= limite) //on relance tous les rand() qui donnent sur un nombre entre rand_max et rand_max - (rand_max%4) on garde comme cela qu'un nombre de possibilitÃ©s divisibles par 4
 			j = rand();
 		g->direction[i] = all_dir[(j/x)];
 	}
@@ -184,7 +184,7 @@ void rotate_piece_one(game game, int x, int y){
 		fprintf(stderr,"Les cordonnees entrees ne sont pas correctes, veuillez-reessayer");
 		exit(EXIT_FAILURE);
 	}
-	rotate_piece(game,x,y,1); //il s'agis juste d'utilisé rotate_piece une pour avancé d'un cran
+	rotate_piece(game,x,y,1); //il s'agis juste d'utilisÃ© rotate_piece une pour avancÃ© d'un cran
 }
 
 
@@ -208,11 +208,11 @@ void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
 
 void set_piece_current_dir (game game, int x, int y, direction dir){
 	assert(game);
-	game->direction[indexs(game,x,y)] = dir;
+	game->direction[index(game,x,y)] = dir;
 }
 
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
-	return is_edge(get_piece(g,x,y),get_current_dir(g,x,y),dir); //il s'agis juste de faire is_edge à une position donné
+	return is_edge(get_piece(g,x,y),get_current_dir(g,x,y),dir); //il s'agis juste de faire is_edge Ã  une position donnÃ©
 }
 
 
@@ -220,7 +220,7 @@ bool is_edge_coordinates(cgame g, int x, int y, direction dir){
 bool is_edge(piece piece, direction orientation, direction dir){
 	if(piece == EMPTY){            //case vide ne connecte jamais
 		return false;
-	}else if(piece == CROSS){   //Cross connecte dans les 4 sens c'est-à-dire toujours
+	}else if(piece == CROSS){   //Cross connecte dans les 4 sens c'est-Ã -dire toujours
 		return true;
 	}else if(piece == LEAF){       //Leaf connecte seulement dans le sens vers lequel il oriente
 		return orientation == dir;
@@ -234,7 +234,7 @@ bool is_edge(piece piece, direction orientation, direction dir){
 }
 
 direction opposite_dir(direction dir){
-	direction tab[NB_DIR] = {S,W,N,E}; //Avec la propriété des enum N vaut 0 puis E vaut 1 ect donc on peut s'en servir comme indice
+	direction tab[NB_DIR] = {S,W,N,E}; //Avec la propriÃ©tÃ© des enum N vaut 0 puis E vaut 1 ect donc on peut s'en servir comme indice
 	return tab[dir];
 }
 
@@ -262,7 +262,7 @@ game copy_game (cgame g_src){
 	return copy;
 }
 
-void delete_game (game g){ //on free d'abord les pointeurs pointés par g pour ne pas les perdre
+void delete_game (game g){ //on free d'abord les pointeurs pointÃ©s par g pour ne pas les perdre
    	free(g->start);
    	free(g->direction);
   	free(g->piece);
@@ -274,31 +274,31 @@ void delete_game (game g){ //on free d'abord les pointeurs pointés par g pour n
 piece get_piece(cgame game, int x, int y){
 	assert(game);
 	if(x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game)){
-		fprintf(stderr, "Invalid coordinates 1\n");
+		fprintf(stderr, "Invalid coordinates 1");
 		exit(EXIT_FAILURE);	}
 
-	return game->piece[indexs(game,x,y)];
+	return game->piece[index(game,y,x)];
 }
 
 direction get_current_dir(cgame game, int x, int y){
 	assert(game);
 	if(x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game)){
-		fprintf(stderr, "Invalid coordinates 2\n");
+		fprintf(stderr, "Invalid coordinates 2");
 		exit(EXIT_FAILURE);
 	}
 
-	return game->direction[indexs(game,x,y)];
+	return game->direction[index(game,x,y)];
 }
 
-//fonction qui test si le game est connexe sans aucun loop et renvoie un tableau de 0,1 ou 2 qui est ensuite decodé pour voir si le game est valide (tableau remplie de 1)
+//fonction qui test si le game est connexe sans aucun loop et renvoie un tableau de 0,1 ou 2 qui est ensuite decodÃ© pour voir si le game est valide (tableau remplie de 1)
 
 int** connexe_without_loop(cgame g,int** tab,int x,int y,int previous,int* error){
-	if(get_piece(g,x,y)==EMPTY){  //cas où la case est juste empty on met la case en erreur
-		tab[x][y] = ERROR_CASE;        // ici 2 est utilisé pour coder une erreur et sera detecté dans game_over, 1 code les cases ou on est déja passé et 0 les cases qu'on n'a jamais emprunté
+	if(get_piece(g,x,y)==EMPTY){  //cas oÃ¹ la case est juste empty on met la case en erreur
+		tab[x][y] = ERROR_CASE;        // ici 2 est utilisÃ© pour coder une erreur et sera detectÃ© dans game_over, 1 code les cases ou on est dÃ©ja passÃ© et 0 les cases qu'on n'a jamais empruntÃ©
 		*error = 1;
 		return tab;
 	}
-	if(tab[x][y]==CONNEXE){             //cas où on est deja passé par cette case, (detection de boucle) on met la case en erreur
+	if(tab[x][y]==CONNEXE){             //cas oÃ¹ on est deja passÃ© par cette case, (detection de boucle) on met la case en erreur
 		tab[x][y] = ERROR_CASE;
 		*error = 1;
 		return tab;
@@ -320,7 +320,7 @@ int** connexe_without_loop(cgame g,int** tab,int x,int y,int previous,int* error
 					next_x = i == E ? 0 : i == W ? game_width(g)-1 : next_x;
 					next_y = i == N ? 0 : i == S ? game_height(g)-1 : next_y;
 				}
-			}                                 //cas où on ne déborde pas
+			}                                 //cas oÃ¹ on ne dÃ©borde pas
 			if(is_edge_coordinates(g,next_x,next_y,opposite_dir(set_dir[i])))
 					tab = connexe_without_loop(g,tab,next_x,next_y,opposite_dir(i),error);
 			else{
@@ -359,10 +359,10 @@ bool is_game_over (cgame g){
 			exit(EXIT_FAILURE);
 		}
 	}
-	connexe = connexe_without_loop(g,connexe,0,0,NB_DIR,&error); //ici 4 sert a représenter qu'il n'y a pas de direction précédente (l'argument previous detecte à l'aide d'un int entre 0 et 3 la direction precedente)
+	connexe = connexe_without_loop(g,connexe,0,0,NB_DIR,&error); //ici 4 sert a reprÃ©senter qu'il n'y a pas de direction prÃ©cÃ©dente (l'argument previous detecte Ã  l'aide d'un int entre 0 et 3 la direction precedente)
 	for(int x = 0; x < g->width;x++){
 		for(int y = 0 ; y < g->height;y++){
-			if(!(connexe[x][y]==1)){ //verifcation que toute les cases on été traversées (code 1) et sans erreurs (les erreur sont code 2), code 0 sont des cases en dehors de la composante connexe
+			if(!(connexe[x][y]==1)){ //verifcation que toute les cases on Ã©tÃ© traversÃ©es (code 1) et sans erreurs (les erreur sont code 2), code 0 sont des cases en dehors de la composante connexe
 				free_connexe(g,connexe);
 				return false;
 			}
@@ -375,6 +375,6 @@ bool is_game_over (cgame g){
 
 void restart_game(game g){
 	for(int i = 0; i < (g->width)*(g->height);i++ ){
-		g->direction[i] = g->start[i];             //on remet les direction initiales sauvegardées dans le tableau start
+		g->direction[i] = g->start[i];             //on remet les direction initiales sauvegardÃ©es dans le tableau start
 	}
 }
