@@ -18,6 +18,6 @@ int main(int argc, char* argv[]) {
 }
 
 void usage_main(){
-    printf("Usage: net_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>.\n");
+    printf("Usage: net_solve FIND_ONE|NB_SOL|FIND_ALL|GEN_SEQ <nom_fichier_pb> <prefix_fichier_sol>.\n");
     exit(EXIT_FAILURE);
 }

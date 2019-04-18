@@ -7,7 +7,7 @@
 #include <string.h>
 
 void usage(){
-    printf("Usage: net_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>.\n");
+    printf("Usage: net_solve FIND_ONE|NB_SOL|FIND_ALL|GEN_SEQ <nom_fichier_pb> <prefix_fichier_sol>.\n");
     exit(EXIT_FAILURE);
 }
 
@@ -35,25 +35,35 @@ option check_option(char* opt){
             }
         }
     }
+		if(opt[0]=='G'){
+			if(!strcmp(opt,"GEN_SEQ"))
+				return GEN_SEQ;
+		}
     usage();
 }
 
 void solver(cgame g, option o, char* filename) {
 	game g2 = copy_game(g);
+	game g3 = copy_game(g);
 	int n = 0;
-    bool fini = false;
-	solver_rec(g2, o, 0, &n, filename, &fini);
-    if(!fini)
-	    solver_print_nbsolv_or_no_sol(o,&n,filename);
+	bool fini = false;
+	
+	int* gen_seq_list = (int*) malloc(SIZE_LIST * sizeof(int));
+	int gen_seq_n = 0;
+	solver_rec(g2, o, 0, &n, filename, &fini, gen_seq_list, &gen_seq_n, g3);
+	if(!fini)
+		solver_print_nbsolv_or_no_sol(o,&n,filename);
+	if(o == GEN_SEQ)
+		solver_print_genseq(gen_seq_list, gen_seq_n, filename, game_width(g2), game_height(g2));
 	delete_game(g2);
-	g2=NULL;
+	delete_game(g3);
 }
 
 
-void solver_rec(game g, option o, int i, int* n, char* filename, bool* fini) {
-    if(*fini)
-        return;
-
+void solver_rec(game g, option o, int i, int* n, char* filename, bool* fini, int* seq_list, int* seq_n, game g3) {
+	if(*fini){
+		return;
+	}
 	int w = game_width(g), h = game_height(g);
 	if(i == w * h) {
 		if(is_game_over(g))
@@ -70,7 +80,7 @@ void solver_rec(game g, option o, int i, int* n, char* filename, bool* fini) {
 		end_dir = E;
 	else // if (p == CROSS)
 		end_dir = N;
-	for(direction d = N; d <= end_dir; d++) {
+	for(direction d = N; d <= end_dir && !(*fini); d++) {
 		set_piece_current_dir(g, x, y, d);
 		bonne_dir = true; // Bonne direction
 		if(is_edge_coordinates(g, x, y, S)){ // vise le haut
@@ -129,8 +139,16 @@ void solver_rec(game g, option o, int i, int* n, char* filename, bool* fini) {
 			}
 		}
 		
-		if(bonne_dir)
-			solver_rec(g, o, i+1, n, filename, fini);
+		if(bonne_dir){
+			solver_rec(g, o, i+1, n, filename, fini, seq_list, seq_n, g3);
+			if(*fini && o == GEN_SEQ){
+				for(direction d2 = get_current_dir(g3, x, y); d2 != d; d2 = (d2 + 1) % 4){
+					seq_list[*seq_n] = x;
+					seq_list[*seq_n + 1] = y;
+					*seq_n += 2;
+				}
+			}
+		}
 	}
 }
 
@@ -149,6 +167,8 @@ void solver_print(game g,int *c,option opt,char* prefix, bool* fini)
 		sprintf(filename, "%s.sol%d", prefix, *c);
 		save_game(g,filename);	
 	}
+	else if (opt == GEN_SEQ)
+		*fini = true;
 	free(filename);
 }
 
@@ -182,4 +202,35 @@ void create_file(char* filename, char* msg) {
 	}
 	fprintf(savefile, "%s\n", msg);
 	fclose(savefile);
+}
+
+void solver_print_genseq(int* list, int n, char* prefix, int w, int h){
+	int x = 0, y = 0;
+	while(w > 0){
+		w /= 10;
+		x++;
+	}
+	while(h > 0){
+		h /= 10;
+		y++;
+	}
+	if(x > y)
+		y = x;
+	else
+		x = y;
+			
+	char *filename = (char*) malloc(SIZE_CHAINE * sizeof(char));
+	sprintf(filename, "%s.seq", prefix);
+	FILE* savefile;
+
+	savefile = fopen(filename, "w");
+	if(!savefile){
+		fprintf(stderr, "Not enough memory\n");
+		exit(EXIT_FAILURE);
+	}
+	for(int i = 0; i < n; i +=2 ){
+		fprintf(savefile, "%d %d\n", list[i], list[i+1]);
+	}
+	fclose(savefile);
+	free(filename);
 }
