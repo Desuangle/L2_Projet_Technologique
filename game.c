@@ -277,7 +277,7 @@ piece get_piece(cgame game, int x, int y){
 		fprintf(stderr, "Invalid coordinates 1");
 		exit(EXIT_FAILURE);	}
 
-	return game->piece[index(game,y,x)];
+	return game->piece[index(game,x,y)];
 }
 
 direction get_current_dir(cgame game, int x, int y){
