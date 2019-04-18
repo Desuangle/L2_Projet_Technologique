@@ -46,7 +46,7 @@ bool is_wrapping(cgame g){
 	assert(g);
 	return g->wrapping;
 }
-static int indexs (cgame game, int x, int y){ // renvoie l'indexs de la piece actuelle
+static int index (cgame game, int x, int y){ // fonction auxiliaire, trouver l'index de la pièce actuelle
 	if(x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game)){
 		fprintf(stderr, "Invalid coordinates 0");
 		exit(EXIT_FAILURE);
@@ -208,7 +208,7 @@ void rotate_piece(game game, int x, int y, int nb_cw_quarter_turn){
 
 void set_piece_current_dir (game game, int x, int y, direction dir){
 	assert(game);
-	game->direction[indexs(game,x,y)] = dir;
+	game->direction[index(game,x,y)] = dir;
 }
 
 bool is_edge_coordinates(cgame g, int x, int y, direction dir){
@@ -274,20 +274,20 @@ void delete_game (game g){ //on free d'abord les pointeurs pointés par g pour n
 piece get_piece(cgame game, int x, int y){
 	assert(game);
 	if(x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game)){
-		fprintf(stderr, "Invalid coordinates 1\n");
+		fprintf(stderr, "Invalid coordinates 1");
 		exit(EXIT_FAILURE);	}
 
-	return game->piece[indexs(game,x,y)];
+	return game->piece[index(game,y,x)];
 }
 
 direction get_current_dir(cgame game, int x, int y){
 	assert(game);
 	if(x < 0 || x >= game_width(game) || y < 0 || y >= game_height(game)){
-		fprintf(stderr, "Invalid coordinates 2\n");
+		fprintf(stderr, "Invalid coordinates 2");
 		exit(EXIT_FAILURE);
 	}
 
-	return game->direction[indexs(game,x,y)];
+	return game->direction[index(game,x,y)];
 }
 
 //fonction qui test si le game est connexe sans aucun loop et renvoie un tableau de 0,1 ou 2 qui est ensuite decodé pour voir si le game est valide (tableau remplie de 1)
