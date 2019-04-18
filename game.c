@@ -153,7 +153,6 @@ void set_piece(game g, int x, int y, piece piece, direction orientation){ // x+(
 	assert(g);                                                        // le tableau de piece ou de direction
 	g->piece[x+(g->width*y)] = piece;
 	g->direction[x+(g->width*y)] = orientation;
-	g->start[x+(g->width*y)] = orientation;
 }
 
 void shuffle_dir(game g){
