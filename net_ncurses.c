@@ -53,7 +53,33 @@ int main(int argc, char *argv[]) {
   game g = NULL;
   
   //----------------------------------------
-  // TODO : ajouter le code permettant d'initialiser la variable g comme dans net_text.c
+  /*
+    Setting up the parameters of the game
+   */
+	if(argc > 2){
+		fprintf(stderr, "Usage : %s <file>\n", argv[0]);
+		return(EXIT_FAILURE);
+	}
+	if(argc==1){
+		piece p1[] = {
+			LEAF, TEE, LEAF, LEAF, LEAF,
+			LEAF, TEE, TEE, CORNER, SEGMENT,
+			LEAF, LEAF, TEE, LEAF, SEGMENT,
+			TEE, TEE, TEE, TEE, TEE,
+			CORNER, LEAF, LEAF, CORNER, LEAF
+		};
+		direction p2[] = {
+			E, W, S, E, S,
+			S, S, N, W, N,
+			E, N, W, W, E,
+			S, W, N, E, E,
+			W, N, W, N, S,
+		};
+		g = new_game_ext(5, 5, p1, p2, false);
+	}
+	else {
+		g = load_game(argv[1]);
+	}
   //----------------------------------------
 
   if (g == NULL) {
