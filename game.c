@@ -377,4 +377,14 @@ void restart_game(game g){
 	for(int i = 0; i < (g->width)*(g->height);i++ ){
 		g->direction[i] = g->start[i];             //on remet les direction initiales sauvegardÃ©es dans le tableau start
 	}
-}
+
+
+/* The following tests FAILED:
+          5 - test_is_game_over (Failed)
+          9 - test_rotate_piece (Timeout)
+         12 - test_new_game (Failed)
+         13 - test_shuffle_dir (Failed)
+         16 - test_new_game_ext (Failed)
+         20 - test_current_dir (Failed)
+         21 - test_restart (Failed)
+*/
