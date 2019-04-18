@@ -37,6 +37,9 @@ target_link_libraries(net_sdl ${SDL2_ALL_LIBS} m game solve)
 add_executable(net_text net_text.c)
 target_link_libraries(net_text game )
 
+add_executable(net_ncurses net_ncurses.c)
+target_link_libraries(net_ncurses ncurses game)
+
 add_executable(test_kleguen test_kleguen.c)
 target_link_libraries(test_kleguen game )
 
