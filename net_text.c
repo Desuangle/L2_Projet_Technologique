@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "game_io.h"
 
 /*
@@ -12,9 +13,37 @@ shows the grid of the game
 //Future co-author: Killian Le Guen
 //Future co-author: Alouini Walid
 
+char* leaf[] = {
+	"^", ">", "v", "<"
+};
+char* segment[] = {
+	"|", "-", "|", "-"
+};
+char* corner[] = {
+	"└", "┌", "┐", "┘"
+};
+char* tee[] = {
+	"┴", "├", "┬", "┤"
+};
+char* cross[] = {
+	"+", "+", "+", "+"
+};
+char** symbols[] = {
+	leaf, segment, corner, tee, cross
+};
+
 void num_input(int tab[], unsigned int size) {
 	if(size == 2) {
-		scanf("%d%d", &tab[0], &tab[1]);
+		tab[0] = -1;
+		tab[1] = -1;
+		char c;
+		while (tab[0] < 0 && tab[1] < 0){
+			scanf("%d%d", &tab[0], &tab[1]);
+			if (tab[0] < 0 || tab[1] < 0)
+				printf("mauvaises coordonnées, veuillez recommencer.\n$");
+			while((c = getchar()) != '\n' && c != EOF)
+				/* discard */ ;
+		}
 	}
 }
 
@@ -27,88 +56,16 @@ void show_grid(game g) {
 	/*
     	beginning of the loop
    	*/
+	char* s;
 	for(int y = game_height(g) - 1; y >= 0; y--) { // vertical
 		printf("# ");
 		for(int x = 0; x < game_width(g); x++) { // horizontal
-			switch(get_piece(g, x, y)) {
-			case EMPTY:
-				printf("E");
-				break;
-			case LEAF:
-				switch(get_current_dir(g, x, y)) {
-				case N:
-					printf("^");
-					break;
-				case S:
-					printf("v");
-					break;
-				case E:
-					printf(">");
-					break;
-				case W:
-					printf("<");
-					break;
-				}
-				break;
-			case SEGMENT:
-				if(get_current_dir(g, x, y) == N || get_current_dir(g, x, y) == S) {
-					printf("|");
-				} else {
-					printf("-");
-				}
-				break;
-			case CORNER:
-				switch(get_current_dir(g, x, y)) {
-				case N:
-					printf("└");
-					break;
-				case S:
-					printf("┐");
-					break;
-				case E:
-					printf("┌");
-					break;
-				case W:
-					printf("┘");
-					break;
-				}
-				break;
-			case TEE:
-				switch(get_current_dir(g, x, y)) {
-				case N:
-					printf("┴");
-					break;
-				case S:
-					printf("┬");
-					break;
-				case E:
-					printf("├");
-					break;
-				case W:
-					printf("┤");
-					break;
-				}
-				break;
-			case CROSS:
-				switch(get_current_dir(g, x, y)) {
-				case N:
-					printf("+");
-					break;
-				case S:
-					printf("+");
-					break;
-				case E:
-					printf("+");
-					break;
-				case W:
-					printf("+");
-					break;
-				}
-				break;
-			default:
-				printf("?");
+			if(get_piece(g, x, y) == EMPTY)
+				printf("  ");
+			else{
+				s = symbols[get_piece(g, x, y)][get_current_dir(g, x, y)];
+				printf("%s ", s);
 			}
-			printf(" ");
 		} // end of x loop
 		printf("#\n");
 	}
@@ -145,21 +102,21 @@ int main(int argc, char** argv) {
 		ex = load_game(argv[1]);
 	}
 	/*
-	    Starting the game
-	   */
+		Starting the game
+	*/
 
 	int coords[2]; //coords[0] = x, coords[1] = y
-
-			while(!is_game_over(ex)) {
+	
+	while(!is_game_over(ex)) {
 		show_grid(ex);
 		printf("Entrer des coordonnées (de la forme <x> <y>) :\n$");
-				num_input(coords, 2);
-
+		num_input(coords, 2);
+		
 		if(coords[0] >= 0 && coords[0] < game_width(ex) && coords[1] >= 0 && coords[1] < game_height(ex)) {
 			rotate_piece_one(ex, coords[0], coords[1]);
 		}
-					}
-
+	}
+			
 	show_grid(ex);
 
 	delete_game(ex);
