@@ -21,7 +21,8 @@ set(HEADERS
 
 add_library(game ${SRCS} ${HEADERS})
 add_library(solve solve.c solve.h)
-    
+
+
 # pkg-config --list-all  | grep -i sdl2
 include(FindPkgConfig)
 pkg_search_module(SDL2 REQUIRED sdl2)
@@ -33,6 +34,10 @@ set(SDL2_ALL_INC ${SDL2_INCLUDE_DIRS} ${SDL2_IMG_INCLUDE_DIRS} ${SDL2_TTF_INCLUD
 include_directories(${SDL2_ALL_INC})
 add_executable(net_sdl net_sdl.c main.c)
 target_link_libraries(net_sdl ${SDL2_ALL_LIBS} m game solve)
+
+add_executable(net_ncurses net_ncurses.c game_io.c game.c)
+target_link_libraries(net_ncurses ncurses )
+
 
 add_executable(net_text net_text.c)
 target_link_libraries(net_text game )
