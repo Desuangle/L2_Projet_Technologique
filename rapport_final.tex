@@ -16,8 +16,46 @@
 
 \tableofcontents
 
+\section{game\_io.c}
+\subsection{Synthèse}
+Ce fichier fournit des fonctions pour charger ou enregistrer un jeu(deux fonctions principale Load\_game et Save\_game), crée le jeu en chargeant sa description dans un fichier et retourner le jeu chargé.
+\subsection{Analyse}
+Notre but était de load et save un game a partir d'un fichier passer en paramétre, notre stratégie d'attaque du problème consiste a la création de quelques fonctions auxiliaires: convert\_piece a le rôle de convertir les caracteres pieces du fichier passer en paramétres en pieces (cette fonction appeler par la fonction load\_game), convert\_direction a le rôle de convertir les caracteres direntions en directions (cette fonction appeler par la fonction load\_game) et la fonction print\_piece a le rôle de convertir les pieces en caracteres(cette fonction appeler par la fonction save\_game).\\
+Parmit les difficultés rencontrées c'était lors de load game, dans la première ligne du fichier passer en paramétre, le soucis est comment différencier les dérniers caractéres du mode wrapping et les caractéres piéces du jeu
+\subsection{Bilan sur les fonctionnalités}
+Fonction load\_game\\ 
+Fonction save\_game\\ 
+Fonction auxiliaire convert\_piece\\ 
+Fonction auxiliaire convert\_direction\\ 
+Fonction auxiliaire print\_piece\\ 
+Fonction auxiliaire error\\ 
 
 
-%\lstinputlisting[language=c]{solve_main.c}
+\section{game.c}
+\subsection{Synthèse}
+Ce fichier contient les définitions des fonctions décrivant l'interface de programmation du jeu.
+\subsection{Analyse}
+Définir tout ce qu'on a besoin dans la structure game\_s.\\
+Parmit les difficultés rencontrées c'était dans la fonction bool is\_game\_over, on a eu quelques fuites mémoires.\\
+\subsection{Bilan sur les fonctionnalités}
+A part les fonctions principals dans le fichier game.h on a ajouté ces fonctions auxiliaires:\\
+bool is\_connected\_coordinates\\
+bool all\_pieces\_connected\\
+void aux\_all\_pieces\_connected\\
 
+
+
+\section{Cmake}
+\subsection{Synthèse}
+On a créer ce fichier Cmake afin de remplacer le fichier Makefile.
+\subsection{Analyse}
+Notre fichier CMakeLists.txt, va produire le script de compilation permettant la création de l'exécutable,
+il est indépendant de la plateforme, et décrit comment compiler le projet à l'aide d'informations comme : le langage utilisé, les fichiers à compiler, les dépendances.\\
+Ainsi CMakeLists.txt va pouvoir produire la bibliotheque game crée à partir de game.c et game\_io.c contient les fonctionalités du jeu\\
+Parmit les difficultés rencontrées c'était quelques problémes syntaxique du Cmake.
+\subsection{Bilan sur les fonctionnalités}
+création des executables.\\ 
+création de la bibliotheque game.\\ 
+création des executables des tests du jeu.\\ 
 \end{document}
+%\lstinputlisting[language=c, firstline= 9, lastline= 12]{game_io.c}
