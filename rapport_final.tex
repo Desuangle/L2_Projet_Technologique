@@ -13,10 +13,36 @@
 \date{\today}
 
 \maketitle
-
 \tableofcontents
 
+\section{Git}
+\subsection{Synthèse}
+Pour notre gestion de projet nous avons utilisé Git et le serveur Savane du Cremi afin de pouvoir partager et accéder a notre projet de n'importe ou.
+Git nous à aussi permis d'avoir un versionning de notre projet afin de revenir en arrière en cas de besoin.
+Nous nous sommes assurés de ne push que des versions qui compilent.
+\subsection{Analyse}
+Lors de notre projet il nous est arrivé d'avoir des conflits de versions, afin de résoudre ce problème nous avons créé des branches locales. 
+Ce qui à permit de pouvoir utilé git pull sur la branche master et de fusionner plus façilement avec la branche local.
+\subsection{Bilan}
+Lors du projet nous avond été amené a utilisé les fonctions : Git clone,Git init, pull, push, merge,branch,checkout
+\subsection{Amélioration}
+En plus de créer des branches locales nous aurions pu créer des branches distantes afin de partager nos versions incomplétes sans inpacter la branche master.
 
+\section{Test}
+\subsection{Synthèse}
+Afin de vérifier le bon fonctionnement des fonctions de game.c nous avons crée un ensemble de test qui une fois lancé renvoie failure ou success 
+pour chaque fonction testé
+\subsection{Analyse}
+Nous nous somme ainsi répartis les fonctions en 4 et nous avons ensuite chacun crée notre fichier.
+Il fut parfois difficile de trouver tous les bugs possibles de nos fonctions car ne disposant que du game.o
+nous n'avions pas accès au code sources et n'avions pas forcement une compréhension complète des fonctions, 
+de plus certaines fonction sont dépendantes des autres ainsi elles envoie des faux positifs
+Afin d'avoir des test cohérents nous avons suivit le standard fournit le fichier fournit.
+\subsection{Bilan}
+Nous avons testé toute les fonctionnalitées de la V1. Ainsi que les fonctions  is_wrapping, new_game_ext,new_game_empty_ext.
+Certaines de nos fonctions de test ont aussi été mise à jour pour la v2.
+\subsection{Amélioration}
+Afin d'améliorer nos test il faudrait penser à ajouter les nouvelles fonctions développer et à minimiser les dépendances des tests
 
 %\lstinputlisting[language=c]{solve_main.c}
 
