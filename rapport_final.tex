@@ -21,17 +21,17 @@
 \section{Makefile}
 \subsection{Synthèse}
 
-Réalisation d'un fichier Makefile pour la V1 afin d'automatiser la compilation des éxecutables du jeu et des différents tests.
+Réalisation d'un fichier Makefile pour la V1 afin d'automatiser la compilation des exécutables du jeu et des différents tests.
 
 \subsection{Analyse}
 
-Nous avons utilisé les connaissances acquises lors du TD sur make dés la première version
+Nous avons utilisé les connaissances acquises lors du TD sur make dès la première version
 de notre Makefile pour la V1, celle-ci faisant déjà usage de variables implicites (FLAGS) et automatiques.
 Nous avons subséquemment ajouté le code nécessaire à la compilation des tests sur la V1 puis du nouveau
 framework de test.
 
 Nous n'avons rencontré aucun problème majeur dans l'implémentation de make, les seuls
-problèmes mineurs pouvait provenir d'erreurs humaines dans l'écriture du Makefile et
+problèmes mineurs pouvaient provenir d'erreurs humaines dans l'écriture du Makefile et
 nous n'avions aussi pas immédiatement compris qu'il fallait utiliser la commande \textbf{ar}
 pour générer les librairies.
 
@@ -43,7 +43,7 @@ commande \textbf{make test}), aucun bug notoire n'a été associé à make lors 
 
 \subsection{Améliorations}
 
-Les améliorations concernant make ont été apportée par l'utilisation de cmake qui permettait la 
+Les améliorations concernant make ont été apportées par l'utilisation de cmake qui permettait la 
 génération automatique de Makefile.
 
 
@@ -57,15 +57,15 @@ seulement les coordonnées de la pièce à tourner à l'utilisateur.
 \subsection{Analyse}
 
 La première implémentation de net\_text employait un switch case pour associer chaque couple 
-pièce, orientation à un caractère donné, de plus la gestion de l'interaction utilisateur 
-était minimale et l'envoie de lettres en guise de coordonnées causait une boucle infinie.
+pièce, orientation à un caractère donné. De plus la gestion de l'interaction utilisateur 
+était minimale et l'envoi de lettres en guise de coordonnées causait une boucle infinie.
 Le code a été allégé en utilisant des tableaux de caractères à la place de switch case et 
 la boucle infinie est désormais évitée en s'assurant que le programme va jusqu'à la fin de 
 la chaîne de caractères fournie par l'utilisateur lorsque des coordonnées lui sont demandées.
 Il reste cependant des légers problèmes : 
 \begin{itemize}
 \item L'entrée d'une seule coordonnée n'est pas considérée comme invalide et l'utilisateur peut indiquer la seconde coordonnée dans la ligne suivante du terminal.
-\item Dut à la résolution de la boucle infinie, des coordonnées sous forme <nombre> <lettre> réaffichent la grille mais pas des coordonnées de la forme <nombre> <lettre>.
+\item Du à la résolution de la boucle infinie, des coordonnées sous forme <nombre> <lettre> réaffichent la grille mais pas des coordonnées de la forme <lettre> <nombre>.
 \end{itemize}
 
 \subsection{Bilan}
@@ -86,34 +86,34 @@ plutôt que de laisser l'utilisateur les trouver.
 
 \section{Git}
 \subsection{Synthèse}
-Pour notre gestion de projet nous avons utilisé Git et le serveur Savane du Cremi afin de pouvoir partager et accéder a notre projet de n'importe ou.
-Git nous à aussi permis d'avoir un versionning de notre projet afin de revenir en arrière en cas de besoin.
+Pour notre gestion de projet nous avons utilisé Git et le serveur Savane du Cremi afin de pouvoir partager et accéder a notre projet de n'importe où.
+Git nous a aussi permis d'avoir un versionning de notre projet afin de revenir en arrière en cas de besoin.
 Nous nous sommes assurés de ne push que des versions qui compilent.
 \subsection{Analyse}
 Lors de notre projet il nous est arrivé d'avoir des conflits de versions, afin de résoudre ce problème nous avons créé des branches locales. 
-Ce qui à permit de pouvoir utilé git pull sur la branche master et de fusionner plus façilement avec la branche local.
+Ce qui à permit de pouvoir utiliser git pull sur la branche master et de fusionner plus facilement avec la branche locale.
 \subsection{Bilan}
-Lors du projet nous avond été amené a utilisé les fonctions : Git clone,Git init, pull, push, merge,branch,checkout
+Lors du projet nous avons été amené à utiliser les fonctions : clone, init, pull, push, merge, branch, checkout
 \subsection{Amélioration}
-En plus de créer des branches locales nous aurions pu créer des branches distantes afin de partager nos versions incomplétes sans inpacter la branche master.
+En plus de créer des branches locales nous aurions pu créer des branches distantes afin de partager nos versions incomplètes sans impacter la branche master.
 
 
 
-\section{Test}
+\section{Tests}
 \subsection{Synthèse}
-Afin de vérifier le bon fonctionnement des fonctions de game.c nous avons crée un ensemble de test qui une fois lancé renvoie failure ou success 
-pour chaque fonction testé
+Afin de vérifier le bon fonctionnement des fonctions de game.c nous avons créé un ensemble de test qui, une fois lancé, renvoie failure ou success 
+pour chaque fonction testée.
 \subsection{Analyse}
-Nous nous somme ainsi répartis les fonctions en 4 et nous avons ensuite chacun crée notre fichier.
-Il fut parfois difficile de trouver tous les bugs possibles de nos fonctions car ne disposant que du game.o
-nous n'avions pas accès au code sources et n'avions pas forcement une compréhension complète des fonctions, 
-de plus certaines fonction sont dépendantes des autres ainsi elles envoie des faux positifs
-Afin d'avoir des test cohérents nous avons suivit le standard fournit le fichier fournit.
+Nous nous sommes ainsi répartis les fonctions en 4 et nous avons ensuite chacun créé notre fichier.
+Il était parfois difficile de trouver tous les bugs possibles de nos fonctions car ne disposant que du game.o
+nous n'avions pas accès au code source et n'avions pas forcément une compréhension complète des fonctions. 
+De plus certaines fonctions sont dépendantes des autres ; ainsi elles envoient des faux positifs.
+Afin d'avoir des test cohérents nous avons suivi le fichier fournit.
 \subsection{Bilan}
-Nous avons testé toute les fonctionnalitées de la V1. Ainsi que les fonctions is\_wrapping,new\_game\_ext,new\_game\_empty\_ext.
-Certaines de nos fonctions de test ont aussi été mise à jour pour la v2.
+Nous avons testé toutes les fonctionnalitées de la V1, ainsi que les fonctions is\_wrapping, new\_game\_ext, new\_game\_empty\_ext.
+Certaines de nos fonctions de test ont aussi été mises à jour pour la V2.
 \subsection{Amélioration}
-Afin d'améliorer nos test il faudrait penser à ajouter les nouvelles fonctions développer et à minimiser les dépendances des tests
+Afin d'améliorer nos tests il faudrait penser à ajouter les nouvelles fonctions développées et à minimiser les dépendances des tests.
 
 
 
@@ -123,17 +123,18 @@ Ce fichier contient les définitions des fonctions décrivant l'interface de pro
 \subsection{Analyse}
 Définir tout ce qu'on a besoin dans la structure game\_s.
 
-Parmit les difficultés rencontrées c'était dans la fonction bool is\_game\_over, on a eu quelques fuites mémoires.
+Parmis les difficultés rencontrées c'était dans la fonction bool is\_game\_over, où on a eu quelques fuites mémoires.
 
 \subsection{Bilan sur les fonctionnalités}
-A part les fonctions principals dans le fichier game.h on a ajouté ces fonctions auxiliaires:
+\`A part les fonctions principales dans le fichier game.h on a ajouté ces fonctions auxiliaires:
 
-bool is\_connected\_coordinates
+\begin{itemize}
+\item bool is\_connected\_coordinates
 
-bool all\_pieces\_connected
+\item bool all\_pieces\_connected
 
-void aux\_all\_pieces\_connected
-
+\item void aux\_all\_pieces\_connected
+\end{itemize}
 
 
 \section{Cmake}
