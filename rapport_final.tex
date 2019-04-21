@@ -16,6 +16,8 @@
 \maketitle
 \tableofcontents
 
+
+
 \section{Makefile}
 \subsection{Synth\`ese}
 
@@ -33,7 +35,6 @@ probl\`emes mineurs pouvait provenir d'erreurs humaines dans l'\'ecriture du Mak
 nous n'avions aussi pas imm\'ediatement compris qu'il fallait utiliser la commande \textbf{ar}
 pour g\'en\'erer les librairies.
 
-
 \subsection{Bilan}
 
 L'utilisation de make a effectivement rendu la compilation et les tests associ\'es au projet plus faciles 
@@ -44,6 +45,8 @@ commande \textbf{make test}), aucun bug notoire n'a \'et\'e associ\'e \`a make l
 
 Les am\'eliorations concernant make ont \'et\'e apport\'ee par l'utilisation de cmake qui permettait la 
 g\'en\'eration automatique de Makefile.
+
+
 
 \section{Net\_text}
 \subsection{Synth\`ese}
@@ -79,25 +82,39 @@ des chiffres dans les coordonn\'ees le cas \'ech\'eant, il serait \'egalement po
 la lecture de la grille plus facile en indiquant les coordonn\'ees directement sur celle-ci 
 plutôt que de laisser l'utilisateur les trouver.
 
-\section{game\_io.c}
+
+
+\section{Git}
 \subsection{Synthèse}
-Ce fichier fournit des fonctions pour charger ou enregistrer un jeu(deux fonctions principale Load\_game et Save\_game), crée le jeu en chargeant sa description dans un fichier et retourner le jeu chargé.
+Pour notre gestion de projet nous avons utilisé Git et le serveur Savane du Cremi afin de pouvoir partager et accéder a notre projet de n'importe ou.
+Git nous à aussi permis d'avoir un versionning de notre projet afin de revenir en arrière en cas de besoin.
+Nous nous sommes assurés de ne push que des versions qui compilent.
 \subsection{Analyse}
-Notre but était de load et save un game a partir d'un fichier passer en paramétre, notre stratégie d'attaque du problème consiste a la création de quelques fonctions auxiliaires: convert\_piece a le rôle de convertir les caracteres pieces du fichier passer en paramétres en pieces (cette fonction appeler par la fonction load\_game), convert\_direction a le rôle de convertir les caracteres direntions en directions (cette fonction appeler par la fonction load\_game) et la fonction print\_piece a le rôle de convertir les pieces en caracteres(cette fonction appeler par la fonction save\_game).
+Lors de notre projet il nous est arrivé d'avoir des conflits de versions, afin de résoudre ce problème nous avons créé des branches locales. 
+Ce qui à permit de pouvoir utilé git pull sur la branche master et de fusionner plus façilement avec la branche local.
+\subsection{Bilan}
+Lors du projet nous avond été amené a utilisé les fonctions : Git clone,Git init, pull, push, merge,branch,checkout
+\subsection{Amélioration}
+En plus de créer des branches locales nous aurions pu créer des branches distantes afin de partager nos versions incomplétes sans inpacter la branche master.
 
-Parmit les difficultés rencontrées c'était lors de load game, dans la première ligne du fichier passer en paramétre, le soucis est comment différencier les dérniers caractéres du mode wrapping et les caractéres piéces du jeu
-\subsection{Bilan sur les fonctionnalités}
-Fonction load\_game
 
-Fonction save\_game
 
-Fonction auxiliaire convert\_piece
+\section{Test}
+\subsection{Synthèse}
+Afin de vérifier le bon fonctionnement des fonctions de game.c nous avons crée un ensemble de test qui une fois lancé renvoie failure ou success 
+pour chaque fonction testé
+\subsection{Analyse}
+Nous nous somme ainsi répartis les fonctions en 4 et nous avons ensuite chacun crée notre fichier.
+Il fut parfois difficile de trouver tous les bugs possibles de nos fonctions car ne disposant que du game.o
+nous n'avions pas accès au code sources et n'avions pas forcement une compréhension complète des fonctions, 
+de plus certaines fonction sont dépendantes des autres ainsi elles envoie des faux positifs
+Afin d'avoir des test cohérents nous avons suivit le standard fournit le fichier fournit.
+\subsection{Bilan}
+Nous avons testé toute les fonctionnalitées de la V1. Ainsi que les fonctions is\_wrapping,new\_game\_ext,new\_game\_empty\_ext.
+Certaines de nos fonctions de test ont aussi été mise à jour pour la v2.
+\subsection{Amélioration}
+Afin d'améliorer nos test il faudrait penser à ajouter les nouvelles fonctions développer et à minimiser les dépendances des tests
 
-Fonction auxiliaire convert\_direction
-
-Fonction auxiliaire print\_piece
-
-Fonction auxiliaire error
 
 
 \section{game.c}
@@ -119,7 +136,6 @@ void aux\_all\_pieces\_connected
 
 
 
-
 \section{Cmake}
 \subsection{Synthèse}
 On a créer ce fichier Cmake afin de remplacer le fichier Makefile.
@@ -136,35 +152,30 @@ création des executables.
 création de la bibliotheque game.
  
 création des executables des tests du jeu.
- 
-\section{Git}
-\subsection{Synthèse}
-Pour notre gestion de projet nous avons utilisé Git et le serveur Savane du Cremi afin de pouvoir partager et accéder a notre projet de n'importe ou.
-Git nous à aussi permis d'avoir un versionning de notre projet afin de revenir en arrière en cas de besoin.
-Nous nous sommes assurés de ne push que des versions qui compilent.
-\subsection{Analyse}
-Lors de notre projet il nous est arrivé d'avoir des conflits de versions, afin de résoudre ce problème nous avons créé des branches locales. 
-Ce qui à permit de pouvoir utilé git pull sur la branche master et de fusionner plus façilement avec la branche local.
-\subsection{Bilan}
-Lors du projet nous avond été amené a utilisé les fonctions : Git clone,Git init, pull, push, merge,branch,checkout
-\subsection{Amélioration}
-En plus de créer des branches locales nous aurions pu créer des branches distantes afin de partager nos versions incomplétes sans inpacter la branche master.
 
-\section{Test}
+
+
+\section{game\_io.c}
 \subsection{Synthèse}
-Afin de vérifier le bon fonctionnement des fonctions de game.c nous avons crée un ensemble de test qui une fois lancé renvoie failure ou success 
-pour chaque fonction testé
+Ce fichier fournit des fonctions pour charger ou enregistrer un jeu(deux fonctions principale Load\_game et Save\_game), crée le jeu en chargeant sa description dans un fichier et retourner le jeu chargé.
 \subsection{Analyse}
-Nous nous somme ainsi répartis les fonctions en 4 et nous avons ensuite chacun crée notre fichier.
-Il fut parfois difficile de trouver tous les bugs possibles de nos fonctions car ne disposant que du game.o
-nous n'avions pas accès au code sources et n'avions pas forcement une compréhension complète des fonctions, 
-de plus certaines fonction sont dépendantes des autres ainsi elles envoie des faux positifs
-Afin d'avoir des test cohérents nous avons suivit le standard fournit le fichier fournit.
-\subsection{Bilan}
-Nous avons testé toute les fonctionnalitées de la V1. Ainsi que les fonctions is\_wrapping,new\_game\_ext,new\_game\_empty\_ext.
-Certaines de nos fonctions de test ont aussi été mise à jour pour la v2.
-\subsection{Amélioration}
-Afin d'améliorer nos test il faudrait penser à ajouter les nouvelles fonctions développer et à minimiser les dépendances des tests
+Notre but était de load et save un game a partir d'un fichier passer en paramétre, notre stratégie d'attaque du problème consiste a la création de quelques fonctions auxiliaires: convert\_piece a le rôle de convertir les caracteres pieces du fichier passer en paramétres en pieces (cette fonction appeler par la fonction load\_game), convert\_direction a le rôle de convertir les caracteres direntions en directions (cette fonction appeler par la fonction load\_game) et la fonction print\_piece a le rôle de convertir les pieces en caracteres(cette fonction appeler par la fonction save\_game).
+
+Parmit les difficultés rencontrées c'était lors de load game, dans la première ligne du fichier passer en paramétre, le soucis est comment différencier les dérniers caractéres du mode wrapping et les caractéres piéces du jeu
+\subsection{Bilan sur les fonctionnalités}
+Fonction load\_game
+
+Fonction save\_game
+
+Fonction auxiliaire convert\_piece
+
+Fonction auxiliaire convert\_direction
+
+Fonction auxiliaire print\_piece
+
+Fonction auxiliaire error
+ 
+
 
 \section{Solveur}
 \subsection{Synthèse}
