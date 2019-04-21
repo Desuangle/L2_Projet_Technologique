@@ -15,6 +15,69 @@
 \maketitle
 \tableofcontents
 
+\section{Makefile}
+\subsection{Synth\`ese}
+
+R\'ealisation d'un fichier Makefile pour la V1 afin d'automatiser la compilation des \'executables du jeu et des diff\'erents tests.
+
+\subsection{Analyse}
+
+Nous avons utilis\'e les connaissances acquises lors du TD sur make d\'es la premi\`ere version
+de notre Makefile pour la V1, celle-ci faisant d\'ej\`a usage de variables implicites (FLAGS) et automatiques.
+Nous avons subs\'equemment ajout\'e le code n\'ecessaire \`a la compilation des tests sur la V1 puis du nouveau
+framework de test.
+
+Nous n'avons rencontr\'e aucun probl\`eme majeur dans l'impl\'ementation de make, les seuls
+probl\`emes mineurs pouvait provenir d'erreurs humaines dans l'\'ecriture du Makefile et
+nous n'avions aussi pas imm\'ediatement compris qu'il fallait utiliser la commande \textbf{ar}
+pour g\'en\'erer les librairies.
+
+
+\subsection{Bilan}
+
+L'utilisation de make a effectivement rendu la compilation et les tests associ\'es au projet plus faciles 
+(le nouveau framework de test permettant d'effectuer tous les tests avec une simple utilisation de la 
+commande \textbf{make test}), aucun bug notoire n'a \'et\'e associ\'e \`a make lors du d\'eveloppement.
+
+\subsection{Am\'eliorations}
+
+Les am\'eliorations concernant make ont \'et\'e apport\'ee par l'utilisation de cmake qui permettait la 
+g\'en\'eration automatique de Makefile.
+
+\section{Net\_text}
+\subsection{Synth\`ese}
+
+Nous avons avec net_text impl\'ement\'e une version textuelle du jeu net via le terminal en demandant
+seulement les coordonn\'ees de la pi\`ece \`a tourner \`a l'utilisateur.
+
+\subsection{Analyse}
+
+La premi\`ere impl\'ementation de net_text employait un switch case pour associer chaque couple 
+pi\`ece, orientation \`a un caract\`ere donn\'e, de plus la gestion de l'interaction utilisateur 
+\'etait minimale et l'envoie de lettres en guise de coordonn\'ees causait une boucle infinie.
+Le code a \'et\'e all\'eg\'e en utilisant des tableaux de caract\`eres \`a la place de switch case et 
+la boucle infinie est d\'esormais \'evit\'ee en s'assurant que le programme va jusqu'\`a la fin de 
+la chaîne de caract\`eres fournie par l'utilisateur lorsque des coordonn\'ees lui sont demand\'ees.
+Il reste cependant des l\'egers probl\`emes : 
+\begin{itemize}
+\item L'entr\'ee d'une seule coordonn\'ee n'est pas consid\'er\'ee comme invalide et l'utilisateur peut indiquer la seconde coordonn\'ee dans la ligne suivante du terminal.
+\item Dut \`a la r\'esolution de la boucle infinie, des coordonn\'ees sous forme <nombre> <lettre> r\'eaffichent la grille mais pas des coordonn\'ees de la forme <nombre> <lettre>.
+\end{itemize}
+
+\subsection{Bilan}
+
+En l'\'etat le jeu en version texte est fonctionnel, la grille de jeu est affich\'ee puis des 
+les coordonn\'ees d'une pi\`ece \`a bouger sont demand\'ees \`a chaque mouvement et le bug le plus 
+important a \'et\'e r\'esolu. Aucun probl\`eme de performance n'est \`a d\'eplorer.
+
+\subsection{Am\'eliorations}
+
+Une meilleure gestion de l'interaction utilisateur est une bonne piste d'am\'elioration.
+Il serait par exemple possible de pr\'eciser de ne pas utiliser de caract\`eres autres que
+des chiffres dans les coordonn\'ees le cas \'ech\'eant, il serait \'egalement possible de rendre
+la lecture de la grille plus facile en indiquant les coordonn\'ees directement sur celle-ci 
+plutôt que de laisser l'utilisateur les trouver.
+
 \section{game\_io.c}
 \subsection{Synthèse}
 Ce fichier fournit des fonctions pour charger ou enregistrer un jeu(deux fonctions principale Load\_game et Save\_game), crée le jeu en chargeant sa description dans un fichier et retourner le jeu chargé.
