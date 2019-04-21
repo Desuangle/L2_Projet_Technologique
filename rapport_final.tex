@@ -19,28 +19,40 @@
 \subsection{Synthèse}
 Ce fichier fournit des fonctions pour charger ou enregistrer un jeu(deux fonctions principale Load\_game et Save\_game), crée le jeu en chargeant sa description dans un fichier et retourner le jeu chargé.
 \subsection{Analyse}
-Notre but était de load et save un game a partir d'un fichier passer en paramétre, notre stratégie d'attaque du problème consiste a la création de quelques fonctions auxiliaires: convert\_piece a le rôle de convertir les caracteres pieces du fichier passer en paramétres en pieces (cette fonction appeler par la fonction load\_game), convert\_direction a le rôle de convertir les caracteres direntions en directions (cette fonction appeler par la fonction load\_game) et la fonction print\_piece a le rôle de convertir les pieces en caracteres(cette fonction appeler par la fonction save\_game).\\
+Notre but était de load et save un game a partir d'un fichier passer en paramétre, notre stratégie d'attaque du problème consiste a la création de quelques fonctions auxiliaires: convert\_piece a le rôle de convertir les caracteres pieces du fichier passer en paramétres en pieces (cette fonction appeler par la fonction load\_game), convert\_direction a le rôle de convertir les caracteres direntions en directions (cette fonction appeler par la fonction load\_game) et la fonction print\_piece a le rôle de convertir les pieces en caracteres(cette fonction appeler par la fonction save\_game).
+
 Parmit les difficultés rencontrées c'était lors de load game, dans la première ligne du fichier passer en paramétre, le soucis est comment différencier les dérniers caractéres du mode wrapping et les caractéres piéces du jeu
 \subsection{Bilan sur les fonctionnalités}
-Fonction load\_game\\ 
-Fonction save\_game\\ 
-Fonction auxiliaire convert\_piece\\ 
-Fonction auxiliaire convert\_direction\\ 
-Fonction auxiliaire print\_piece\\ 
-Fonction auxiliaire error\\ 
+Fonction load\_game
+
+Fonction save\_game
+
+Fonction auxiliaire convert\_piece
+
+Fonction auxiliaire convert\_direction
+
+Fonction auxiliaire print\_piece
+
+Fonction auxiliaire error
 
 
 \section{game.c}
 \subsection{Synthèse}
 Ce fichier contient les définitions des fonctions décrivant l'interface de programmation du jeu.
 \subsection{Analyse}
-Définir tout ce qu'on a besoin dans la structure game\_s.\\
-Parmit les difficultés rencontrées c'était dans la fonction bool is\_game\_over, on a eu quelques fuites mémoires.\\
+Définir tout ce qu'on a besoin dans la structure game\_s.
+
+Parmit les difficultés rencontrées c'était dans la fonction bool is\_game\_over, on a eu quelques fuites mémoires.
+
 \subsection{Bilan sur les fonctionnalités}
-A part les fonctions principals dans le fichier game.h on a ajouté ces fonctions auxiliaires:\\
-bool is\_connected\_coordinates\\
-bool all\_pieces\_connected\\
-void aux\_all\_pieces\_connected\\
+A part les fonctions principals dans le fichier game.h on a ajouté ces fonctions auxiliaires:
+
+bool is\_connected\_coordinates
+
+bool all\_pieces\_connected
+
+void aux\_all\_pieces\_connected
+
 
 
 
@@ -49,13 +61,18 @@ void aux\_all\_pieces\_connected\\
 On a créer ce fichier Cmake afin de remplacer le fichier Makefile.
 \subsection{Analyse}
 Notre fichier CMakeLists.txt, va produire le script de compilation permettant la création de l'exécutable,
-il est indépendant de la plateforme, et décrit comment compiler le projet à l'aide d'informations comme : le langage utilisé, les fichiers à compiler, les dépendances.\\
-Ainsi CMakeLists.txt va pouvoir produire la bibliotheque game crée à partir de game.c et game\_io.c contient les fonctionalités du jeu\\
+il est indépendant de la plateforme, et décrit comment compiler le projet à l'aide d'informations comme : le langage utilisé, les fichiers à compiler, les dépendances.
+
+Ainsi CMakeLists.txt va pouvoir produire la bibliotheque game crée à partir de game.c et game\_io.c contient les fonctionalités du jeu
+
 Parmit les difficultés rencontrées c'était quelques problémes syntaxique du Cmake.
 \subsection{Bilan sur les fonctionnalités}
-création des executables.\\ 
-création de la bibliotheque game.\\ 
-création des executables des tests du jeu.\\ 
+création des executables.
+ 
+création de la bibliotheque game.
+ 
+création des executables des tests du jeu.
+ 
 \section{Git}
 \subsection{Synthèse}
 Pour notre gestion de projet nous avons utilisé Git et le serveur Savane du Cremi afin de pouvoir partager et accéder a notre projet de n'importe ou.
@@ -85,7 +102,80 @@ Certaines de nos fonctions de test ont aussi été mise à jour pour la v2.
 \subsection{Amélioration}
 Afin d'améliorer nos test il faudrait penser à ajouter les nouvelles fonctions développer et à minimiser les dépendances des tests
 
-%\lstinputlisting[language=c]{solve_main.c}
+\section{Solveur}
+\subsection{Synthèse}
+On a fait une bibliothèque ``solve'' comprenant ``solve.c'' et ``solve.h'', ainsi qu'un fichier ``solve\_main.c'' qui permet de compiler le programe ``net\_solve''.
 
+Le solveur renvoie soit une solution, soit le nombre de solutions, soit toutes les solutions pour un jeu donné.
+
+On l'a intégré à la version SDL du jeu.
+\subsection{Analyse critique}
+On a fait un brainstorming après la présentation du solveur, et on en a sorti un algorithme. Après implémentation il ne fonctionnait pas, et on a analysé l'algorithme pour voir ce qui n'allait pas puis on l'a corrigé (L'algorithme final est trouvable en annexe~\ref{algosolv}).
+
+Utiliser un algorithme était un bon choix car il permettait d'avoir une vue d'ensemble et il était facile de voir les erreurs à corriger.
+\subsection{Bilan}
+Le solveur fonctionne pour des jeux dont la taille va jusqu'à 20x20 (pour du 20x20 il met 5 secondes).
+
+Il n'est pas très optimisé mais il est clair et c'est facile d'ajouter des options comme fait en tp noté.
+\subsection{Pistes d'amélioration}
+On pourrait revoir l'algorithme pour atteindre la fin de la récursion si et seulement si le jeu est finit. Ainsi il n'y aurait plus besoin de vérifier avec la fonction isgameover, ce qui améliorerait grandement la vitesse.
+
+
+
+\section{Net SDL}
+\subsection{Synthèse}
+On a créé deux fichiers ``net\_sdl.c'' et ``main.c'', qui permettent de faire un rendu graphique du jeu grâce à la bibliothèque SDL2.
+\subsection{Analyse critique}
+Pour le ``main.c'' on a gardé celui de la démo, car il n'y avait rien à changer.
+
+Pour ``net\_sdl.c'', on a repris ``model.c'' et on l'a rempli en s'inspirant de ``demo.c''.
+
+On a rencontré des difficultés pour définir les variables globales nécessaires, au début on pensait utiliser des matrices de coordonnées ce qui est inutile.
+
+Enfin on a testé assez tard le fait de viser en dehors du cadre, surtout du fait que pendant un certain temps c'était impossible car le jeu prenait la totalité du cadre, donc on n'a que tardivement corrigé un bug qui faisait planter le jeu en visant  à côté.
+\subsection{Bilan}
+Le jeu fonctionne, on a intégré le chargement de fichier comme dans net\_text, et on a aussi intégré le solveur.
+\subsection{Pistes d'amélioration}
+Pris par la pression des projets de fin d'année, on n'a pas été jusqu'au bout pour les fonctionnalités.
+
+On peut ajouter la sauvegarde de partie, le chargement de partie, la génération aléatoire, et on peut mettre tout ça dans un menu graphique à côté du jeu.
+
+
+
+\section{Portage android}
+\subsection{Synthèse}
+On a ajouté le dossier ``android'' qui comprend tout ce qu'il faut pour créer une application sous android de net\_sdl.
+\subsection{Analyse critique}
+Certains membres du groupe ont eu des difficultés avec les instructions du README qui ont fait qu'ils n'ont pas pu travailler dessus.
+
+Pour changer ``net\_sdl.c'', on s'est à nouveau basé sur ``demo.c'', afin de changer ce qui est compilé entre gcc et ndk. On a longtemps eu des problèmes au lancement de l'apk (le jeu qui plante au démarage) sans savoir la cause, puis on a finit par comprendre que ça venait du chargement de fichier. On a alors décidé de ne pas utiliser gameio mais plutôt de recréer les pièces et directions directement dans net\_sdl, comme au début de net\_text, et le jeu n'a plus planté.
+
+On a aussi eu des confusions au niveau du rendu, car on nous disait à la fois de ne pas inclure les bibliothèques SDL, et de pouvoir compiler directement. Il a fallu confirmation avec le professeur pour comprendre qu'il fallait suivre la première instruction.
+\subsection{Bilan}
+Le jeu fonctionne sous android, il reprend les mêmes fonctionnalités que net\_sdl sauf qu'on ne peut pas utiliser le solveur.
+\subsection{Pistes d'amélioration}
+Toutes les améliorations de net\_sdl se répercuteront sur la version android. Il faudra juste ajouter des menus sinon il n'y a pas vraiment de touches de clavier sur téléphone pour lancer des choses comme le solveur.
+
+De plus, après avoir finit le projet, on a vu sur le forum moodle le programme qui est censé réparer le chargement de fichiers au démarrage, donc ce serait bien de rétablir default.txt.
+
+
+
+\section{Conclusion}
+\subsection{Vialar Alexandre}
+Le projet était intéressant, c'était bien de nous faire travailler en groupe.
+
+J'ai beaucoup appris sur les makefile, git, et les outils de débuggage.
+
+Cependant ça manquait de vrais cours, ce qui fait que je passais plus de temps à réexpliquer le cours moodle à mes collègues qu'à travailler réellement.
+
+Il serait bien aussi de mieux expliquer l'utilité de chaque cours (par exemple pour \LaTeX, personnelement je sais qu'il est utilisé par les chercheurs, par des enseignants, etc... mais c'est parce que je m'en suis déjà servi auparavant et que je m'étais renseigné dessus, tout le monde n'a pas eu cette lubie). 
+J'ai d'ailleurs remarqué que d'autres étudiants ne faisaient les cours que pour la note, ne lisant pas les cours sans rendus, et ne comprenant pas l'utilité de \LaTeX.
+Je pense qu'avoir ne serait-ce que 5 minutes de cours en début de TP pourrait améliorer les choses.
+
+Le travail en autonomie est une bonne idée, mais je ne pense pas que l'apprentissage devrait se faire en autonomie, et même si un professeur passe dans les rangs, je pense que ce n'est pas suffisant.
+
+\section{Annexe}
+\subsection{Algorithme Solveur}
+\label{algosolv}
+\lstinputlisting{algo_solveur.txt}
 \end{document}
-%\lstinputlisting[language=c, firstline= 9, lastline= 12]{game_io.c}
