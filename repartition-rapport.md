@@ -1,6 +1,6 @@
 -makefile : mathis
 
--net_text.c : alexandre
+-net_text.c : mathis
 
 -git (+ branches) : killian
 
@@ -12,7 +12,7 @@
 
 -gameio.c : walid
 
--solve.c / solve_main.c : mathis
+-solve.c / solve_main.c : alexandre
 
 -net_sdl.c : alexandre
 

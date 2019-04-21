@@ -16,8 +16,80 @@
 
 \tableofcontents
 
+\section{Solveur}
+\subsection{Synthèse}
+On a fait une bibliothèque ``solve'' comprenant ``solve.c'' et ``solve.h'', ainsi qu'un fichier ``solve\_main.c'' qui permet de compiler le programe ``net\_solve''.
+
+Le solveur renvoie soit une solution, soit le nombre de solutions, soit toutes les solutions pour un jeu donné.
+
+On l'a intégré à la version SDL du jeu.
+\subsection{Analyse critique}
+On a fait un brainstorming après la présentation du solveur, et on en a sorti un algorithme. Après implémentation il ne fonctionnait pas, et on a analysé l'algorithme pour voir ce qui n'allait pas puis on l'a corrigé (L'algorithme final est trouvable en annexe~\ref{algosolv}).
+
+Utiliser un algorithme était un bon choix car il permettait d'avoir une vue d'ensemble et il était facile de voir les erreurs à corriger.
+\subsection{Bilan}
+Le solveur fonctionne pour des jeux dont la taille va jusqu'à 20x20 (pour du 20x20 il met 5 secondes).
+
+Il n'est pas très optimisé mais il est clair et c'est facile d'ajouter des options comme fait en tp noté.
+\subsection{Pistes d'amélioration}
+On pourrait revoir l'algorithme pour atteindre la fin de la récursion si et seulement si le jeu est finit. Ainsi il n'y aurait plus besoin de vérifier avec la fonction isgameover, ce qui améliorerait grandement la vitesse.
 
 
-%\lstinputlisting[language=c]{solve_main.c}
 
+\section{Net SDL}
+\subsection{Synthèse}
+On a créé deux fichiers ``net\_sdl.c'' et ``main.c'', qui permettent de faire un rendu graphique du jeu grâce à la bibliothèque SDL2.
+\subsection{Analyse critique}
+Pour le ``main.c'' on a gardé celui de la démo, car il n'y avait rien à changer.
+
+Pour ``net\_sdl.c'', on a repris ``model.c'' et on l'a rempli en s'inspirant de ``demo.c''.
+
+On a rencontré des difficultés pour définir les variables globales nécessaires, au début on pensait utiliser des matrices de coordonnées ce qui est inutile.
+
+Enfin on a testé assez tard le fait de viser en dehors du cadre, surtout du fait que pendant un certain temps c'était impossible car le jeu prenait la totalité du cadre, donc on n'a que tardivement corrigé un bug qui faisait planter le jeu en visant  à côté.
+\subsection{Bilan}
+Le jeu fonctionne, on a intégré le chargement de fichier comme dans net\_text, et on a aussi intégré le solveur.
+\subsection{Pistes d'amélioration}
+Pris par la pression des projets de fin d'année, on n'a pas été jusqu'au bout pour les fonctionnalités.
+
+On peut ajouter la sauvegarde de partie, le chargement de partie, la génération aléatoire, et on peut mettre tout ça dans un menu graphique à côté du jeu.
+
+
+
+\section{Portage android}
+\subsection{Synthèse}
+On a ajouté le dossier ``android'' qui comprend tout ce qu'il faut pour créer une application sous android de net\_sdl.
+\subsection{Analyse critique}
+Certains membres du groupe ont eu des difficultés avec les instructions du README qui ont fait qu'ils n'ont pas pu travailler dessus.
+
+Pour changer ``net\_sdl.c'', on s'est à nouveau basé sur ``demo.c'', afin de changer ce qui est compilé entre gcc et ndk. On a longtemps eu des problèmes au lancement de l'apk (le jeu qui plante au démarage) sans savoir la cause, puis on a finit par comprendre que ça venait du chargement de fichier. On a alors décidé de ne pas utiliser gameio mais plutôt de recréer les pièces et directions directement dans net\_sdl, comme au début de net\_text, et le jeu n'a plus planté.
+
+On a aussi eu des confusions au niveau du rendu, car on nous disait à la fois de ne pas inclure les bibliothèques SDL, et de pouvoir compiler directement. Il a fallu confirmation avec le professeur pour comprendre qu'il fallait suivre la première instruction.
+\subsection{Bilan}
+Le jeu fonctionne sous android, il reprend les mêmes fonctionnalités que net\_sdl sauf qu'on ne peut pas utiliser le solveur.
+\subsection{Pistes d'amélioration}
+Toutes les améliorations de net\_sdl se répercuteront sur la version android. Il faudra juste ajouter des menus sinon il n'y a pas vraiment de touches de clavier sur téléphone pour lancer des choses comme le solveur.
+
+De plus, après avoir finit le projet, on a vu sur le forum moodle le programme qui est censé réparer le chargement de fichiers au démarrage, donc ce serait bien de rétablir default.txt.
+
+
+
+\section{Conclusion}
+\subsection{Vialar Alexandre}
+Le projet était intéressant, c'était bien de nous faire travailler en groupe.
+
+J'ai beaucoup appris sur les makefile, git, et les outils de débuggage.
+
+Cependant ça manquait de vrais cours, ce qui fait que je passais plus de temps à réexpliquer le cours moodle à mes collègues qu'à travailler réellement.
+
+Il serait bien aussi de mieux expliquer l'utilité de chaque cours (par exemple pour \LaTeX, personnelement je sais qu'il est utilisé par les chercheurs, par des enseignants, etc... mais c'est parce que je m'en suis déjà servi auparavant et que je m'étais renseigné dessus, tout le monde n'a pas eu cette lubie). 
+J'ai d'ailleurs remarqué que d'autres étudiants ne faisaient les cours que pour la note, ne lisant pas les cours sans rendus, et ne comprenant pas l'utilité de \LaTeX.
+Je pense qu'avoir ne serait-ce que 5 minutes de cours en début de TP pourrait améliorer les choses.
+
+Le travail en autonomie est une bonne idée, mais je ne pense pas que l'apprentissage devrait se faire en autonomie, et même si un professeur passe dans les rangs, je pense que ce n'est pas suffisant.
+
+\section{Annexe}
+\subsection{Algorithme Solveur}
+\label{algosolv}
+\lstinputlisting{algo_solveur.txt}
 \end{document}
