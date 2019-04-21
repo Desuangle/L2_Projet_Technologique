@@ -19,67 +19,67 @@
 
 
 \section{Makefile}
-\subsection{Synth\`ese}
+\subsection{Synthèse}
 
-R\'ealisation d'un fichier Makefile pour la V1 afin d'automatiser la compilation des \'executables du jeu et des diff\'erents tests.
+Réalisation d'un fichier Makefile pour la V1 afin d'automatiser la compilation des éxecutables du jeu et des différents tests.
 
 \subsection{Analyse}
 
-Nous avons utilis\'e les connaissances acquises lors du TD sur make d\'es la premi\`ere version
-de notre Makefile pour la V1, celle-ci faisant d\'ej\`a usage de variables implicites (FLAGS) et automatiques.
-Nous avons subs\'equemment ajout\'e le code n\'ecessaire \`a la compilation des tests sur la V1 puis du nouveau
+Nous avons utilisé les connaissances acquises lors du TD sur make dés la première version
+de notre Makefile pour la V1, celle-ci faisant déjà usage de variables implicites (FLAGS) et automatiques.
+Nous avons subséquemment ajouté le code nécessaire à la compilation des tests sur la V1 puis du nouveau
 framework de test.
 
-Nous n'avons rencontr\'e aucun probl\`eme majeur dans l'impl\'ementation de make, les seuls
-probl\`emes mineurs pouvait provenir d'erreurs humaines dans l'\'ecriture du Makefile et
-nous n'avions aussi pas imm\'ediatement compris qu'il fallait utiliser la commande \textbf{ar}
-pour g\'en\'erer les librairies.
+Nous n'avons rencontré aucun problème majeur dans l'implémentation de make, les seuls
+problèmes mineurs pouvait provenir d'erreurs humaines dans l'écriture du Makefile et
+nous n'avions aussi pas immédiatement compris qu'il fallait utiliser la commande \textbf{ar}
+pour générer les librairies.
 
 \subsection{Bilan}
 
-L'utilisation de make a effectivement rendu la compilation et les tests associ\'es au projet plus faciles 
+L'utilisation de make a effectivement rendu la compilation et les tests associés au projet plus faciles 
 (le nouveau framework de test permettant d'effectuer tous les tests avec une simple utilisation de la 
-commande \textbf{make test}), aucun bug notoire n'a \'et\'e associ\'e \`a make lors du d\'eveloppement.
+commande \textbf{make test}), aucun bug notoire n'a été associé à make lors du développement.
 
-\subsection{Am\'eliorations}
+\subsection{Améliorations}
 
-Les am\'eliorations concernant make ont \'et\'e apport\'ee par l'utilisation de cmake qui permettait la 
-g\'en\'eration automatique de Makefile.
+Les améliorations concernant make ont été apportée par l'utilisation de cmake qui permettait la 
+génération automatique de Makefile.
 
 
 
 \section{Net\_text}
-\subsection{Synth\`ese}
+\subsection{Synthèse}
 
-Nous avons avec net\_text impl\'ement\'e une version textuelle du jeu net via le terminal en demandant
-seulement les coordonn\'ees de la pi\`ece \`a tourner \`a l'utilisateur.
+Nous avons avec net\_text implémenté une version textuelle du jeu net via le terminal en demandant
+seulement les coordonnées de la pièce à tourner à l'utilisateur.
 
 \subsection{Analyse}
 
-La premi\`ere impl\'ementation de net\_text employait un switch case pour associer chaque couple 
-pi\`ece, orientation \`a un caract\`ere donn\'e, de plus la gestion de l'interaction utilisateur 
-\'etait minimale et l'envoie de lettres en guise de coordonn\'ees causait une boucle infinie.
-Le code a \'et\'e all\'eg\'e en utilisant des tableaux de caract\`eres \`a la place de switch case et 
-la boucle infinie est d\'esormais \'evit\'ee en s'assurant que le programme va jusqu'\`a la fin de 
-la chaîne de caract\`eres fournie par l'utilisateur lorsque des coordonn\'ees lui sont demand\'ees.
-Il reste cependant des l\'egers probl\`emes : 
+La première implémentation de net\_text employait un switch case pour associer chaque couple 
+pièce, orientation à un caractère donné, de plus la gestion de l'interaction utilisateur 
+était minimale et l'envoie de lettres en guise de coordonnées causait une boucle infinie.
+Le code a été allégé en utilisant des tableaux de caractères à la place de switch case et 
+la boucle infinie est désormais évitée en s'assurant que le programme va jusqu'à la fin de 
+la chaîne de caractères fournie par l'utilisateur lorsque des coordonnées lui sont demandées.
+Il reste cependant des légers problèmes : 
 \begin{itemize}
-\item L'entr\'ee d'une seule coordonn\'ee n'est pas consid\'er\'ee comme invalide et l'utilisateur peut indiquer la seconde coordonn\'ee dans la ligne suivante du terminal.
-\item Dut \`a la r\'esolution de la boucle infinie, des coordonn\'ees sous forme <nombre> <lettre> r\'eaffichent la grille mais pas des coordonn\'ees de la forme <nombre> <lettre>.
+\item L'entrée d'une seule coordonnée n'est pas considérée comme invalide et l'utilisateur peut indiquer la seconde coordonnée dans la ligne suivante du terminal.
+\item Dut à la résolution de la boucle infinie, des coordonnées sous forme <nombre> <lettre> réaffichent la grille mais pas des coordonnées de la forme <nombre> <lettre>.
 \end{itemize}
 
 \subsection{Bilan}
 
-En l'\'etat le jeu en version texte est fonctionnel, la grille de jeu est affich\'ee puis des 
-les coordonn\'ees d'une pi\`ece \`a bouger sont demand\'ees \`a chaque mouvement et le bug le plus 
-important a \'et\'e r\'esolu. Aucun probl\`eme de performance n'est \`a d\'eplorer.
+En l'état le jeu en version texte est fonctionnel, la grille de jeu est affichée puis des 
+les coordonnées d'une pièce à bouger sont demandées à chaque mouvement et le bug le plus 
+important a été résolu. Aucun problème de performance n'est à déplorer.
 
-\subsection{Am\'eliorations}
+\subsection{Améliorations}
 
-Une meilleure gestion de l'interaction utilisateur est une bonne piste d'am\'elioration.
-Il serait par exemple possible de pr\'eciser de ne pas utiliser de caract\`eres autres que
-des chiffres dans les coordonn\'ees le cas \'ech\'eant, il serait \'egalement possible de rendre
-la lecture de la grille plus facile en indiquant les coordonn\'ees directement sur celle-ci 
+Une meilleure gestion de l'interaction utilisateur est une bonne piste d'amélioration.
+Il serait par exemple possible de préciser de ne pas utiliser de caractères autres que
+des chiffres dans les coordonnées le cas échéant, il serait également possible de rendre
+la lecture de la grille plus facile en indiquant les coordonnées directement sur celle-ci 
 plutôt que de laisser l'utilisateur les trouver.
 
 
