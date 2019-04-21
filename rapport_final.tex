@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[frenchb]{babel}
 %\usepackage[]{geometry}
+\usepackage[T1]{fontenc}
 \usepackage{listings}
 \lstset{breaklines=true}
 
@@ -47,12 +48,12 @@ g\'en\'eration automatique de Makefile.
 \section{Net\_text}
 \subsection{Synth\`ese}
 
-Nous avons avec net_text impl\'ement\'e une version textuelle du jeu net via le terminal en demandant
+Nous avons avec net\_text impl\'ement\'e une version textuelle du jeu net via le terminal en demandant
 seulement les coordonn\'ees de la pi\`ece \`a tourner \`a l'utilisateur.
 
 \subsection{Analyse}
 
-La premi\`ere impl\'ementation de net_text employait un switch case pour associer chaque couple 
+La premi\`ere impl\'ementation de net\_text employait un switch case pour associer chaque couple 
 pi\`ece, orientation \`a un caract\`ere donn\'e, de plus la gestion de l'interaction utilisateur 
 \'etait minimale et l'envoie de lettres en guise de coordonn\'ees causait une boucle infinie.
 Le code a \'et\'e all\'eg\'e en utilisant des tableaux de caract\`eres \`a la place de switch case et 
